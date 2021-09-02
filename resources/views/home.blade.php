@@ -1,4 +1,4 @@
-@extends('layouts/main_layout');
+@extends('layouts/main_layout')
 
 @section('content')
 
@@ -109,7 +109,5 @@
         background: rgba(63, 191, 63, 0.5);
     }
 </style>
-
-<script>
     
 @endsection
