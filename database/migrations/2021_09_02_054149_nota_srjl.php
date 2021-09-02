@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class RelasiReseller extends Migration
+class NotaSrjl extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class RelasiReseller extends Migration
      */
     public function up()
     {
-        Schema::create('relasi_reseller', function (Blueprint $table) {
+        Schema::create('nota_srjl', function (Blueprint $table) {
             $table->id();
-            $table->integer('reseller_id');
-            $table->integer('pelanggan_id');
-            // $table->timestamps();
+            $table->foreignId("nota_id");
+            $table->foreignId("srjl_id");
         });
     }
 
@@ -28,6 +27,6 @@ class RelasiReseller extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('relasi_reseller');
+        //
     }
 }

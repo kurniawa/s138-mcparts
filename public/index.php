@@ -21,7 +21,7 @@ define('LARAVEL_START', microtime(true));
 |
 */
 
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +35,7 @@ require __DIR__.'/../vendor/autoload.php';
 |
 */
 
-$app = require_once __DIR__.'/../bootstrap/app.php';
+$app = require_once __DIR__ . '/../bootstrap/app.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -58,3 +58,39 @@ $response = $kernel->handle(
 $response->send();
 
 $kernel->terminate($request, $response);
+
+/*
+ * First Database Setup for this Project
+ * 
+ php artisan make:model -m -c Pelanggan
+ php artisan make:model -m -c Ekspedisi
+ php artisan make:model -m -c Produk
+ php artisan make:model -m -c Bahan
+ php artisan make:model -m -c Variasi
+ php artisan make:model -m -c Jahit
+ php artisan make:model -m -c Spk
+ php artisan make:model -m -c Nota
+ php artisan make:model -m -c Srjl
+ php artisan make:migration pelanggan_produk_harga
+ php artisan make:migration produk_harga
+ php artisan make:migration bahan_harga
+ php artisan make:migration variasi_harga
+ php artisan make:migration jahit_harga
+ php artisan make:migration pelanggan_ekspedisi
+ php artisan make:migration spk_nota
+ php artisan make:migration nota_srjl
+
+ Schema - Pelanggan:
+  Schema::create('pelanggans', function (Blueprint $table) {
+            $table->id();
+            $table->string("nama", 100);
+            $table->string("alamat");
+            $table->string("daerah", 50);
+            $table->string("no_kontak", 50)->nullable();
+            $table->string("pulau", 50);
+            $table->string("ktrg")->nullable();
+            $table->timestamp("created_at")->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp("updated_at")->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+        });
+ * 
+ */

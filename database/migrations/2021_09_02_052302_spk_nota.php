@@ -15,8 +15,8 @@ class SpkNota extends Migration
     {
         Schema::create('spk_nota', function (Blueprint $table) {
             $table->id();
-            $table->integer("spk_id");
-            $table->integer("nota_id");
+            $table->foreignId("spk_id");
+            $table->foreignId("nota_id");
         });
     }
 

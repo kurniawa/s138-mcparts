@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateSpksTable extends Migration
 {
@@ -15,7 +16,15 @@ class CreateSpksTable extends Migration
     {
         Schema::create('spks', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('no_spk', 20);
+            $table->foreignId('pelanggan_id');
+            $table->string('status', 50);
+            $table->string('ktrg');
+            $table->foreignId('created_by');
+            $table->foreignId('updated_by');
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('finished_at')->nullable();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
     }
 
