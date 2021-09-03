@@ -5,16 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="fonts/Nunito-Fontface/stylesheet.css">
-    <link rel="stylesheet" href="fonts/Roboto-Fontface/stylesheet.css">
+    {{-- <link rel="stylesheet" href="fonts/Nunito-Fontface/stylesheet.css"> --}}
+    {{-- <link rel="stylesheet" href="fonts/Roboto-Fontface/stylesheet.css"> --}}
     <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/grid.css">
-    <link rel="stylesheet" href="css/fonts.css">
+    {{-- <link rel="stylesheet" href="css/fonts.css"> --}}
     <link rel="stylesheet" href="css/border.css">
     <link rel="stylesheet" href="js/jquery-ui-1.12.1/jquery-ui.css">
     <script src="js/jquery-3.5.1.js"></script>
     <script src="js/jquery-ui-1.12.1/jquery-ui.js"></script>
     <script src="js/functions.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
     <title>MC-Parts Smart System</title>
 </head>
@@ -22,6 +23,9 @@
 <body>
     @yield('content')
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 <script>
     function showDropDown(id) {
         $selectedDiv = $("#divDetailDropDown-" + id);

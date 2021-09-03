@@ -781,6 +781,7 @@ class ComposerStaticInit80fd682ef2e262a22885b85346c6b859
         'Egulias\\EmailValidator\\Warning\\QuotedString' => __DIR__ . '/..' . '/egulias/email-validator/src/Warning/QuotedString.php',
         'Egulias\\EmailValidator\\Warning\\TLD' => __DIR__ . '/..' . '/egulias/email-validator/src/Warning/TLD.php',
         'Egulias\\EmailValidator\\Warning\\Warning' => __DIR__ . '/..' . '/egulias/email-validator/src/Warning/Warning.php',
+        'Ekspedisi' => __DIR__ . '/../..' . '/database/seeds/Ekspedisi.php',
         'Facade\\FlareClient\\Api' => __DIR__ . '/..' . '/facade/flare-client-php/src/Api.php',
         'Facade\\FlareClient\\Concerns\\HasContext' => __DIR__ . '/..' . '/facade/flare-client-php/src/Concerns/HasContext.php',
         'Facade\\FlareClient\\Concerns\\UsesTime' => __DIR__ . '/..' . '/facade/flare-client-php/src/Concerns/UsesTime.php',
