@@ -67,30 +67,73 @@ $kernel->terminate($request, $response);
  php artisan make:model -m -c Produk
  php artisan make:model -m -c Bahan
  php artisan make:model -m -c Variasi
+ php artisan make:model -m -c Ukuran
  php artisan make:model -m -c Jahit
+ php artisan make:model -m -c Kombinasi
+ php artisan make:model -m -c Standar
+ php artisan make:model -m -c Busastang
  php artisan make:model -m -c Spk
  php artisan make:model -m -c Nota
  php artisan make:model -m -c Srjl
+ php artisan make:migration pelanggan_reseller
+ php artisan make:migration pelanggan_produk
  php artisan make:migration pelanggan_produk_harga
  php artisan make:migration produk_harga
  php artisan make:migration bahan_harga
  php artisan make:migration variasi_harga
+ php artisan make:migration ukuran_harga
  php artisan make:migration jahit_harga
+ php artisan make:migration kombinasi_harga
+ php artisan make:migration standar_harga
+ php artisan make:migration busastang_harga
  php artisan make:migration pelanggan_ekspedisi
  php artisan make:migration spk_nota
  php artisan make:migration nota_srjl
+ php artisan make:migration spk_produk
+ php artisan make:migration nota_produk
+ php artisan make:migration srjl_produk
 
  Schema - Pelanggan:
+ -------------------
   Schema::create('pelanggans', function (Blueprint $table) {
-            $table->id();
-            $table->string("nama", 100);
-            $table->string("alamat");
-            $table->string("daerah", 50);
-            $table->string("no_kontak", 50)->nullable();
-            $table->string("pulau", 50);
-            $table->string("ktrg")->nullable();
-            $table->timestamp("created_at")->default(DB::raw('CURRENT_TIMESTAMP'));
-            $table->timestamp("updated_at")->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
-        });
- * 
+    $table->id();
+    $table->string("nama", 100);
+    $table->string("alamat");
+    $table->string("daerah", 50);
+    $table->string("kontak", 50)->nullable();
+    $table->string("pulau", 50);
+    $table->string("ktrg")->nullable();
+    $table->timestamp("created_at")->default(DB::raw('CURRENT_TIMESTAMP'));
+    $table->timestamp("updated_at")->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+});
+    
+Schema - Ekspedisi:
+-------------------
+Schema::create('ekspedisis', function (Blueprint $table) {
+    $table->id();
+    $table->string("nama", 100);
+    $table->string("alamat");
+    $table->string("pulau_tujuan", 50);
+    $table->string("daerah_tujuan", 50);
+    $table->string("kontak", 50)->nullable();
+    $table->string("ktrg")->nullable();
+    $table->timestamp("created_at")->default(DB::raw('CURRENT_TIMESTAMP'));
+    $table->timestamp("updated_at")->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+});
+
+Schema - Produk:
+----------------
+Schema::create('ekspedisis', function (Blueprint $table) {
+    $table->id();
+    $table->string("tipe", 100);
+    $table->foreignId("bahan");
+    $table->foreignId("bahan");
+    $table->string("pulau_tujuan", 50);
+    $table->string("daerah_tujuan", 50);
+    $table->string("kontak", 50)->nullable();
+    $table->string("ktrg")->nullable();
+    $table->timestamp("created_at")->default(DB::raw('CURRENT_TIMESTAMP'));
+    $table->timestamp("updated_at")->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
+});
+* 
  */
