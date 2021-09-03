@@ -1,0 +1,569 @@
+function deleteItems (id, table, column) {
+    let results;
+    $.ajax({
+        type: "POST",
+        url: "01-crud.php",
+        cache: false,
+        async: false,
+        data: {
+            id: id,
+            table: table,
+            column: column,
+            type: "delete"
+        },
+        success: function (responseText) {
+            console.log(responseText);
+            results = responseText;
+        }
+    });
+
+    return results;
+}
+
+// Jangan lupa pakai JSON stringify dan tanda petik satu
+// elements merupakan array dalam array dengan key ID dan time
+function elementToToggle (elements) {
+    console.log(elements);
+    for (const element of elements) {
+        if ($(element.id).css("display") == "none") {
+            $(element.id).show(element.time);
+        } else {
+            $(element.id).toggle(element.time);
+        }
+    }
+}
+
+function getLastID (table) {
+    var results;
+    $.ajax({
+        type: "POST",
+        url: "01-crud.php",
+        cache: false,
+        async: false,
+        data: {
+            table: table,
+            type: "last"
+        },
+        success: function (responseText) {
+            console.log(responseText);
+            results = responseText;
+        }
+    });
+    return results;
+}
+
+function liveSearch (key, table, column) {
+    let results;
+    $.ajax({
+        type: "POST",
+        url: "01-crud.php",
+        cache: false,
+        async: false,
+        data: {
+            key: key,
+            table: table,
+            column: column,
+            type: "live-search"
+        },
+        success: function (responseText) {
+            console.log(responseText);
+            results = responseText;
+        }
+    });
+    return results;
+}
+
+function formatDate (date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+
+    return [day, month, year].join('-');
+}
+
+
+function formatHarga (harga) {
+    console.log(harga);
+    let hargaRP = '';
+    let akhir = harga.length;
+    let posisi = akhir - 3;
+    let jmlTitik = Math.ceil((harga.length / 3) - 1);
+    console.log(jmlTitik);
+    for (let i = 0; i < jmlTitik; i++) {
+        hargaRP = '.' + harga.slice(posisi, akhir) + hargaRP;
+        console.log(hargaRP);
+        akhir = posisi;
+        posisi = akhir - 3;
+    }
+    hargaRP = harga.slice(0, akhir) + hargaRP;
+    return hargaRP;
+}
+
+function onCheckToggle (elements) {
+    // console.log(elements);
+    for (const element of elements) {
+        console.log("(element.idCheckbox).is(':checked')");
+        console.log($(element.idCheckbox).is(':checked'));
+        if ($(element.idCheckbox).is(':checked') == true) {
+            $(element.elementToToggle).show(element.time);
+        } else {
+            $(element.elementToToggle).hide(element.time);
+        }
+    }
+}
+
+function onMultipleCheckToggleWithORLogic (elements) {
+    // console.log(elements);
+    for (const element of elements) {
+        // console.log("(element.idCheckbox).is(':checked')");
+        // console.log($(element.idCheckbox).is(':checked'));
+        var sumCheckboxIsChecked = 0;
+        var lengthIdCheckbox = element.idCheckboxORLogic.length;
+        for (let i = 0; i < lengthIdCheckbox; i++) {
+            if (i == 0) {
+                if ($(element.idCheckboxORLogic[0]).is(':checked') == true) {
+                    $(element.elementToToggle).show(element.time);
+                } else {
+                    $(element.elementToToggle).toggle(element.time);
+                }
+            }
+            if ($(element.idCheckboxORLogic[i]).is(':checked') == true) {
+                sumCheckboxIsChecked++;
+            }
+        }
+
+        // console.log("sumCheckboxIsChecked");
+        // console.log(sumCheckboxIsChecked);
+        if (sumCheckboxIsChecked > 0) {
+            // console.log("running toggle elementORLogic");
+            // console.log(element);
+            $(element.elementORLogicToToggle).show(element.time);
+        } else {
+            $(element.elementORLogicToToggle).hide(element.time);
+        }
+    }
+}
+// function insertToDB (table, column, value, data_length) {
+//     let sqlPart1 = "INSERT INTO $table(";
+//     let sqlPart2 = " VALUE(";
+
+//     for (let i = 0; i < $data_length; i++) {
+//         if (i === ($data_length - 1)) {
+//             sqlPart1 = `${sqlPart1}${column[i]})`;
+//             sqlPart2 = `${sqlPart2}'${value[i]}')`;
+//         } else {
+//             sqlPart1 = `${sqlPart1}${column[i]}, `;
+//             sqlPart2 = `${sqlPart2}'${value[$i]}', `;
+//         }
+//     }
+//     let sql = sqlPart1 + sqlPart2;
+//     console.log(sql)
+
+// $msg = "Query: ".$sql. " SUCCESSFULLY EXECUTED.";
+// $res = mysqli_query($con, $sql);
+
+// if (!$res) {
+//     echo json_encode(array("error", "Error: ".$sql. "<br>".mysqli_error($con)));
+//     die;
+// } else {
+//     echo json_encode(array("insert", $msg));
+// }
+// }
+
+function randomColor () {
+    let arrayColor = ["#FFB08E", "#DEDEDE", "#D1FFCA", "#FFB800", '#706DFF'];
+    let randomIndex = Math.floor(Math.random() * arrayColor.length);
+    return arrayColor[randomIndex];
+}
+
+function goBack () {
+    window.history.back();
+}
+
+function windowHistoryGo (params) {
+    window.history.go(parseInt(params));
+}
+
+function goTo (link) {
+    window.location.href = `${link}`;
+}
+
+// FUNCTION CREATE LIST
+
+function createList (params) {
+    var grid_num = params.keys.length + 1;
+    // var list_html = `
+    //     <div class='grid-${grid_num}-auto'>
+    // `;
+    var list_html = `
+        <div class='bb-1px-solid-grey'>
+    `;
+
+    console.log(params.keys);
+
+    var k = 0 // INDEX LIST atau obj nya
+    params.json_obj.forEach(obj => {
+        list_html += `
+            <div>
+            <table style='width:100%'><tr>
+        `;
+
+        var i = 0
+        // Menentukan banyaknya kolom atau td dalam satu row
+        params.keys.forEach(key => {
+            list_html += `
+                <td>${obj[key]}</td>
+            `;
+
+            if (i == params.keys.length - 1) {
+                list_html += `
+                    <td onclick="showDD('#dd-${k}','#dd_icon-${k}');" id="dd_icon-${k}"><img src='img/icons/dropdown.svg' style="width:0.7em"></td>
+                    </tr></table>
+                `;
+            }
+            i++;
+        });
+
+        // DROPDOWN
+        var dd_html = `<div id="dd-${k}" class="b-1px-solid-grey p-1em" style="display:none">`;
+        if (typeof params.dd_keys !== "undefined") {
+            params.dd_keys.forEach(dd_key => {
+                var icon = '';
+                if (dd_key == "alamat") {
+                    icon += `
+                        <div style="display:inline-block"><img src='img/icons/real-estate.svg' style="width:2em"></div>
+                    `;
+                } else if (dd_key == "kontak") {
+                    icon += `
+                        <div style="display:inline-block"><img src='img/icons/phonebook.svg' style="width:2em"></div>
+                    `;
+                }
+                dd_html += `
+                    <div>${icon}<div style="display:inline-block">${obj[dd_key]}</div></div>
+                `;
+            });
+        }
+
+        // DROPDOWN -> BUTTON HAPUS DAN DETAIL
+        var btn = '<div class="text-right">';
+        if (params.detail !== '' && typeof params.detail !== "undefined") {
+            btn += `
+                <a href='${params.detail.link}${obj[params.detail.key]}' class='btn-warning' style="display:inline-block">Detail</a>
+            `;
+        }
+
+        if (params.delete !== '' && typeof params.delete !== "undefined") {
+            console.log(params.delete);
+            var col = new Array();
+            var colVal = new Array();
+
+            params.delete.input.forEach(inp => {
+                console.log("inp");
+                console.log(inp);
+                col.push(inp.name);
+
+                if (typeof inp.key !== "undefined") {
+                    colVal.push(obj[inp.key]);
+                } else {
+                    colVal.push(inp.value);
+                }
+            });
+
+            var delProps = {
+                table: params.delete.table,
+                goBackNum: params.delete.goBackNum,
+                col: col,
+                colVal: colVal
+            };
+
+            delProps = JSON.stringify(delProps);
+
+            // btn += `<form action="${params.delete.action}" method="post" style="display:inline-block">`;
+            // params.delete.input.forEach(inp => {
+            //     if (typeof inp.key !== "undefined") {
+            //         btn += `
+            //         <input type="hidden" name="${inp.name}" value="${obj[inp.key]}">
+            //         `;
+            //     } else {
+            //         btn += `
+            //             <input type="hidden" name="${inp.name}" value="${inp.value}">
+            //         `;
+            //     }
+            // });
+            btn +=
+                `
+                <button class='btn-danger' onclick='showDelConfirm(${delProps});'>Hapus</button>
+                `;
+            // </form>
+        }
+        btn += `</div>`;
+
+        dd_html += `${btn}</div>`;
+        // END OF DROPDOWN
+
+        list_html += `
+            ${dd_html}</div>
+        `;
+
+        k++;
+    });
+
+    list_html += `</div>`;
+
+    return list_html;
+}
+
+function showDelConfirm (delProps) {
+    // delProps = JSON.parse(delProps);
+    console.log("running showDelConfirm");
+    var divConfirmBox = document.createElement("div");
+    divConfirmBox.id = "divConfirmBox";
+    var htmlConfirmBox = `
+            <div class="grid-2-10_auto">
+                <div><img src="img/icons/speech-bubble.svg" alt="" style="width: 2em;"></div>
+                <div class="font-weight-bold">Yakin ingin menghapus?</div>
+            </div>
+            <br><br>
+            <div>
+            <form action="DELETE-OneItem.php" method="post" class="grid-2-auto">
+            `;
+    for (let i = 0; i < delProps.col.length; i++) {
+        htmlConfirmBox += `
+        <input type="hidden" name="column[]" value="${delProps.col[i]}">
+        <input type="hidden" name="columnValue[]" value="${delProps.colVal[i]}">
+        `;
+    }
+    htmlConfirmBox +=
+        `
+            <input type="hidden" name="goBackNum" value="${delProps.goBackNum}">
+            <input type="hidden" name="table" value="${delProps.table}">
+            <button type="submit" class="btn-danger">Ya</button>
+            <div class="btn-secondary" onclick='removeElem(["divConfirmBox", "closingArea"]);'>
+                <span>Batal</span>
+            </div>
+            </form>
+        </div>
+        `;
+    divConfirmBox.innerHTML = htmlConfirmBox;
+
+    var closingArea = document.createElement("div");
+    closingArea.id = "closingArea";
+
+    document.body.appendChild(closingArea);
+    document.body.appendChild(divConfirmBox);
+
+}
+
+function removeElem (elements) {
+    for (let i = 0; i < elements.length; i++) {
+        document.querySelector(`#${elements[i]}`).remove();
+    }
+}
+
+// #################################
+
+
+function showDD (divID, iconID) {
+    console.log(iconID);
+    $(divID).toggle(400);
+
+    setTimeout(() => {
+        if ($(divID).css("display") === "block") {
+            $(iconID + " img").attr("src", "img/icons/dropup.svg");
+        } else {
+            $(iconID + " img").attr("src", "img/icons/dropdown.svg");
+        }
+    }, 450);
+}
+
+// FUNCTION CHECKBOX CONFIRM LIST
+
+function createCheckboxConfirmList (params) {
+
+    var list_html = `
+        <form action="${params.form.action}" method="${params.form.method}" class="m-1em">
+    `;
+
+    if (typeof params.form.input !== "undefined") {
+        var html_form_input = "";
+        params.form.input.forEach(inp => {
+            var inpClass = "";
+            if (typeof inp.class !== "undefined") {
+                inpClass = inp.class;
+            }
+            html_form_input += `<input type="${inp.type}" name="${inp.name}" value="${inp.value}" class="${inpClass}">`;
+        });
+        list_html += html_form_input;
+    }
+
+    var k = 0 // INDEX LIST atau obj nya
+    var isCheckedParamsAll = new Array();
+    params.object.forEach(obj => {
+        list_html += `
+            <div class='bb-1px-solid-grey pb-1em pt-1em'>
+            <table style='width:100%'><tr>
+        `;
+
+        var i = 0
+        // Menentukan banyaknya kolom atau td dalam satu row
+        params.first_line_keys.forEach(key => {
+            // MENENTUKAN WARNA TULISAN
+            var color = "";
+
+            if (typeof key.color !== "undefined") {
+                if (typeof key.color.requirement !== "undefined") {
+                    var j = 0;
+                    key.color.requirement.value.forEach(val => {
+                        // console.log("run foreach requirement value");
+                        // console.log(obj[key.color.requirement.key], val);
+                        // console.log(key.color.requirement.key);
+                        // console.log(obj['status']);
+                        if (obj[key.color.requirement.key] === val) {
+                            color = key.color.requirement.color[j];
+                        }
+                        j++;
+                    });
+                } else {
+                    color = key.color;
+                }
+            }
+
+            // MENAMBAHKAN CLASS
+            var attClass = "";
+            if (typeof key.class !== "undefined") {
+                attClass = key.class;
+            }
+
+            list_html += `
+                <td style="color:${color};font-weight:bold;font-size:1em;" class="${attClass}">${obj[key.name]}</td>
+            `;
+
+            var isCheckedParams = {
+                id_dd: `#dd_checkbox_show-${k}`,
+                class_checkbox: ".dd_checkbox",
+                id_checkbox: `#dd_checkbox-${k}`,
+                id_button: `#${params.button.id}`
+            };
+
+            isCheckedParamsAll.push(isCheckedParams);
+
+            isCheckedParams = JSON.stringify(isCheckedParams);
+
+            if (i == params.first_line_keys.length - 1) {
+                list_html += `
+                    <td><input id="dd_checkbox-${k}" class="dd_checkbox" type="checkbox" name="${params.checkbox.name}[]" value="${obj[params.checkbox.value]}" onclick='isChecked(${isCheckedParams});'></td>
+                    </tr></table>
+                `;
+            }
+            i++;
+        });
+
+        // DROPDOWN
+        var html_dd_title = "";
+        if (typeof params.dd_input_title !== "undefined") {
+            html_dd_title += `<div>${params.dd_input_title.title}${obj[params.dd_input_title.key]}</div>`;
+        }
+        var dd_html = `<div id="dd_checkbox_show-${k}" style="display:none">
+        ${html_dd_title}
+        <table class="b-1px-solid-grey">`;
+        if (typeof params.dd_input !== "undefined") {
+            params.dd_input.forEach(input => {
+                // MENENTUKAN VALUE DARI INPUT
+                var value = "";
+                if (typeof input.value.key !== "undefined") {
+                    value = obj[input.value.key];
+                } else {
+                    value = input.value;
+                    // console.log("obj.jumlah");
+                    // console.log(obj.jumlah);
+                }
+                // MENENTUKAN INPUT HIDDEN
+                if (input.type == "hidden") {
+                    dd_html += `<tr><td></td>`;
+                } else {
+                    dd_html += `<tr><td>${input.label}:</td>`;
+                }
+
+                var inpClass = "";
+                if (typeof input.class !== "undefined") {
+                    inpClass = input.class;
+                }
+
+                dd_html += `
+                    <td><input type="${input.type}" name="${input.name}[]" value="${value}" class="${inpClass}"></td></tr>
+                `;
+            });
+        }
+
+        dd_html += `</table></div>`;
+        // END OF DROPDOWN
+
+        list_html += `
+            ${dd_html}</div>
+        `;
+
+        k++;
+    });
+
+    // HTML BUTTON
+    html_button = `<button id="${params.button.id}" type="submit" class="btn-warning-full" style="display:none">${params.button.label}</button>`;
+
+    // END HTML
+    list_html += `${html_button}`;
+
+    list_html += `</form>`;
+
+    if (typeof params.container !== "undefined") {
+        // console.log("run embed innerHTML");
+        document.getElementById(`${params.container.id}`).innerHTML = list_html;
+        isCheckedParamsAll.forEach(isCheckedParams => {
+            isChecked(isCheckedParams);
+        });
+
+    } else {
+        return list_html;
+    }
+
+}
+
+// Kalau checkbox nya di check maka akan muncul tombol selesai
+
+function isChecked (params) {
+    // console.log(params);
+    const checkbox_all = document.querySelectorAll(`${params.class_checkbox}:checked`);
+    const btnToShow = document.querySelector(params.id_button);
+    const checkbox = document.querySelector(params.id_checkbox);
+    // const dd = document.querySelector(params.id_dd);
+
+    // SHOW DD
+    if (checkbox.checked == true) {
+        // console.log(checkbox.checked);
+        $(params.id_dd).show(300);
+        // document.querySelector(params.id_dd).getElementsByTagName('input').disabled = false;
+        $(`${params.id_dd} :input`).prop("disabled", false);
+        // dd.style.display = "block";
+    } else {
+        $(params.id_dd).hide(300);
+        $(`${params.id_dd} :input`).prop("disabled", true);
+        // document.querySelector(params.id_dd).getElementsByTagName('input').disabled = true;
+        // setTimeout(() => {
+        // dd.style.display = "none";
+        // }, 300);
+    }
+
+    // SHOW BUTTON
+    if (checkbox_all.length !== 0) {
+        // console.log("checked");
+        btnToShow.style.display = "block";
+    } else {
+        btnToShow.style.display = "none";
+    }
+
+}
+// END: Memunculkan tombol selesai

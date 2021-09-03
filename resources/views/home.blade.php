@@ -39,7 +39,7 @@
             </a>
         </div>
         <div class="gridMenuItem">
-            <a href="04-01-pelanggan.php" class="menuIcons">
+            <a href="pelanggan" class="menuIcons">
                 <img src="img/icons/boy.svg" alt="Icon SPK">
                 <div>
                     Pelanggan

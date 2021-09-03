@@ -1,0 +1,39 @@
+.b-none {
+    border: none;
+}
+.b-05px {
+    border: 0.5px solid;
+}
+.b-radius-5px {
+    border-radius: 5px;
+}
+.b-radius-10px {
+    border-radius: 10px;
+}
+.b-radius-25px {
+    border-radius: 25px;
+}
+.b-radius-50px {
+    border-radius: 50px;
+}
+.b-radius-100 {
+    border-radius: 100%;
+}
+.b-1px-solid-black {
+    border: 1px solid black;
+}
+.b-1px-solid-grey {
+    border: 1px solid #E4E4E4;
+}
+.bt-1px-solid-grey {
+    border-top: 1px solid #E4E4E4;
+}
+.bb-none {
+    border-bottom: none;
+}
+.bb-1px-solid-grey {
+    border-bottom: 1px solid #E4E4E4;
+}
+.bb-0_5px-solid-grey {
+    border-bottom: 0.5px solid #E4E4E4;
+}

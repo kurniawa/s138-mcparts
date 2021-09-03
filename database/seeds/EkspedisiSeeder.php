@@ -3,7 +3,7 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class PelangganSeeder extends Seeder
+class EkspedisiSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,11 +12,12 @@ class PelangganSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('pelanggans')->insert([
-            'nama' => '3 Putra Motor',
-            'alamat' => 'Jl. Sutoyo 5 No. 140, Kel. Teluk Dalam, Kec. Banjar Barat, Banjarmasin',
+        // daerah tujuan, tabel many to many
+        DB::table('ekspedisis')->insert([
+            'nama' => 'CV Angkasa',
+            'alamat' => 'Jl. Mangga Dua Raya, Ruko Mangga Dua Plaza, Blok B, No. 06',
+            'no_kontak' => '(021)6120 705',
             'daerah' => 'Banjarmasin',
-            'no_kontak' => '0822 5363 3222',
             'pulau' => 'Kalimantan',
         ], [
             'nama' => 'Akong',
