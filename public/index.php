@@ -87,6 +87,8 @@ $kernel->terminate($request, $response);
  php artisan make:migration standar_harga
  php artisan make:migration busastang_harga
  php artisan make:migration pelanggan_ekspedisi
+ php artisan make:migration pelanggan_pengiriman
+ php artisan make:migration ekspedisi_tujuan
  php artisan make:migration spk_nota
  php artisan make:migration nota_srjl
  php artisan make:migration spk_produk
@@ -113,8 +115,6 @@ Schema::create('ekspedisis', function (Blueprint $table) {
     $table->id();
     $table->string("nama", 100);
     $table->string("alamat");
-    $table->string("pulau_tujuan", 50);
-    $table->string("daerah_tujuan", 50);
     $table->string("kontak", 50)->nullable();
     $table->string("ktrg")->nullable();
     $table->timestamp("created_at")->default(DB::raw('CURRENT_TIMESTAMP'));

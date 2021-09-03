@@ -17,7 +17,6 @@ class CreateBahansTable extends Migration
             $table->id();
             $table->string('nama');
             $table->string('ktrg')->nullable();
-            $table->timestamps();
         });
     }
 
