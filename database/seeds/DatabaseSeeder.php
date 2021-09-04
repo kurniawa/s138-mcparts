@@ -12,6 +12,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $pelanggan = [
+            ['nama' => 'Akong', 'alamat' => 'Pluit, Jakarta', 'daerah' => 'Pluit', 'no_kontak' => '', 'pulau' => 'Jawa'],
+            ['nama' => '3 Putra Motor', 'alamat' => '']
+        ];
         DB::table('pelanggans')->insert([
             'nama' => 'Akong',
             'alamat' => 'Pluit, Jakarta',
