@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class BahanHarga extends Migration
+class UkuranHarga extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class BahanHarga extends Migration
      */
     public function up()
     {
-        Schema::create('bahan_harga', function (Blueprint $table) {
+        Schema::create('ukuran_harga', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('bahan_id');
+            $table->foreignId('ukuran_id');
             $table->integer("harga");
             $table->timestamp('created_at');
         });
@@ -28,6 +28,6 @@ class BahanHarga extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bahan_harga');
+        Schema::dropIfExists('ukuran_harga');
     }
 }
