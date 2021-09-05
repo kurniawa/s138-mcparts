@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class BahanHarga extends Migration
@@ -17,7 +18,7 @@ class BahanHarga extends Migration
             $table->id();
             $table->foreignId('bahan_id');
             $table->integer("harga");
-            $table->timestamp('created_at');
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 

@@ -1,5 +1,7 @@
 @extends('layouts/main_layout')
 
+@extends('layouts/navbar')
+
 @section('content')
 
 <div id="homeScreen">

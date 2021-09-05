@@ -169,5 +169,9 @@
         showLightBoxGlobal(deletePropertiesStringified);
     }
 </script>
-
+<style>
+    a {
+        text-decoration: none;
+    }
+</style>
 </html>

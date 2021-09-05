@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class UkuranHarga extends Migration
+class CreateEkspedisisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,11 +14,12 @@ class UkuranHarga extends Migration
      */
     public function up()
     {
-        Schema::create('ukuran_harga', function (Blueprint $table) {
+        Schema::create('ekspedisis', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('ukuran_id');
-            $table->integer("harga");
-            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->string('nama');
+            $table->string('alamat');
+            $table->string('no_kontak', 50)->nullable();
+            $table->string('tujuan', 50)->nullable();
         });
     }
 
@@ -29,6 +30,6 @@ class UkuranHarga extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('ukuran_harga');
+        Schema::dropIfExists('ekspedisis');
     }
 }

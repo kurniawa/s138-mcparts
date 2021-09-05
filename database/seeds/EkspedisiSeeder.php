@@ -17,14 +17,12 @@ class EkspedisiSeeder extends Seeder
             'nama' => 'CV Angkasa',
             'alamat' => 'Jl. Mangga Dua Raya, Ruko Mangga Dua Plaza, Blok B, No. 06',
             'no_kontak' => '(021)6120 705',
-            'daerah' => 'Banjarmasin',
-            'pulau' => 'Kalimantan',
+            'tujuan' => 'Banjarmasin',
         ], [
-            'nama' => 'Akong',
-            'alamat' => 'Pluit, Jakarta',
-            'daerah' => 'Pluit',
-            'no_kontak' => '',
-            'pulau' => 'Jawa',
+            'nama' => 'Wira Agung',
+            'alamat' => 'Jl. Tubagus Angke Blok D 1/9, Ruko Taman Duta Mas',
+            'tujuan' => 'Banjarmasin',
+            'no_kontak' => '(021) 5678 067',
         ]);
     }
 }
