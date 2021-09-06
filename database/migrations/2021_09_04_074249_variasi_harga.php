@@ -19,6 +19,7 @@ class VariasiHarga extends Migration
             $table->foreignId('variasi_id');
             $table->integer("harga");
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            // Karena suka ditanya, ini harga dari kapan naik nya misalnya.
         });
     }
 

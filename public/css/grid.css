@@ -149,6 +149,11 @@
     grid-template-columns: 75% 15% 10%;
     align-items: center;
 }
+.grid-4-auto {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    align-items: center;
+}
 .grid-4-8-auto-auto-5 {
     display: grid;
     grid-template-columns: 8% auto auto 5%;

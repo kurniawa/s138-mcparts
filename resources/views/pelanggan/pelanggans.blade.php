@@ -2,6 +2,7 @@
 
 @section('content')
     
+{{-- {{ dd($pelanggans) }} --}}
 <header class="header grid-2-auto">
     <img class="w-0_8em ml-1_5em" src="img/icons/back-button-white.svg" alt="" onclick="goBack();">
     <div class="justify-self-right pr-0_5em">
@@ -31,32 +32,39 @@
 
 <script>
 
-    var listPelanggan = {!! json_encode($listPelanggan) !!};
+    var pelanggans = {!! json_encode($pelanggans, JSON_HEX_TAG) !!};
+    console.log(pelanggans);
 
-    if (listPelanggan == undefined || listPelanggan.length == 0) {
+    if (pelanggans == undefined || pelanggans.length == 0) {
         console.log("Tidak ada list pelanggan di database!");
     } else {
         $arrayBgColors = ["#FFB08E", "#DEDEDE", "#D1FFCA", "#FFB800"];
-        for (const pelanggan of listPelanggan) {
+        for (const pelanggan of pelanggans) {
             $randomIndex = Math.floor(Math.random() * 4);
             console.log("$randomIndex: " + $randomIndex);
+            var singkatan = "";
+            if (pelanggan.singkatan === null || typeof pelanggan.singkatan === 'undefined') {
+                
+            } else {
+                singkatan = pelanggan.singkatan;
+            }
 
             $htmlPelanggan = "<div class='ml-1em mr-1em pb-1em bb-1px-solid-grey pt-1em font-size-0_9em'>" +
                 "<div class='grid-3-10_80_10'>" +
-                "<div class='singkatan circle-medium grid-1-auto justify-items-center font-weight-bold' style='background-color: " + $arrayBgColors[$randomIndex] + "'>" + pelanggan.singkatan + "</div>" +
+                "<div class='singkatan circle-medium grid-1-auto justify-items-center font-weight-bold' style='background-color: " + $arrayBgColors[$randomIndex] + "'>" + singkatan + "</div>" +
                 "<div class='justify-self-left font-weight-bold'>" + pelanggan.nama + " - " + pelanggan.daerah + "</div>" +
                 "<div id='divDropdown-" + pelanggan.id + "' class='justify-self-right' onclick='showDropDown(" + pelanggan.id + ");'><img class='w-0_7em' src='img/icons/dropdown.svg'></div>" +
                 "</div>" +
 
                 // DROPDOWN
-                "<div id='divDetailDropDown-" + pelanggan.id + "' class='d-none b-1px-solid-grey p-0_5em mt-1em'>" +
+                "<div id='divDetailDropDown-" + pelanggan.id + "' class='b-1px-solid-grey p-0_5em mt-1em' style='display:none'>" +
 
                 "<div class='grid-2-10_auto'>" +
 
-                "<div><img class='w-2em' src='img/icons/real-estate.svg'></div>" +
+                "<div><img class='w-2em' src='img/icons/address.svg'></div>" +
                 "<div>" + pelanggan.alamat.replace(new RegExp('\r?\n', 'g'), '<br />') + "</div>" +
-                "<div><img class='w-2em' src='img/icons/phonebook.svg'></div>" +
-                "<div>" + pelanggan.kontak + "</div>" +
+                "<div><img class='w-2em' src='img/icons/call.svg'></div>" +
+                "<div>" + pelanggan.no_kontak + "</div>" +
 
                 "</div>" +
 

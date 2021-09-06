@@ -1,13 +1,13 @@
 @extends('layouts/main_layout')
 
-@extends('layouts/navbar')
+{{-- @extends('layouts/navbar') --}}
 
 @section('content')
 
 <div id="homeScreen">
     <div id="gridMenu">
         <div class="gridMenuItem">
-            <a href="03-01-spk-v3.php" class="menuIcons">
+            <a href="/spk" class="menuIcons">
                 <img src="img/icons/pencil.svg" alt="Icon SPK">
                 <div>
                     SPK
@@ -18,7 +18,7 @@
 
         <div class="gridMenuItem">
             <a class="menuIcons" href="07-01-nota.php">
-                <img src="img/icons/checklist.svg" alt="Icon SPK">
+                <img src="img/icons/invoice_2.svg" alt="Icon SPK">
                 <div>
                     Nota
                 </div>
@@ -26,7 +26,7 @@
         </div>
         <div class="gridMenuItem">
             <a class="menuIcons" href="08-01-surat-jalan.php">
-                <img src="img/icons/email.svg" alt="Icon SPK">
+                <img src="img/icons/letter.svg" alt="Icon SPK">
                 <div>
                     Surat<br>Jalan
                 </div>
@@ -34,7 +34,7 @@
         </div>
         <div class="gridMenuItem">
             <a href="05-01-ekspedisi.php" class="menuIcons">
-                <img src="img/icons/shipment.svg" alt="Icon SPK">
+                <img src="img/icons/truck_2.svg" alt="Icon SPK">
                 <div>
                     Ekspedisi
                 </div>
@@ -50,7 +50,7 @@
         </div>
         <div class="gridMenuItem">
             <div class="menuIcons">
-                <img src="img/icons/pencil.svg" alt="Icon SPK">
+                <img src="img/icons/stok_barang.svg" alt="Icon SPK">
             </div>
             Database<br>
             Stok
@@ -63,10 +63,16 @@
         </div>
         <div class="gridMenuItem">
             <div class="menuIcons">
-                <img src="img/icons/pencil.svg" alt="Icon SPK">
+                <img src="img/icons/paper-roll.svg" alt="Icon SPK">
             </div>
             Bahan<br>
             Baku
+        </div>
+        <div class="gridMenuItem">
+            <a href="/about" class="menuIcons">
+                <img src="img/icons/info.svg" alt="Icon SPK">
+                <div>Info Icons/<br>About</div>
+            </a>
         </div>
     </div>
 </div>

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Pelanggan;
+use App\Spk;
 use Illuminate\Http\Request;
 
-class PelangganController extends Controller
+class SpkController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,11 +14,13 @@ class PelangganController extends Controller
      */
     public function index()
     {
-        //
-        $data = [
-            "pelanggans" => Pelanggan::all()
-        ];
-        return view('pelanggan/pelanggans', $data);
+        $data = ['spks' => Spk::all()];
+        return view('spk/spks', $data);
+    }
+
+    public function spk_baru()
+    {
+        return view('spk/spk_baru');
     }
 
     /**
@@ -45,10 +47,10 @@ class PelangganController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Pelanggan  $pelanggan
+     * @param  \App\Spk  $spk
      * @return \Illuminate\Http\Response
      */
-    public function show(Pelanggan $pelanggan)
+    public function show(Spk $spk)
     {
         //
     }
@@ -56,10 +58,10 @@ class PelangganController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Pelanggan  $pelanggan
+     * @param  \App\Spk  $spk
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pelanggan $pelanggan)
+    public function edit(Spk $spk)
     {
         //
     }
@@ -68,10 +70,10 @@ class PelangganController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Pelanggan  $pelanggan
+     * @param  \App\Spk  $spk
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pelanggan $pelanggan)
+    public function update(Request $request, Spk $spk)
     {
         //
     }
@@ -79,10 +81,10 @@ class PelangganController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Pelanggan  $pelanggan
+     * @param  \App\Spk  $spk
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pelanggan $pelanggan)
+    public function destroy(Spk $spk)
     {
         //
     }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\SpkController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,4 +19,9 @@ Route::get('/', function () {
     return view('home');
 });
 
+Route::get('/spk', [SpkController::class, "index"]);
+Route::get('/spk/spk_baru', [SpkController::class, "spk_baru"]);
 Route::get('/pelanggan', [PelangganController::class, "index"]);
+Route::get('/about', function () {
+    return view('/about/about');
+});
