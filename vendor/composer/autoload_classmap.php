@@ -15,6 +15,7 @@ return array(
     'App\\Http\\Controllers\\EkspedisiController' => $baseDir . '/app/Http/Controllers/EkspedisiController.php',
     'App\\Http\\Controllers\\JahitController' => $baseDir . '/app/Http/Controllers/JahitController.php',
     'App\\Http\\Controllers\\PelangganController' => $baseDir . '/app/Http/Controllers/PelangganController.php',
+    'App\\Http\\Controllers\\SpkController' => $baseDir . '/app/Http/Controllers/SpkController.php',
     'App\\Http\\Controllers\\UkuranController' => $baseDir . '/app/Http/Controllers/UkuranController.php',
     'App\\Http\\Controllers\\VariasiController' => $baseDir . '/app/Http/Controllers/VariasiController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',

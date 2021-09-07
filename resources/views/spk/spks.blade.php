@@ -48,7 +48,7 @@ console.log(spk_contains_item); --}}
     console.log("spks:");
     console.log(spks);
 
-    if (spk == undefined || spk.length == 0) {
+    if (spks == undefined || spks.length == 0) {
         console.log('Belum ada daftar SPK');
     } else {
         for (var i = 0; i < spk.length; i++) {

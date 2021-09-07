@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Spk;
+use App\Pelanggan;
 use Illuminate\Http\Request;
 
 class SpkController extends Controller
@@ -20,7 +21,12 @@ class SpkController extends Controller
 
     public function spk_baru()
     {
-        return view('spk/spk_baru');
+        $pelanggan = new Pelanggan();
+        $d_label_pelanggan = $pelanggan->d_label_pelanggan();
+        // $d_nama_pelanggan_2 = $pelanggan->d_nama_pelanggan_2();
+
+        $data = ['d_label_pelanggan' => $d_label_pelanggan];
+        return view('spk/spk_baru', $data);
     }
 
     /**

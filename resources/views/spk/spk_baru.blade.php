@@ -25,10 +25,35 @@ foreach ($dPelanggan as $pelanggan) {
 
 // dd($dPelanggan); --}}
 
+{{-- {{ dd($d_nama_pelanggan) }} --}}
+
+{{-- const dPelanggan = {!! json_encode($dPelanggan) !!};
+// console.log("dPelanggan");
+// console.log(dPelanggan);
+const dLabelValPelanggan = {!! json_encode($dLabelValPelanggan) !!};
+console.log("dLabelValPelanggan");
+console.log(dLabelValPelanggan);
+
+$("#inputCustomerName").autocomplete({
+    source: dLabelValPelanggan,
+    select: function(event, ui) {
+        console.log(ui);
+        $("#inputIDCust").val(ui.item.id);
+        $("#daerahCust").val(ui.item.daerah);
+        // console.log(event);
+        // alert(ui.item.name);
+    }
+});
+
+const d_nama_pelanggan_2 = {!! json_encode($d_nama_pelanggan_2, JSON_HEX_TAG) !!}
+    console.log("d_nama_pelanggan_2");
+    console.log(d_nama_pelanggan_2);
+
+--}}
 @section('content')
     
 <header class="header grid-2-auto">
-    <img class="w-0_8em ml-1_5em" src="img/icons/back-button-white.svg" alt="" onclick="goBack();">
+    <img class="w-0_8em ml-1_5em" src="/img/icons/back-button-white.svg" alt="" onclick="goBack();">
     <div class="justify-self-right pr-0_5em">
         <!-- <a href="06-02-produk-baru.php" id="btnNewProduct" class="btn-atas-kanan2">
             + Tambah Produk Baru
@@ -39,7 +64,7 @@ foreach ($dPelanggan as $pelanggan) {
 
     <div class="mt-1em ml-1em grid-2-10_auto">
         <div class="">
-            <img class="w-2em" src="img/icons/pencil.svg" alt="">
+            <img class="w-2em" src="/img/icons/pencil.svg" alt="">
         </div>
         <div class="font-weight-bold">
             Untuk siapa SPK ini?
@@ -73,9 +98,8 @@ foreach ($dPelanggan as $pelanggan) {
     <div id="warning" class="d-none"></div>
 
     <div class="m-1em">
-        <!-- <button type="submit" class="w-100 h-4em bg-color-orange-2 grid-1-auto" onclick="beginInsertingProducts();"> -->
-        <button type="submit" class="w-100 h-4em bg-color-orange-2 grid-1-auto">
-            <span class="justify-self-center font-weight-bold">Input Item SPK >></span>
+        <button type="submit" class="btn btn-warning w-100 pb-4 pt-4">
+            Input Item SPK >>
         </button>
     </div>
 
@@ -86,25 +110,21 @@ foreach ($dPelanggan as $pelanggan) {
 
 
 <script>
-    const dPelanggan = {!! json_encode($dPelanggan) !!};
-    // console.log("dPelanggan");
-    // console.log(dPelanggan);
-    const dLabelValPelanggan = {!! json_encode($dLabelValPelanggan) !!};
-    console.log("dLabelValPelanggan");
-    console.log(dLabelValPelanggan);
+    const d_label_pelanggan = {!! json_encode($d_label_pelanggan, JSON_HEX_TAG) !!}
+    console.log("d_label_pelanggan");
+    console.log(d_label_pelanggan);
 
     $("#inputCustomerName").autocomplete({
-        source: dLabelValPelanggan,
-        select: function(event, ui) {
-            console.log(ui);
-            $("#inputIDCust").val(ui.item.id);
-            $("#daerahCust").val(ui.item.daerah);
-            // console.log(event);
-            // alert(ui.item.name);
-        }
-    });
-
-    
+    source: d_label_pelanggan,
+    select: function(event, ui) {
+        console.log(ui);
+        $("#inputIDCust").val(ui.item.id);
+        $("#daerahCust").val(ui.item.daerah);
+        // console.log(event);
+        // alert(ui.item.name);
+    }
+});
+   
 </script>
 
 <style>
