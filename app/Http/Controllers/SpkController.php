@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Spk;
 use App\Pelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SpkController extends Controller
 {
@@ -24,11 +25,25 @@ class SpkController extends Controller
         $pelanggan = new Pelanggan();
         $d_label_pelanggan = $pelanggan->d_label_pelanggan();
         // $d_nama_pelanggan_2 = $pelanggan->d_nama_pelanggan_2();
+        // dd($d_label_pelanggan);
+        // dd($d_label_pelanggan_2);
 
         $data = ['d_label_pelanggan' => $d_label_pelanggan];
         return view('spk/spk_baru', $data);
     }
 
+    public function inserting_spk_item(Request $request)
+    {
+        $post = $request->input();
+        $data = ['post' => $post];
+
+        dd($post);
+        DB::table('spks')->insert([
+            'no_spk' => ''
+        ]);
+        return view('/spk/inserting_spk_item', $data);
+        // return $post;
+    }
     /**
      * Show the form for creating a new resource.
      *

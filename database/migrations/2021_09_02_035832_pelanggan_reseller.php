@@ -13,12 +13,13 @@ class PelangganReseller extends Migration
      */
     public function up()
     {
-        Schema::create('pelanggan_reseller', function (Blueprint $table) {
-            $table->id();
-            $table->integer('reseller_id');
-            $table->integer('pelanggan_id');
-            // $table->timestamps();
-        });
+        // Schema::create('pelanggan_reseller', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('nama');
+        //     $table->integer('reseller_id');
+        //     $table->integer('pelanggan_id');
+        //     // $table->timestamps();
+        // });
     }
 
     /**

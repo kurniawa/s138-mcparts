@@ -37,6 +37,8 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
 
 --}}
 
+{{-- {{ dd($post) }} --}}
+
 @extends('layouts/main_layout')
 
 @section('content')

@@ -60,7 +60,8 @@ const d_nama_pelanggan_2 = {!! json_encode($d_nama_pelanggan_2, JSON_HEX_TAG) !!
         </a> -->
     </div>
 </header>
-<form action="03-03-01-begin-inserting-products.php" method="GET" id="SPKBaru">
+<form action="/spk/inserting_spk_item" method="POST" id="SPKBaru">
+    @csrf
 
     <div class="mt-1em ml-1em grid-2-10_auto">
         <div class="">
@@ -83,7 +84,8 @@ const d_nama_pelanggan_2 = {!! json_encode($d_nama_pelanggan_2, JSON_HEX_TAG) !!
                 <input id="inputCustomerName" class="input-1 pb-1em bb-none" name="nama_pelanggan" type="text" placeholder="Pelanggan">
                 <div id="searchResults" class="d-none b-1px-solid-grey bb-none"></div>
                 <input id="daerahCust" type="hidden" name="daerah">
-                <input id="inputIDCust" type="hidden" name="id_pelanggan">
+                <input id="inputIDCust" type="hidden" name="pelanggan_id">
+                <input id="reseller_id" type="hidden" name="reseller_id">
             </div>
         </div>
 
@@ -119,6 +121,7 @@ const d_nama_pelanggan_2 = {!! json_encode($d_nama_pelanggan_2, JSON_HEX_TAG) !!
     select: function(event, ui) {
         console.log(ui);
         $("#inputIDCust").val(ui.item.id);
+        $("#reseller_id").val(ui.item.reseller_id);
         $("#daerahCust").val(ui.item.daerah);
         // console.log(event);
         // alert(ui.item.name);

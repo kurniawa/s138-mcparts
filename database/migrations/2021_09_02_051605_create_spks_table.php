@@ -17,7 +17,8 @@ class CreateSpksTable extends Migration
         Schema::create('spks', function (Blueprint $table) {
             $table->id();
             $table->string('no_spk', 20);
-            $table->foreignId('pelanggan_id');
+            $table->foreignId('pelanggan_id')->nullable();
+            $table->foreignId('reseller_id')->nullable();
             $table->string('status', 50);
             $table->string('ktrg');
             $table->foreignId('created_by')->constrained('users');
