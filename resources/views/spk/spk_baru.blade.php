@@ -89,7 +89,7 @@ const d_nama_pelanggan_2 = {!! json_encode($d_nama_pelanggan_2, JSON_HEX_TAG) !!
             </div>
         </div>
 
-        <input name="ket_judul" id="titleDesc" class="input-1 mt-1em pb-1em" type="text" placeholder="Keterangan Judul (opsional)">
+        <input name="judul" id="titleDesc" class="input-1 mt-1em pb-1em" type="text" placeholder="Keterangan (opsional)">
 
 
     </div>

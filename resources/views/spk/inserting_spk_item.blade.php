@@ -11,27 +11,27 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     die;
 }
 
-$id_pelanggan = $_GET["id_pelanggan"];
+$pelanggan_id = $_GET["pelanggan_id"];
 $tanggal = $_GET["tanggal"];
 $ket_judul = $_GET["ket_judul"];
 $nama_pelanggan = $_GET["nama_pelanggan"];
 $daerah = $_GET["daerah"];
 
 // CEK APAKAH ADA ITEM YANG SUDAH SEMPAT DIINPUT
-$item_spk;
+$spk_item;
 if ($status == "OK") {
     $table = "spk_item";
-    $item_spk = dbGet($table);
-    // var_dump($item_spk);
+    $spk_item = dbGet($table);
+    // var_dump($spk_item);
 }
 
 $htmlLogError = $htmlLogError . "</div>";
 $htmlLogOK = $htmlLogOK . "</div>";
 $htmlLogWarning = $htmlLogWarning . "</div>"; 
 
- var item_spk = <-?= json_encode($item_spk); ?>;
-    console.log("item_spk:");
-    console.log(item_spk);
+ var spk_item = <-?= json_encode($spk_item); ?>;
+    console.log("spk_item:");
+    console.log(spk_item);
 
     var status = '<-?= $status; ?>';
 
@@ -44,7 +44,7 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
 @section('content')
     
 <header class="header grid-2-auto">
-    <img class="w-0_8em ml-1_5em" src="img/icons/back-button-white.svg" alt="" onclick="goBack();">
+    <img class="w-0_8em ml-1_5em" src="/img/icons/back-button-white.svg" alt="" onclick="goBack();">
     <div class="justify-self-right pr-0_5em">
         <!-- <a href="06-02-produk-baru.php" id="btnNewProduct" class="btn-atas-kanan2">
             + Tambah Produk Baru
@@ -64,22 +64,22 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
             <div class="divSPKNumber font-weight-bold">(Auto Generated)</div>
             <div>Tanggal</div>
             <div>:</div>
-            <div class="divSPKDate font-weight-bold"><?= $tanggal; ?></div>
+            <div class="divSPKDate font-weight-bold">{{ $spks['tanggal'] }}</div>
             <div>Untuk</div>
             <div>:</div>
-            <div class="divSPKCustomer font-weight-bold"><?= $nama_pelanggan; ?> - <?= $daerah; ?></div>
-            <input id="inputIDCustomer" type="hidden" name="id_pelanggan" value="<?= $id_pelanggan; ?>">
+            <div class="divSPKCustomer font-weight-bold"></div>
+            <input id="inputIDCustomer" type="hidden" name="pelanggan_id" value="">
         </div>
         <div class="grid-1-auto justify-items-right m-0_5em">
             <div>
-                <img class="w-1em" src="img/icons/edit-grey.svg" alt="">
+                <img class="w-1em" src="/img/icons/edit-grey.svg" alt="">
             </div>
         </div>
-        <input type="hidden" name="tgl_pembuatan" value="<?= $tanggal; ?>">
+        <input type="hidden" name="tgl_pembuatan" value="">
     </div>
 
-    <div class="divTitleDesc grid-1-auto justify-items-center mt-0_5em"><?= $ket_judul; ?></div>
-    <input type="hidden" name="ket_judul" value="<?= $ket_judul; ?>">
+    <div class="divTitleDesc grid-1-auto justify-items-center mt-0_5em"></div>
+    <input type="hidden" name="ket_judul">
 
     <div id="divItemList" class="bt-1px-solid-grey font-weight-bold"></div>
     <input id="inputHargaTotalSPK" type="hidden" name="total_harga">
@@ -90,19 +90,19 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
     </div>
 
     <div id="divAddItems" class="h-9em position-relative mt-1em">
-        <a href="03-03-02-inserting_item_spk.php?tipe=varia" class="productType position-absolute top-0 left-50 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
+        <a href="03-03-02-inserting_spk_item.php?tipe=varia" class="productType position-absolute top-0 left-50 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
             <span class="font-size-0_8em text-center font-weight-bold">SJ<br>Varia</span>
         </a>
-        <a href="03-03-02-inserting_item_spk.php?tipe=kombi" class="productType position-absolute top-1em left-35 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
+        <a href="03-03-02-inserting_spk_item.php?tipe=kombi" class="productType position-absolute top-1em left-35 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
             <span class="font-size-0_8em text-center font-weight-bold">SJ<br>Kombi</span>
         </a>
-        <a href="03-03-02-inserting_item_spk.php?tipe=std" class="productType position-absolute top-1em left-65 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
+        <a href="03-03-02-inserting_spk_item.php?tipe=std" class="productType position-absolute top-1em left-65 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
             <span class="font-size-0_8em text-center font-weight-bold">SJ<br>Std</span>
         </a>
-        <a href="03-03-02-inserting_item_spk.php?tipe=tankpad" class="productType position-absolute top-5em left-30 transform-translate--50_0 circle-L bg-color-soft-red grid-1-auto justify-items-center">
+        <a href="03-03-02-inserting_spk_item.php?tipe=tankpad" class="productType position-absolute top-5em left-30 transform-translate--50_0 circle-L bg-color-soft-red grid-1-auto justify-items-center">
             <span class="font-size-0_8em text-center font-weight-bold">Tank<br>Pad</span>
         </a>
-        <a href="03-03-02-inserting_item_spk.php?tipe=busastang" class="productType position-absolute top-5em left-70 transform-translate--50_0 circle-L bg-color-grey grid-1-auto justify-items-center">
+        <a href="03-03-02-inserting_spk_item.php?tipe=busastang" class="productType position-absolute top-5em left-70 transform-translate--50_0 circle-L bg-color-grey grid-1-auto justify-items-center">
             <span class="font-size-0_8em text-center font-weight-bold">Busa<br>Stang</span>
         </a>
         <div class="position-absolute top-5em left-50 transform-translate--50_0 grid-1-auto justify-items-center" onclick="toggleProductType();">
@@ -129,10 +129,10 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
 
 </form>
 
-<div class="divLogError"></div>
+{{-- <div class="divLogError"></div>
 <div class="divLogWarning"></div>
 <div class="divLogOK"></div>
-<div class="h-4em"></div>
+<div class="h-4em"></div> --}}
 
 <script>
 
@@ -141,35 +141,42 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
     $('#divJmlTotal').hide();
     // getSPKItems();
 
+    var spks = {!! json_encode($spks, JSON_HEX_TAG) !!};
+    var spk_item = {!! json_encode($spk_item, JSON_HEX_TAG) !!};
+
+    console.log(spks);
+    // console.log(spks.daerah);
+    console.log(spk_item);
+
     var htmlItemList = '';
     var totalHarga = 0;
     var jumlahTotalItem = 0;
     var keterangan = "";
-    for (var i = 0; i < item_spk.length; i++) {
-        if (item_spk[i].ktrg == null) {
+    for (var i = 0; i < spk_item.length; i++) {
+        if (spk_item[i].ktrg == null) {
 
         } else {
-            keterangan = item_spk[i].ktrg.replace(new RegExp('\r?\n', 'g'), '<br />');
+            keterangan = spk_item[i].ktrg.replace(new RegExp('\r?\n', 'g'), '<br />');
         }
         htmlItemList = htmlItemList +
             `<div class='divItem grid-3-auto_auto_10 pt-0_5em pb-0_5em bb-1px-solid-grey'>
             <div class='divItemName grid-2-15_auto'>
-                <div id='btnRemoveItem-${i}' class='btnRemoveItem grid-1-auto justify-items-center circle-medium bg-color-soft-red' onclick='removeSPKItem("${item_spk[i].id}");'><img style='width: 1.3em;' src='img/icons/minus-white.svg'></div>
-                    ${item_spk[i].nama_lengkap}
+                <div id='btnRemoveItem-${i}' class='btnRemoveItem grid-1-auto justify-items-center circle-medium bg-color-soft-red' onclick='removeSPKItem("${spk_item[i].id}");'><img style='width: 1.3em;' src='img/icons/minus-white.svg'></div>
+                    ${spk_item[i].nama_lengkap}
                 </div>
             <div class='grid-1-auto'>
             <div class='color-green justify-self-right font-size-1_2em'>
-                ${item_spk[i].jumlah}
+                ${spk_item[i].jumlah}
             </div>
                 <div class='color-grey justify-self-right'>Jumlah</div>
             </div>
-            <div id='btnEditItem-${i}' class='btnEditItem grid-1-auto justify-items-center circle-medium bg-color-purple-blue' onclick='editSPKItem("${item_spk[i].id}", "${item_spk[i].tipe}");'><img style='width: 1.3em;' src='img/icons/pencil2-white.svg'></div>
+            <div id='btnEditItem-${i}' class='btnEditItem grid-1-auto justify-items-center circle-medium bg-color-purple-blue' onclick='editSPKItem("${spk_item[i].id}", "${spk_item[i].tipe}");'><img style='width: 1.3em;' src='img/icons/pencil2-white.svg'></div>
             <div class='pl-0_5em color-blue-purple'>${keterangan}</div>
             </div>`;
 
         // kita jumlah harga semua item untuk satu SPK
-        totalHarga = totalHarga + parseFloat(item_spk[i].harga_item);
-        jumlahTotalItem = jumlahTotalItem + parseFloat(item_spk[i].jumlah);
+        totalHarga = totalHarga + parseFloat(spk_item[i].harga_item);
+        jumlahTotalItem = jumlahTotalItem + parseFloat(spk_item[i].jumlah);
     }
     $('#inputHargaTotalSPK').val(totalHarga);
     if (jumlahTotalItem !== 0) {

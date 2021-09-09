@@ -20,9 +20,9 @@ class CreateSpksTable extends Migration
             $table->foreignId('pelanggan_id')->nullable();
             $table->foreignId('reseller_id')->nullable();
             $table->string('status', 50);
-            $table->string('ktrg');
-            $table->foreignId('created_by')->constrained('users');
-            $table->foreignId('updated_by')->constrained('users');
+            $table->string('judul')->nullable();
+            $table->foreignId('created_by')->constrained('users')->nullable();
+            $table->foreignId('updated_by')->constrained('users')->nullable();
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('finished_at')->nullable();
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));

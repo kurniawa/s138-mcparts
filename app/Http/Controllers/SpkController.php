@@ -35,12 +35,20 @@ class SpkController extends Controller
     public function inserting_spk_item(Request $request)
     {
         $post = $request->input();
-        $data = ['post' => $post];
 
-        dd($post);
-        DB::table('spks')->insert([
-            'no_spk' => ''
-        ]);
+        // dd($post);
+        // DB::table('temp_spks')->insert([
+        //     'pelanggan_id' => $post['pelanggan_id'],
+        //     'reseller_id' => $post['reseller_id'],
+        //     'status' => 'PROSES',
+        //     'judul' => $post['judul'],
+        // ]);
+
+        // Setelah berhasil insert, maka berikutnya coba get temp_spk_produk,
+        // apakah sebelumnya sempat ada item yang diinput.
+
+        $spk_item = DB::table('temp_spk_produk')->get();
+        $data = ['spks' => $post, 'spk_item' => $spk_item];
         return view('/spk/inserting_spk_item', $data);
         // return $post;
     }

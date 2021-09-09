@@ -8,6 +8,8 @@ class ProdukTipeSrjok extends Migration
 {
     /**
      * Run the migrations.
+     * Ini merupakan table bantuan untuk menyambung ke table masing2 tipe produk,
+     * sehingga dapat mengetahui apa saja attribut2 untuk tipe2 produk yang ada.
      *
      * @return void
      */
