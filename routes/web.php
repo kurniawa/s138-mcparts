@@ -22,6 +22,7 @@ Route::get('/', function () {
 Route::get('/spk', [SpkController::class, "index"]);
 Route::get('/spk/spk_baru', [SpkController::class, "spk_baru"]);
 Route::post('/spk/inserting_spk_item', [SpkController::class, "inserting_spk_item"]);
+Route::get('/spk/inserting_varia', [SpkController::class, "inserting_varia"]);
 Route::get('/pelanggan', [PelangganController::class, "index"]);
 Route::get('/about', function () {
     return view('/about/about');

@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Spk;
 use App\Pelanggan;
+use App\Bahan;
+use App\Jahit;
+use App\Ukuran;
+use App\Variasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -51,6 +55,34 @@ class SpkController extends Controller
         $data = ['spks' => $post, 'spk_item' => $spk_item];
         return view('/spk/inserting_spk_item', $data);
         // return $post;
+    }
+
+    public function inserting_varia()
+    {
+        $bahan = new Bahan();
+        $label_bahans = $bahan->label_bahans();
+
+        $variasi = new Variasi();
+        $varias_harga = $variasi->varias_harga();
+
+        $ukuran = new Ukuran();
+        $ukurans_harga = $ukuran->ukurans_harga();
+
+        $jahit = new Jahit();
+        $jahits_harga = $jahit->jahits_harga();
+
+        // dump($label_bahans);
+        // dump($varias_harga);
+        // dump($ukurans_harga);
+        // dump($jahits_harga);
+
+        $data = [
+            'bahans' => $label_bahans,
+            'varias' => $varias_harga,
+            'ukurans' => $ukurans_harga,
+            'jahits' => $jahits_harga,
+        ];
+        return view('/spk/inserting_varia', $data);
     }
     /**
      * Show the form for creating a new resource.

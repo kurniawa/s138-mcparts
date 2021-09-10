@@ -67,7 +67,7 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
             <div class="divSPKDate font-weight-bold">{{ $spks['tanggal'] }}</div>
             <div>Untuk</div>
             <div>:</div>
-            <div class="divSPKCustomer font-weight-bold"></div>
+            <div class="divSPKCustomer font-weight-bold">{{ $spks['nama_pelanggan'] }} - {{ $spks['daerah'] }}</div>
             <input id="inputIDCustomer" type="hidden" name="pelanggan_id" value="">
         </div>
         <div class="grid-1-auto justify-items-right m-0_5em">
@@ -90,7 +90,7 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
     </div>
 
     <div id="divAddItems" class="h-9em position-relative mt-1em">
-        <a href="03-03-02-inserting_spk_item.php?tipe=varia" class="productType position-absolute top-0 left-50 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
+        <a href="/spk/inserting_varia" class="productType position-absolute top-0 left-50 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
             <span class="font-size-0_8em text-center font-weight-bold">SJ<br>Varia</span>
         </a>
         <a href="03-03-02-inserting_spk_item.php?tipe=kombi" class="productType position-absolute top-1em left-35 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
