@@ -121,7 +121,7 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
         <div class="d-inline-block btn-1 font-weight-bold color-white" style="background-color: gray;" onclick="hideEditOptItemSPK();">Finish Editing</div>
     </div>
     <!-- END - EDIT ITEM SPK -->
-    <div class="position-fixed bottom-0_5em w-calc-100-1em">
+    <div class="position-absolute bottom-0_5em w-calc-100-1em">
         <button type="submit" id="btnProsesSPK" class="w-100 h-4em bg-color-orange-2 grid-1-auto">
             <span class="justify-self-center font-weight-900">PROSES SPK</span>
         </button>

@@ -9,6 +9,9 @@ class TempSpkProduk extends Migration
     /**
      * Run the migrations.
      * temp_spk_produk ini berguna sebagai table bantuan ketika input item spk.
+     * tipe disini untuk bantuan, diputuskan saat ini tidak create table tipe
+     * untuk membedakan nya nanti di hardcode saja daripada create table bantuan tipe
+     * dan tambah relasi-relasi lagi
      * 
      * @return void
      */
@@ -17,18 +20,19 @@ class TempSpkProduk extends Migration
         Schema::create('temp_spk_produk', function (Blueprint $table) {
             $table->id();
             $table->string('tipe', 50);
-            $table->bigInteger('tipe_id');
-            $table->foreignId('bahan_id');
-            $table->foreignId('variasi_id');
-            $table->foreignId('ukuran_id');
-            $table->foreignId('jahit_id');
-            $table->foreignId('std_id');
-            $table->foreignId('kombi_id');
-            $table->foreignId('busastang_id');
-            $table->foreignId('tankpad_id');
+            $table->foreignId('bahan_id')->nullable();
+            $table->foreignId('variasi_id')->nullable();
+            $table->foreignId('ukuran_id')->nullable();
+            $table->foreignId('jahit_id')->nullable();
+            $table->foreignId('std_id')->nullable();
+            $table->foreignId('kombi_id')->nullable();
+            $table->foreignId('busastang_id')->nullable();
+            $table->foreignId('tankpad_id')->nullable();
             $table->string('nama');
             $table->string('nama_nota');
+            $table->string('jumlah');
             $table->integer('harga');
+            $table->string('ktrg')->nullable();
         });
     }
 

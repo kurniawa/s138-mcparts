@@ -51,7 +51,7 @@ const d_nama_pelanggan_2 = {!! json_encode($d_nama_pelanggan_2, JSON_HEX_TAG) !!
 
 --}}
 @section('content')
-    
+
 <header class="header grid-2-auto">
     <img class="w-0_8em ml-1_5em" src="/img/icons/back-button-white.svg" alt="" onclick="goBack();">
     <div class="justify-self-right pr-0_5em">
@@ -76,7 +76,7 @@ const d_nama_pelanggan_2 = {!! json_encode($d_nama_pelanggan_2, JSON_HEX_TAG) !!
 
         <div class="grid-2-auto grid-column-gap-1em mt-1em">
             <input id="SPKNo" class="input-1 pb-1em" type="text" placeholder="No." disabled>
-            <input type="date" class="input-select-option-1 pb-1em" name="tanggal" id="date" value="<?php echo date('Y-m-d'); ?>">
+            <input type="datetime-local" class="input-select-option-1 pb-1em" name="tanggal" id="date" value="{{ date('Y-m-d\TH:i:s') }}">
         </div>
 
         <div id="divInputCustomerName" class="containerInputEkspedisi mt-1em mb-1em">

@@ -40,13 +40,18 @@ class SpkController extends Controller
     {
         $post = $request->input();
 
-        // dd($post);
-        // DB::table('temp_spks')->insert([
-        //     'pelanggan_id' => $post['pelanggan_id'],
-        //     'reseller_id' => $post['reseller_id'],
-        //     'status' => 'PROSES',
-        //     'judul' => $post['judul'],
-        // ]);
+        dd($post);
+
+        // Ternyata disini tetap membutuhkan table bantuan atau mungkin table asli untuk
+        // menyimpan data spk seperti data pelanggan dan tanggal, supaya tidak hilang ketika
+        // berpindah-pindah halaman.
+
+        DB::table('spks')->insert([
+            'pelanggan_id' => $post['pelanggan_id'],
+            'reseller_id' => $post['reseller_id'],
+            'status' => 'PROSES',
+            'judul' => $post['judul'],
+        ]);
 
         // Setelah berhasil insert, maka berikutnya coba get temp_spk_produk,
         // apakah sebelumnya sempat ada item yang diinput.
@@ -83,6 +88,80 @@ class SpkController extends Controller
             'jahits' => $jahits_harga,
         ];
         return view('/spk/inserting_varia', $data);
+    }
+
+    public function inserting_item_db(Request $request)
+    {
+        $post = $request->all();
+
+        dump($post);
+
+        // $table->id();
+        // $table->string('tipe', 50);
+        // $table->bigInteger('tipe_id');
+        // $table->foreignId('bahan_id');
+        // $table->foreignId('variasi_id');
+        // $table->foreignId('ukuran_id');
+        // $table->foreignId('jahit_id');
+        // $table->foreignId('std_id');
+        // $table->foreignId('kombi_id');
+        // $table->foreignId('busastang_id');
+        // $table->foreignId('tankpad_id');
+        // $table->string('nama');
+        // $table->string('nama_nota');
+        // $table->string('jumlah');
+        // $table->integer('harga');
+        // $table->integer('ktrg')->nullable();
+        // 'kombi_id' => $post['kombi_id'],
+        // 'busastang_id' => $post['busastang_id'],
+        // 'tankpad_id' => $post['tankpad_id'],
+        $ktrg = null;
+        if ($post['ktrg'] !== null) {
+            $ktrg = trim($post['ktrg']);
+        }
+        $ukuran_id = null;
+        $jahit_id = null;
+        if ($post['tipe'] === 'varia') {
+            $variasi = json_decode($post['variasi'], true);
+            $harga = $post['bahan_harga'] + $variasi['harga'];
+            $nama = "$post[bahan] $variasi[nama]";
+            $nama_nota = $nama;
+            // dd($variasi);
+            if (isset($post['ukuran'])) {
+                $ukuran = json_decode($post['ukuran'], true);
+                $harga += $ukuran['harga'];
+                $nama .= " uk.$ukuran[nama]";
+                $nama_nota .= " uk.$ukuran[nama_nota]";
+                $ukuran_id = $ukuran['id'];
+            }
+            if (isset($post['jahit'])) {
+                $jahit = json_decode($post['jahit'], true);
+                $harga += $jahit['harga'];
+                $nama .= " + jht.$jahit[nama]";
+                $nama_nota .= " + jht.$jahit[nama]";
+                $jahit_id = $jahit['id'];
+            }
+            // dump($harga);
+            // dump($nama_nota);
+            // dd($nama);
+            DB::table('temp_spk_produk')->insert([
+                'tipe' => $post['tipe'],
+                'bahan_id' => $post['bahan_id'],
+                'variasi_id' => $variasi['id'],
+                'ukuran_id' => $ukuran_id,
+                'jahit_id' => $jahit_id,
+                'nama' => $nama,
+                'nama_nota' => $nama_nota,
+                'jumlah' => $post['jumlah'],
+                'harga' => $harga,
+                'ktrg' => $ktrg,
+            ]);
+        }
+
+        $spk_item = DB::table('temp_spk_produk')->get();
+        $data = ['spks' => $post, 'spk_item' => $spk_item];
+        return view('/spk/inserting_spk_item', $data);
+        // return $post;
     }
     /**
      * Show the form for creating a new resource.

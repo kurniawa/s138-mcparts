@@ -14,6 +14,9 @@ class CreateSpksTable extends Migration
      */
     public function up()
     {
+        // Karena masih dalam development, maka saya set terlebih dahulu
+        // created_by nya boleh nullable
+
         Schema::create('spks', function (Blueprint $table) {
             $table->id();
             $table->string('no_spk', 20);

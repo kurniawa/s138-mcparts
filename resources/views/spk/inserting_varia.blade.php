@@ -25,8 +25,8 @@ console.log("tipe: " + tipe);
 
 @section('content')
     
-<form action="03-03-02-inserting_item_spk_db.php" method="POST" id="form_properti_item_spk" class="m-1em">
-
+<form action="/spk/inserting_item-db" method="POST" id="form_properti_item_spk" class="m-1em">
+@csrf
     <div>
         <h2>Tipe: SJ Variasi</h2>
     </div>
@@ -38,12 +38,13 @@ console.log("tipe: " + tipe);
         <div style='display:none;' class='mt-1em' id='div_select_jht'></div>
         <div style='display:none;' class='mt-1em' id='div_ta_ktrg'></div>
         <div style='display:none;' class='mt-1em' id='div_input_jml'></div>
+        <div style="height: 30vh"></div>
     </div>
 
     <br><br>
 
 
-    <div id="divAvailableOptions" class="position-absolute bottom-5em w-calc-100-1em">
+    <div id="divAvailableOptions" class="position-fixed bottom-5em w-calc-100-1em">
         Available options:
         <div id="container_options">
             <div style="display:inline-block" id="div_option_jml"></div>
@@ -53,7 +54,7 @@ console.log("tipe: " + tipe);
         </div>
 
     </div>
-    <div class="position-absolute bottom-0_5em w-calc-100-1em">
+    <div class="position-fixed bottom-0_5em w-calc-100-1em">
         <button type="submit" id="bottomDiv" class="w-100 h-4em bg-color-orange-2 grid-1-auto">
 
             <span class="justify-self-center font-weight-bold">TAMBAH ITEM KE SPK</span>
@@ -85,6 +86,7 @@ console.log("tipe: " + tipe);
         btn_hide: "close_ukuran",
         btn_show: "box_ukuran",
         id: "div_select_ukuran",
+        opt_to_reset: "sel_ukuran",
     };
     props_alternate_ukuran = JSON.stringify(props_alternate_ukuran);
 
@@ -92,6 +94,7 @@ console.log("tipe: " + tipe);
         btn_hide: "close_jht",
         btn_show: "box_jht",
         id: "div_select_jht",
+        opt_to_reset: "sel_jahit",
     };
     props_alternate_jht = JSON.stringify(props_alternate_jht);
 
@@ -113,18 +116,26 @@ console.log("tipe: " + tipe);
     const pilih_bahan = `
         <div>Pilih Bahan:</div>
         <input type="text" id="bahan" name="bahan" class="input-normal" style="border-radius:5px;">
-        <input type="hidden" id="id_bahan" name="id_bahan">
+        <input type="hidden" id="bahan_id" name="bahan_id">
+        <input type="hidden" id="bahan_harga" name="bahan_harga">
     `;
 
     var pilih_variasi = `
         <div class="mt-1em">Pilih Variasi:</div>
-        <select id="id_variasi" name="id_variasi" class="p-0_5em" style="border-radius:5px;">
+        <select id="variasi" name="variasi" class="p-0_5em" style="border-radius:5px;">
         `;
 
     if (typeof varias !== "undefined") {
         varias.forEach(varia => {
+        var value = {
+                id: varia.id,
+                nama: varia.nama,
+                harga: varia.harga
+            };
+            value = JSON.stringify(value);
+
             pilih_variasi += `
-                <option value="${varia.id}">${varia.nama}</option>
+                <option value='${value}'>${varia.nama}</option>
             `;
         });
     }
@@ -137,21 +148,29 @@ console.log("tipe: " + tipe);
     // ELEMENT TO ALTERNATE SHOW
     const input_jml =
         `<div id="input_jml">
-            <h4>Jumlah:</h4>
+            Jumlah:
             <input type="number" name="jumlah" min="0" step="1" placeholder="Jumlah" class="p-0_5em" style="border-radius:5px;">
         </div>`;
 
     var select_ukuran =
         `<div id="select_ukuran">
-            <h4>Pilih Ukuran:</h4>
+            Pilih Ukuran:
             <div class="grid-2-auto_10">
-                <select name="ukuran" onchange='namaDanHargaUkuran(this.value)' style="border-radius:5px;padding:0.5em;">
+                <select id="sel_ukuran" name="ukuran" style="border-radius:5px;padding:0.5em;">
                     <option value="" disabled selected>Pilih Jenis Ukuran</option>`;
 
     if (typeof ukurans !== "undefined") {
         ukurans.forEach(uk => {
+            var value = {
+                id: uk.id,
+                nama: uk.nama,
+                nama_nota: uk.nama_nota,
+                harga: uk.harga
+            };
+            value = JSON.stringify(value);
+
             select_ukuran += `
-                <option value="${uk.id}">${uk.nama}</option>
+                <option value='${value}'>${uk.nama}</option>
             `;
         });
     }
@@ -164,15 +183,21 @@ console.log("tipe: " + tipe);
 
     var select_jht =
         `<div id="select_jht">
-            <h4>Tambah Jahit Kepala:</h4>
+            Tambah Jahit Kepala:
             <div class="grid-2-auto_10">
-                <select name="jahit" style="border-radius:5px;padding:0.5em;">
+                <select id="sel_jahit" name="jahit" style="border-radius:5px;padding:0.5em;">
                     <option value="" disabled selected>Pilih Jenis Jahit</option>`;
 
     if (typeof jahits !== "undefined") {
         jahits.forEach(jht => {
+            var value = {
+                id: jht.id,
+                nama: jht.nama,
+                harga: jht.harga
+            };
+            value = JSON.stringify(value);
             select_jht += `
-                <option value="${jht.id}">${jht.nama}</option>
+                <option value='${value}'>${jht.nama}</option>
             `;
         });
     }
@@ -242,7 +267,8 @@ console.log("tipe: " + tipe);
             source: bahans,
             select: function(event, ui) {
                 // console.log(ui.item);
-                $("#id_bahan").val(ui.item.id);
+                $("#bahan_id").val(ui.item.id);
+                $("#bahan_harga").val(ui.item.harga);
                 // show_select_variasi();
                 show_options(available_options);
                 document.getElementById("div_pilih_variasi").innerHTML = pilih_variasi;
@@ -343,7 +369,7 @@ console.log("tipe: " + tipe);
     }
 
     function alternate_show(clicked, props) {
-        // console.log(props);
+        console.log(props);
         if (clicked === props.btn_show) {
             // console.log("show");
             // console.log(props.id);
@@ -353,6 +379,9 @@ console.log("tipe: " + tipe);
             // console.log('hide');
             document.getElementById(props.id).style.display = "none";
             document.getElementById(props.btn_show).style.display = "block";
+            if (typeof props.opt_to_reset !== "undefined") {
+                document.getElementById(props.opt_to_reset).selectedIndex = 0;
+            }
         }
     }
 </script>

@@ -21,7 +21,7 @@ class Ukuran extends Model
         //     ->selectRaw('id, ukuran_id, harga, MAX(created_at) GROUP BY ukuran_id');
 
         $ukurans_harga = DB::table('ukurans')
-            ->select('ukurans.id', 'ukurans.nama', 'ukuran_terbaru.harga', 'ukurans.ktrg')
+            ->select('ukurans.id', 'ukurans.nama', 'ukurans.nama_nota', 'ukuran_terbaru.harga', 'ukurans.ktrg')
             ->joinSub($ukuran_terbaru, 'ukuran_terbaru', function ($join) {
                 $join->on('ukurans.id', '=', 'ukuran_terbaru.ukuran_id');
             })
