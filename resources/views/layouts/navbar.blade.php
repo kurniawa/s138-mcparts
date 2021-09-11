@@ -27,10 +27,15 @@
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
           </li>
         </ul>
-        <form class="d-flex">
+        {{-- <form class="d-flex">
           <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+        </form> --}}
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a href="/login" class="nav-link"><i class="bi bi-box-arrow-in-right"></i> Login</a>
+          </li>
+        </ul>
       </div>
     </div>
   </nav>

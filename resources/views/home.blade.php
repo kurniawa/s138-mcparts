@@ -1,6 +1,6 @@
 @extends('layouts/main_layout')
 
-{{-- @extends('layouts/navbar') --}}
+@extends('layouts/navbar')
 
 @section('content')
 

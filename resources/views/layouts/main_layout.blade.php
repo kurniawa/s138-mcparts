@@ -1,5 +1,3 @@
-{{ date_default_timezone_set("Asia/Jakarta") }}
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,11 +16,13 @@
     <script src="/js/jquery-ui-1.12.1/jquery-ui.js"></script>
     <script src="/js/functions.js"></script>
     <link href="/bootstrap-css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    
     <title>MC-Parts Smart System</title>
 </head>
 
 <body>
+
     @yield('content')
 </body>
 

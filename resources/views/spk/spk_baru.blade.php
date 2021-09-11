@@ -49,7 +49,9 @@ const d_nama_pelanggan_2 = {!! json_encode($d_nama_pelanggan_2, JSON_HEX_TAG) !!
     console.log("d_nama_pelanggan_2");
     console.log(d_nama_pelanggan_2);
 
+    {{ date_default_timezone_set("Asia/Jakarta") }}
 --}}
+
 @section('content')
 
 <header class="header grid-2-auto">
