@@ -18,11 +18,23 @@
     <link href="/bootstrap-css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     
+    <style>
+        a {
+            text-decoration: none;
+            color: black;
+        }
+
+        .a-link {
+            text-decoration: underline;
+            color: #0d6efd;
+        }
+    </style>
+
     <title>MC-Parts Smart System</title>
 </head>
 
 <body>
-
+    
     @yield('content')
 </body>
 
@@ -172,10 +184,5 @@
         showLightBoxGlobal(deletePropertiesStringified);
     }
 </script>
-<style>
-    a {
-        text-decoration: none;
-        color: black;
-    }
-</style>
+
 </html>
