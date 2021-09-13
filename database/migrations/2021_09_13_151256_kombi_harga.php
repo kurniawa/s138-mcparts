@@ -2,9 +2,10 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBahansTable extends Migration
+class KombiHarga extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +14,11 @@ class CreateBahansTable extends Migration
      */
     public function up()
     {
-        Schema::create('bahans', function (Blueprint $table) {
+        Schema::create('kombi_harga', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->string('tipe', 20)->nullable();
-            $table->string('ktrg')->nullable();
+            $table->foreignId('kombi_id');
+            $table->integer("harga");
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });
     }
 
@@ -28,6 +29,6 @@ class CreateBahansTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bahans');
+        Schema::dropIfExists('kombi_harga');
     }
 }

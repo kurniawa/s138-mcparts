@@ -62,7 +62,8 @@ const d_nama_pelanggan_2 = {!! json_encode($d_nama_pelanggan_2, JSON_HEX_TAG) !!
         </a> -->
     </div>
 </header>
-<form action="/spk/inserting_spk_item" method="POST" id="SPKBaru">
+<form action="/spk/inserting_spk_item" method="GET" id="SPKBaru">
+    {{-- diputuskan untuk memakai get, supaya tidak pusing ketika berpindah-pindah halaman --}}
     @csrf
 
     <div class="mt-1em ml-1em grid-2-10_auto">

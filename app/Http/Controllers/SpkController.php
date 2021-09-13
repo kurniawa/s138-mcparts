@@ -6,6 +6,7 @@ use App\Spk;
 use App\Pelanggan;
 use App\Bahan;
 use App\Jahit;
+use App\Kombi;
 use App\Ukuran;
 use App\Variasi;
 use Illuminate\Http\Request;
@@ -33,48 +34,80 @@ class SpkController extends Controller
         // dd($d_label_pelanggan_2);
 
         $data = ['d_label_pelanggan' => $d_label_pelanggan];
-        return view('spk/spk_baru', $data);
+        return view('spk.spk_baru', $data);
     }
 
     public function inserting_spk_item(Request $request)
     {
-        $post = $request->input();
+        $get = $request->input();
 
-        dd($post);
-
+        // dd($get);
+        // 1.
         // Ternyata disini tetap membutuhkan table bantuan atau mungkin table asli untuk
         // menyimpan data spk seperti data pelanggan dan tanggal, supaya tidak hilang ketika
-        // berpindah-pindah halaman.
+        // berpindah-pindah halaman..
 
-        DB::table('spks')->insert([
-            'pelanggan_id' => $post['pelanggan_id'],
-            'reseller_id' => $post['reseller_id'],
-            'status' => 'PROSES',
-            'judul' => $post['judul'],
-        ]);
+        // 2.
+        // Karena akan sering bolak balik halaman ini, maka butuh bantuan variable lain
+        // yang akan menandakan, bahwa tidak perlu create spk lagi
+
+
+        // $spk = Spk::create([
+        //     'pelanggan_id' => $get['pelanggan_id'],
+        //     'reseller_id' => $get['reseller_id'],
+        //     'status' => 'PROSES',
+        //     'judul' => $get['judul'],
+        //     'created_at' => $get['tanggal'],
+        // ]);
+
+        // $no_spk = createNoSPK($get['tanggal']);
+        // $getmonth = (int)date('m', strtotime($get['tanggal']));
+        // $getyear = (int)date('Y', strtotime($get['tanggal']));
+        // $month_roman = integerToRoman($getmonth);
+
+        // $spk_update = Spk::find($spk['id']);
+        // $spk_update->no_spk = "01.$spk_update[id]/MCP-A/$month_roman/$getyear";
+        // $spk_update->save();
+
+        $tanggal = date('d-m-Y', strtotime($get['tanggal']));
+        $spk_item = DB::table('temp_spk_produk')->get();
+        $data = ['spks' => $get, 'spk_item' => $spk_item, 'tanggal' => $tanggal];
+        return view('spk.inserting_spk_item', $data);
+
+        // dump(time());
+        // dump(time() / 86400);
+        // dump(date('Y-m-d', 18883 * 86400));
+        // dd(date('Y-m-d', time()));
+        // dump(getdate()['mon']);
+
+        // dump($getmonth);
+
+        // dd($month_roman);
+        // DB::table('spks')->insert([
+        //     'pelanggan_id' => $post['pelanggan_id'],
+        //     'reseller_id' => $post['reseller_id'],
+        //     'status' => 'PROSES',
+        //     'judul' => $post['judul'],
+        //     'created_at' => $post['tanggal'],
+        // ]);
 
         // Setelah berhasil insert, maka berikutnya coba get temp_spk_produk,
         // apakah sebelumnya sempat ada item yang diinput.
 
-        $spk_item = DB::table('temp_spk_produk')->get();
-        $data = ['spks' => $post, 'spk_item' => $spk_item];
-        return view('/spk/inserting_spk_item', $data);
+        // dump($spk['id']);
+        // dd($spk);
+
+        // dd($spk_update);
+
         // return $post;
     }
 
     public function inserting_varia()
     {
-        $bahan = new Bahan();
-        $label_bahans = $bahan->label_bahans();
-
-        $variasi = new Variasi();
-        $varias_harga = $variasi->varias_harga();
-
-        $ukuran = new Ukuran();
-        $ukurans_harga = $ukuran->ukurans_harga();
-
-        $jahit = new Jahit();
-        $jahits_harga = $jahit->jahits_harga();
+        $label_bahans = $this->fetchBahan()->label_bahans();
+        $varias_harga = $this->fetchVaria()->varias_harga();
+        $ukurans_harga = $this->fetchUkuran()->ukurans_harga();
+        $jahits_harga = $this->fetchJahit()->jahits_harga();
 
         // dump($label_bahans);
         // dump($varias_harga);
@@ -94,7 +127,7 @@ class SpkController extends Controller
     {
         $post = $request->all();
 
-        dump($post);
+        // dump($post);
 
         // $table->id();
         // $table->string('tipe', 50);
@@ -160,8 +193,37 @@ class SpkController extends Controller
 
         $spk_item = DB::table('temp_spk_produk')->get();
         $data = ['spks' => $post, 'spk_item' => $spk_item];
-        return view('/spk/inserting_spk_item', $data);
+        return view('spk.inserting_item-db', $data);
         // return $post;
+    }
+
+    public function fetchBahan()
+    {
+        $bahan = new Bahan();
+        return $bahan;
+    }
+
+    public function fetchVaria()
+    {
+        $variasi = new Variasi();
+        return $variasi;
+    }
+
+    public function fetchUkuran()
+    {
+        $ukuran = new Ukuran();
+        return $ukuran;
+    }
+    public function fetchJahit()
+    {
+        $jahit = new Jahit();
+        return $jahit;
+    }
+
+    public function fetchKombi()
+    {
+        $kombi = new Kombi();
+        return $kombi;
     }
     /**
      * Show the form for creating a new resource.

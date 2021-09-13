@@ -61,13 +61,13 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
         <div class="grid-3-25_10_auto m-0_5em grid-row-gap-1em">
             <div>No.</div>
             <div>:</div>
-            <div class="divSPKNumber font-weight-bold">(Auto Generated)</div>
+            <div class="divSPKNumber fw-bold">(Auto Generated)</div>
             <div>Tanggal</div>
             <div>:</div>
-            <div class="divSPKDate font-weight-bold">{{ $spks['tanggal'] }}</div>
+            <div class="divSPKDate fw-bold">{{ $tanggal }}</div>
             <div>Untuk</div>
             <div>:</div>
-            <div class="divSPKCustomer font-weight-bold">{{ $spks['nama_pelanggan'] }} - {{ $spks['daerah'] }}</div>
+            <div class="divSPKCustomer fw-bold">{{ $spks['nama_pelanggan'] }} - {{ $spks['daerah'] }}</div>
             <input id="inputIDCustomer" type="hidden" name="pelanggan_id" value="">
         </div>
         <div class="grid-1-auto justify-items-right m-0_5em">
@@ -81,33 +81,34 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
     <div class="divTitleDesc grid-1-auto justify-items-center mt-0_5em"></div>
     <input type="hidden" name="ket_judul">
 
-    <div id="divItemList" class="bt-1px-solid-grey font-weight-bold"></div>
+    <div id="divItemList" class="bt-1px-solid-grey"></div>
     <input id="inputHargaTotalSPK" type="hidden" name="total_harga">
 
     <div id="divJmlTotal" class="text-right">
-        <div id="divJmlTotal2" class="font-weight-bold font-size-2em color-green"></div>
-        <div class="font-weight-bold color-red font-size-1_5em">Total</div>
+        <div id="divJmlTotal2" class="fw-bold fs-5 text-success"></div>
+        <div class="fw-bold color-red">Total</div>
     </div>
 
     <div id="divAddItems" class="h-9em position-relative mt-1em">
         <a href="/spk/inserting_varia" class="productType position-absolute top-0 left-50 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
-            <span class="font-size-0_8em text-center font-weight-bold">SJ<br>Varia</span>
+            <span class="font-size-0_8em text-center fw-bold">SJ<br>Varia</span>
         </a>
-        <a href="03-03-02-inserting_spk_item.php?tipe=kombi" class="productType position-absolute top-1em left-35 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
-            <span class="font-size-0_8em text-center font-weight-bold">SJ<br>Kombi</span>
+        <a href="/spk/inserting_kombi" class="productType position-absolute top-1em left-35 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
+            <span class="font-size-0_8em text-center fw-bold">SJ<br>Kombi</span>
         </a>
         <a href="03-03-02-inserting_spk_item.php?tipe=std" class="productType position-absolute top-1em left-65 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
-            <span class="font-size-0_8em text-center font-weight-bold">SJ<br>Std</span>
+            <span class="font-size-0_8em text-center fw-bold">SJ<br>Std</span>
         </a>
         <a href="03-03-02-inserting_spk_item.php?tipe=tankpad" class="productType position-absolute top-5em left-30 transform-translate--50_0 circle-L bg-color-soft-red grid-1-auto justify-items-center">
-            <span class="font-size-0_8em text-center font-weight-bold">Tank<br>Pad</span>
+            <span class="font-size-0_8em text-center fw-bold">Tank<br>Pad</span>
         </a>
         <a href="03-03-02-inserting_spk_item.php?tipe=busastang" class="productType position-absolute top-5em left-70 transform-translate--50_0 circle-L bg-color-grey grid-1-auto justify-items-center">
-            <span class="font-size-0_8em text-center font-weight-bold">Busa<br>Stang</span>
+            <span class="font-size-0_8em text-center fw-bold">Busa<br>Stang</span>
         </a>
+        <div style="height:50vh;visibility:hidden;"></div>
         <div class="position-absolute top-5em left-50 transform-translate--50_0 grid-1-auto justify-items-center" onclick="toggleProductType();">
             <div class="circle-medium bg-color-orange-2 grid-1-auto justify-items-center">
-                <span class="color-white font-weight-bold font-size-1_5em">+</span>
+                <span class="color-white fw-bold font-size-1_5em">+</span>
             </div>
         </div>
 
@@ -115,13 +116,13 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
 
     <!-- EDIT ITEM SPK -->
     <div id="divBtnShowEditOptItemSPK" class="text-center">
-        <div class="d-inline-block btn-1 bg-color-purple-blue font-weight-bold color-white" onclick="showEditOptItemSPK();">Edit Item</div>
+        <div class="d-inline-block btn-1 bg-color-purple-blue fw-bold color-white" onclick="showEditOptItemSPK();">Edit Item</div>
     </div>
     <div id="divBtnHideEditOptItemSPK" class="text-center">
-        <div class="d-inline-block btn-1 font-weight-bold color-white" style="background-color: gray;" onclick="hideEditOptItemSPK();">Finish Editing</div>
+        <div class="d-inline-block btn-1 fw-bold color-white" style="background-color: gray;" onclick="hideEditOptItemSPK();">Finish Editing</div>
     </div>
     <!-- END - EDIT ITEM SPK -->
-    <div class="position-absolute bottom-0_5em w-calc-100-1em">
+    <div class="position-fixed bottom-0_5em w-calc-100-1em">
         <button type="submit" id="btnProsesSPK" class="w-100 h-4em bg-color-orange-2 grid-1-auto">
             <span class="justify-self-center font-weight-900">PROSES SPK</span>
         </button>
@@ -161,16 +162,16 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
         htmlItemList = htmlItemList +
             `<div class='divItem grid-3-auto_auto_10 pt-0_5em pb-0_5em bb-1px-solid-grey'>
             <div class='divItemName grid-2-15_auto'>
-                <div id='btnRemoveItem-${i}' class='btnRemoveItem grid-1-auto justify-items-center circle-medium bg-color-soft-red' onclick='removeSPKItem("${spk_item[i].id}");'><img style='width: 1.3em;' src='img/icons/minus-white.svg'></div>
-                    ${spk_item[i].nama_lengkap}
+                <div id='btnRemoveItem-${i}' class='btnRemoveItem grid-1-auto justify-items-center circle-medium bg-color-soft-red' onclick='removeSPKItem("${spk_item[i].id}");'><img style='width: 1.3em;' src='/img/icons/minus-white.svg'></div>
+                    ${spk_item[i].nama}
                 </div>
             <div class='grid-1-auto'>
-            <div class='color-green justify-self-right font-size-1_2em'>
+            <div class='color-green justify-self-right font-size-1_2em fw-bold'>
                 ${spk_item[i].jumlah}
             </div>
                 <div class='color-grey justify-self-right'>Jumlah</div>
             </div>
-            <div id='btnEditItem-${i}' class='btnEditItem grid-1-auto justify-items-center circle-medium bg-color-purple-blue' onclick='editSPKItem("${spk_item[i].id}", "${spk_item[i].tipe}");'><img style='width: 1.3em;' src='img/icons/pencil2-white.svg'></div>
+            <div id='btnEditItem-${i}' class='btnEditItem grid-1-auto justify-items-center circle-medium bg-color-purple-blue' onclick='editSPKItem("${spk_item[i].id}", "${spk_item[i].tipe}");'><img style='width: 1.3em;' src='/img/icons/pencil2-white.svg'></div>
             <div class='pl-0_5em color-blue-purple'>${keterangan}</div>
             </div>`;
 
