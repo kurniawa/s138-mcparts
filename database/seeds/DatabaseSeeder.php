@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             UkuranSeeder::class,
             JahitSeeder::class,
             KombiSeeder::class,
+            SPJapsSeeder::class,
         ]);
     }
 }

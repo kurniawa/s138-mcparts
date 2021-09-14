@@ -15,7 +15,8 @@ class CreateSPJapsTable extends Migration
     {
         Schema::create('spjaps', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('nama');
+            $table->string('ktrg')->nullable();
         });
     }
 

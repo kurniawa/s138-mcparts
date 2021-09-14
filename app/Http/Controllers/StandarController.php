@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\SPJap;
+use App\Standar;
 use Illuminate\Http\Request;
 
-class SPJapController extends Controller
+class StandarController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class SPJapController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\SPJap  $sPJap
+     * @param  \App\Standar  $standar
      * @return \Illuminate\Http\Response
      */
-    public function show(SPJap $sPJap)
+    public function show(Standar $standar)
     {
         //
     }
@@ -52,10 +52,10 @@ class SPJapController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\SPJap  $sPJap
+     * @param  \App\Standar  $standar
      * @return \Illuminate\Http\Response
      */
-    public function edit(SPJap $sPJap)
+    public function edit(Standar $standar)
     {
         //
     }
@@ -64,10 +64,10 @@ class SPJapController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\SPJap  $sPJap
+     * @param  \App\Standar  $standar
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, SPJap $sPJap)
+    public function update(Request $request, Standar $standar)
     {
         //
     }
@@ -75,10 +75,10 @@ class SPJapController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\SPJap  $sPJap
+     * @param  \App\Standar  $standar
      * @return \Illuminate\Http\Response
      */
-    public function destroy(SPJap $sPJap)
+    public function destroy(Standar $standar)
     {
         //
     }

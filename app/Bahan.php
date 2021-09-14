@@ -29,4 +29,19 @@ class Bahan extends Model
 
         return $label_bahans;
     }
+
+    public function d_bahan_a()
+    {
+        $d_bahan_a = DB::table('bahans')
+            ->where('tipe', 'A')
+            ->orderBy('bahans.nama')->get();
+        return $d_bahan_a;
+    }
+    public function d_bahan_b()
+    {
+        $d_bahan_b = DB::table('bahans')
+            ->where('tipe', 'B')
+            ->orderBy('bahans.nama')->get();
+        return $d_bahan_b;
+    }
 }

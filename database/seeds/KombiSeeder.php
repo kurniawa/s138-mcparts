@@ -13,11 +13,11 @@ class KombiSeeder extends Seeder
     public function run()
     {
         $kombi = [[
-            'nama' => 'Kombinasi Sayap Warna(A) Motif + LG + jht.kpl',
+            'nama' => 'Kombinasi Sayap Warna(A) Motif + LG + jht.Kepala',
             'id' => 1,
             'harga' => 20500
         ], [
-            'nama' => 'Kombinasi Warna Japstyle + jht.kpl',
+            'nama' => 'Kombinasi Warna Japstyle + jht.Kepala',
             'id' => 2,
             'harga' => 20000
         ], [
@@ -34,11 +34,11 @@ class KombiSeeder extends Seeder
             'harga' => 26500
         ], [
             'nama' => 'Motif Sixpack 2 Warna + jht.Univ',
-            'id' => 5,
+            'id' => 6,
             'harga' => 27500
         ], [
             'nama' => 'Motif Sixpack 2 Warna uk.JB + jht.JB',
-            'id' => 5,
+            'id' => 7,
             'harga' => 34500
         ]];
 

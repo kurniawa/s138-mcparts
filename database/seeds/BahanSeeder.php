@@ -21,57 +21,75 @@ class BahanSeeder extends Seeder
 
         $bahan = [[
             'nama' => 'Amplas(RY)',
+            'tipe' => null,
             'id' => 1,
             'harga' => 15000
         ], [
             'nama' => 'BigDot(MC)',
+            'tipe' => 'A',
             'id' => 2,
             'harga' => 13000
         ], [
-            'nama' => 'C30(MC)',
+            'nama' => 'L55(CK)',
+            'tipe' => null,
             'id' => 3,
-            'harga' => 13000
+            'harga' => 12000
         ], [
-            'nama' => 'C38(MC)',
+            'nama' => 'C30(MC)',
+            'tipe' => 'A',
             'id' => 4,
             'harga' => 13000
         ], [
-            'nama' => 'Carbon',
+            'nama' => 'C38(MC)',
+            'tipe' => 'A',
             'id' => 5,
+            'harga' => 13000
+        ], [
+            'nama' => 'Carbon',
+            'tipe' => null,
+            'id' => 6,
             'harga' => 17000
         ], [
             'nama' => 'Grafitti',
-            'id' => 6,
+            'tipe' => 'A',
+            'id' => 7,
             'harga' => 13000
         ], [
             'nama' => 'K-Jeruk',
-            'id' => 7,
+            'tipe' => 'B',
+            'id' => 8,
             'harga' => 11500
         ], [
             'nama' => 'L-Hole',
-            'id' => 8,
+            'tipe' => 'B',
+            'id' => 9,
             'harga' => 10000
         ], [
             'nama' => 'Navaro(MC)',
-            'id' => 9,
-            'harga' => 13000
-        ], [
-            'nama' => 'U-Tangan(MC)',
+            'tipe' => 'A',
             'id' => 10,
             'harga' => 13000
         ], [
-            'nama' => 'Vario(M)',
+            'nama' => 'U-Tangan(MC)',
+            'tipe' => 'A',
             'id' => 11,
             'harga' => 13000
         ], [
-            'nama' => 'Vario(MC)',
+            'nama' => 'Vario(M)',
+            'tipe' => 'A',
             'id' => 12,
+            'harga' => 13000
+        ], [
+            'nama' => 'Vario(MC)',
+            'tipe' => 'A',
+            'id' => 13,
             'harga' => 13000
         ]];
 
         for ($i = 0; $i < count($bahan); $i++) {
             DB::table('bahans')->insert([
                 'nama' => $bahan[$i]['nama'],
+                'tipe' => $bahan[$i]['tipe'],
             ]);
             DB::table('bahan_harga')->insert([
                 'bahan_id' => $bahan[$i]['id'],

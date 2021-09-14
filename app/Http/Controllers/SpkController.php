@@ -7,6 +7,8 @@ use App\Pelanggan;
 use App\Bahan;
 use App\Jahit;
 use App\Kombi;
+use App\SPJap;
+use App\Standar;
 use App\Ukuran;
 use App\Variasi;
 use Illuminate\Http\Request;
@@ -123,6 +125,57 @@ class SpkController extends Controller
         return view('/spk/inserting_varia', $data);
     }
 
+    public function inserting_kombi()
+    {
+        $label_kombis = $this->fetchKombi()->label_kombis();
+
+        $element_properties = "
+        <div id='div_pilih_kombi'></div>
+        <div style='display:none;' class='mt-1em' id='div_ta_ktrg'></div>
+        <div style='display:none;' class='mt-1em' id='div_input_jml'></div>
+        ";
+
+        $available_options = "
+        <div style='display:inline-block' id='div_option_jml'></div>
+        <div style='display:inline-block' id='div_option_ktrg'></div>
+        ";
+
+        $data = [
+            'judul' => 'SJ Kombinasi',
+            'tipe' => 'kombi',
+            'kombis' => $label_kombis,
+            'element_properties' => $element_properties,
+            'available_options' => $available_options,
+        ];
+        return view('spk.inserting_kombi', $data);
+    }
+
+    public function inserting_spjap()
+    {
+        $label_spjaps = $this->fetchSpjap()->label_spjaps();
+        $bahan_a = $this->fetchBahan();
+
+        $element_properties = "
+        <div id='div_pilih_spjap'></div>
+        <div style='display:none;' class='mt-1em' id='div_ta_ktrg'></div>
+        <div style='display:none;' class='mt-1em' id='div_input_jml'></div>
+        ";
+
+        $available_options = "
+        <div style='display:inline-block' id='div_option_jml'></div>
+        <div style='display:inline-block' id='div_option_ktrg'></div>
+        ";
+
+        $data = [
+            'judul' => 'SJ SixPack/Japstyle',
+            'tipe' => 'spjap',
+            'spjaps' => $label_spjaps,
+            'element_properties' => $element_properties,
+            'available_options' => $available_options,
+        ];
+        return view('spk.inserting_spk_item-2', $data);
+    }
+
     public function inserting_item_db(Request $request)
     {
         $post = $request->all();
@@ -224,6 +277,18 @@ class SpkController extends Controller
     {
         $kombi = new Kombi();
         return $kombi;
+    }
+
+    public function fetchSpjap()
+    {
+        $spjap = new SPJap();
+        return $spjap;
+    }
+
+    public function fetchStandar()
+    {
+        $std = new Standar();
+        return $std;
     }
     /**
      * Show the form for creating a new resource.

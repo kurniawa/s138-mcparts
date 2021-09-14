@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class SPJaps extends Model
+class Standar extends Model
 {
     //
 }

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class SpjapsHarga extends Migration
+class CreateStandarsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class SpjapsHarga extends Migration
      */
     public function up()
     {
-        Schema::create('spjaps_harga', function (Blueprint $table) {
+        Schema::create('standars', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->string('nama');
+            $table->string('ktrg')->nullable();
         });
     }
 
@@ -26,6 +27,6 @@ class SpjapsHarga extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('spjaps_harga');
+        Schema::dropIfExists('standars');
     }
 }

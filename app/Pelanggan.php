@@ -29,4 +29,9 @@ class Pelanggan extends Model
 
         return $d_nama_pelanggan;
     }
+
+    public function spk()
+    {
+        return $this->hasMany(Spk::class);
+    }
 }
