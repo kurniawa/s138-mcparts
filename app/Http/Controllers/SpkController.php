@@ -153,12 +153,28 @@ class SpkController extends Controller
     public function inserting_spjap()
     {
         $label_spjaps = $this->fetchSpjap()->label_spjaps();
-        $bahan_a = $this->fetchBahan();
+        $d_bahan_a = $this->fetchBahan()->d_bahan_a();
+        $d_bahan_b = $this->fetchBahan()->d_bahan_b();
 
         $element_properties = "
+        <br>
+        Pilih Tipe Bahan:
+        <div id='div_pilih_tipe_bhn'>
+            <select id='tipe_bahan' name='tipe_bhn' class='form-select' onchange='setAutocomplete_D_Bahan();'>
+                <option value='A'>Bahan(A)</option>
+                <option value='B'>Bahan(B)</option>
+            </select>
+        </div>
+        <br>
+        Pilih Bahan:
+        <div id='div_pilih_bahan'>
+        <input type='text' id='bahan' name='bahan' class='input-normal' style='border-radius:5px;'>
+        <input type='hidden' id='bahan_id' name='bahan_id'>
+        </div>
+        <br>
         <div id='div_pilih_spjap'></div>
-        <div style='display:none;' class='mt-1em' id='div_ta_ktrg'></div>
-        <div style='display:none;' class='mt-1em' id='div_input_jml'></div>
+        <div class='mt-1em' id='div_ta_ktrg'></div>
+        <div class='mt-1em' id='div_input_jml'></div>
         ";
 
         $available_options = "
@@ -170,6 +186,52 @@ class SpkController extends Controller
             'judul' => 'SJ SixPack/Japstyle',
             'tipe' => 'spjap',
             'spjaps' => $label_spjaps,
+            'd_bahan_a' => $d_bahan_a,
+            'd_bahan_b' => $d_bahan_b,
+            'element_properties' => $element_properties,
+            'available_options' => $available_options,
+        ];
+        return view('spk.inserting_spk_item-2', $data);
+    }
+
+    public function inserting_std()
+    {
+        $label_spjaps = $this->fetchSpjap()->label_spjaps();
+        $d_bahan_a = $this->fetchBahan()->d_bahan_a();
+        $d_bahan_b = $this->fetchBahan()->d_bahan_b();
+
+        $element_properties = "
+        <br>
+        Pilih Tipe Bahan:
+        <div id='div_pilih_tipe_bhn'>
+            <select id='tipe_bahan' name='tipe_bhn' class='form-select' onchange='setAutocomplete_D_Bahan();'>
+                <option value='A'>Bahan(A)</option>
+                <option value='B'>Bahan(B)</option>
+            </select>
+        </div>
+        <br>
+        Pilih Bahan:
+        <div id='div_pilih_bahan'>
+        <input type='text' id='bahan' name='bahan' class='input-normal' style='border-radius:5px;'>
+        <input type='hidden' id='bahan_id' name='bahan_id'>
+        </div>
+        <br>
+        <div id='div_pilih_spjap'></div>
+        <div class='mt-1em' id='div_ta_ktrg'></div>
+        <div class='mt-1em' id='div_input_jml'></div>
+        ";
+
+        $available_options = "
+        <div style='display:inline-block' id='div_option_jml'></div>
+        <div style='display:inline-block' id='div_option_ktrg'></div>
+        ";
+
+        $data = [
+            'judul' => 'SJ SixPack/Japstyle',
+            'tipe' => 'spjap',
+            'spjaps' => $label_spjaps,
+            'd_bahan_a' => $d_bahan_a,
+            'd_bahan_b' => $d_bahan_b,
             'element_properties' => $element_properties,
             'available_options' => $available_options,
         ];

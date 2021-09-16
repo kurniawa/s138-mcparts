@@ -70,6 +70,9 @@
 </script>
 @if ($tipe==='kombi')
     @include('spk.js_inserting_kombi')
+
+@elseif($tipe === 'spjap')
+    @include('spk.js_inserting_spjap')
 @endif
 
 

@@ -19,6 +19,7 @@ return array(
     'App\\Http\\Controllers\\PelangganController' => $baseDir . '/app/Http/Controllers/PelangganController.php',
     'App\\Http\\Controllers\\RegisterController' => $baseDir . '/app/Http/Controllers/RegisterController.php',
     'App\\Http\\Controllers\\SpkController' => $baseDir . '/app/Http/Controllers/SpkController.php',
+    'App\\Http\\Controllers\\StandarController' => $baseDir . '/app/Http/Controllers/StandarController.php',
     'App\\Http\\Controllers\\UkuranController' => $baseDir . '/app/Http/Controllers/UkuranController.php',
     'App\\Http\\Controllers\\VariasiController' => $baseDir . '/app/Http/Controllers/VariasiController.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',

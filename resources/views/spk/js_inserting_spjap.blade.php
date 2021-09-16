@@ -1,5 +1,9 @@
 <script>
+    const d_bahan_a = {!! json_encode($d_bahan_a, JSON_HEX_TAG) !!};
+    const d_bahan_b = {!! json_encode($d_bahan_b, JSON_HEX_TAG) !!};
     const spjaps = {!! json_encode($spjaps, JSON_HEX_TAG) !!};
+    console.log(d_bahan_a);
+    console.log(d_bahan_b);
     console.log(spjaps);
 
     const pilih_spjaps = `
@@ -18,6 +22,8 @@
 
     const available_options = ["box_jml", "box_ktrg"];
 
+    
+
     $("#spjap").autocomplete({
         source: spjaps,
         select: function(event, ui) {
@@ -28,6 +34,30 @@
             show_options(available_options);
         }
     });
+
+    // Pertama kali page load kan tipe bahan sudah terpilih yang A,
+    // jadi input bahan nya langsung di set daftar bahan A
+    setAutocomplete_D_Bahan();
+
+    function setAutocomplete_D_Bahan() {
+        const tipe_bahan = document.getElementById('tipe_bahan').value;
+        var label_bahan = new Array();
+        if (tipe_bahan === 'A') {
+            label_bahan = d_bahan_a;
+        } else {
+            label_bahan = d_bahan_b;
+        }
+        console.log(tipe_bahan);
+        $("#bahan").autocomplete({
+        source: label_bahan,
+        select: function(event, ui) {
+            // console.log(ui.item);
+            $("#bahan_id").val(ui.item.id);
+            // show_select_variasi();
+            show_options(available_options);
+        }
+    });
+    }
 
 
 </script>
