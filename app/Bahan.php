@@ -33,6 +33,7 @@ class Bahan extends Model
     public function d_bahan_a()
     {
         $d_bahan_a = DB::table('bahans')
+            ->select('bahans.id', 'bahans.nama AS label', 'bahans.nama AS value')
             ->where('tipe', 'A')
             ->orderBy('bahans.nama')->get();
         return $d_bahan_a;
@@ -40,6 +41,7 @@ class Bahan extends Model
     public function d_bahan_b()
     {
         $d_bahan_b = DB::table('bahans')
+            ->select('bahans.id', 'bahans.nama AS label', 'bahans.nama AS value')
             ->where('tipe', 'B')
             ->orderBy('bahans.nama')->get();
         return $d_bahan_b;

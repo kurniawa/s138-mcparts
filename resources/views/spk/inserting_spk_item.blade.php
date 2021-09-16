@@ -96,14 +96,17 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
         <a href="/spk/inserting_kombi" class="productType position-absolute top-1em left-35 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
             <span class="font-size-0_8em text-center fw-bold">SJ<br>Kombi</span>
         </a>
-        <a href="03-03-02-inserting_spk_item.php?tipe=std" class="productType position-absolute top-1em left-65 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
+        <a href="/spk/inserting_std" class="productType position-absolute top-1em left-65 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
             <span class="font-size-0_8em text-center fw-bold">SJ<br>Std</span>
         </a>
-        <a href="03-03-02-inserting_spk_item.php?tipe=tankpad" class="productType position-absolute top-5em left-30 transform-translate--50_0 circle-L bg-color-soft-red grid-1-auto justify-items-center">
+        <a href="/spk/inserting_tankpad" class="productType position-absolute top-5em left-30 transform-translate--50_0 circle-L bg-color-soft-red grid-1-auto justify-items-center">
             <span class="font-size-0_8em text-center fw-bold">Tank<br>Pad</span>
         </a>
-        <a href="03-03-02-inserting_spk_item.php?tipe=busastang" class="productType position-absolute top-5em left-70 transform-translate--50_0 circle-L bg-color-grey grid-1-auto justify-items-center">
+        <a href="/spk/inserting_busastang" class="productType position-absolute top-5em left-70 transform-translate--50_0 circle-L bg-color-grey grid-1-auto justify-items-center">
             <span class="font-size-0_8em text-center fw-bold">Busa<br>Stang</span>
+        </a>
+        <a href="/spk/inserting_spjap" class="productType position-absolute transform-translate--50_0 circle-L bg-color-grey grid-1-auto justify-items-center" style="top:10em;left:30%">
+            <span class="font-size-0_8em text-center fw-bold">SP<br>Jap</span>
         </a>
         <div style="height:50vh;visibility:hidden;"></div>
         <div class="position-absolute top-5em left-50 transform-translate--50_0 grid-1-auto justify-items-center" onclick="toggleProductType();">
