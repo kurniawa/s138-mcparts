@@ -361,6 +361,9 @@ option{
 .w-calc-100-1em {
     width: calc(100% - 1em);
 }
+.w-calc-100-2em {
+    width: calc(100% - 2em);
+}
 
 /* color */
 .color-red {

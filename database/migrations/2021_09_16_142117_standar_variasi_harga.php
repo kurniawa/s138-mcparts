@@ -16,7 +16,7 @@ class StandarVariasiHarga extends Migration
     {
         /**
          * harga price_list ga mesti dicantumin, karena bisa dihitung melalui table variasi_std_harga
-         * Tapi ini teteap dicantumkan untuk memudahkan pembacaan informasi.
+         * Tapi ini tetap dicantumkan untuk memudahkan pembacaan informasi.
          */
         Schema::create('standar_variasi_harga', function (Blueprint $table) {
             $table->id();

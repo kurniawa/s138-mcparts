@@ -73,8 +73,14 @@
 
 @elseif($tipe === 'spjap')
     @include('spk.js_inserting_spjap')
-@endif
+    
+@elseif($tipe === 'std')
+    @include('spk.js_inserting_std')
 
+@elseif($tipe === 'busastang')
+    @include('spk.js_inserting_busastang')
+
+@endif
 
 <script>
 

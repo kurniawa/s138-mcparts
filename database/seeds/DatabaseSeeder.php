@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             JahitSeeder::class,
             KombiSeeder::class,
             SPJapsSeeder::class,
+            StandarSeeder::class,
         ]);
     }
 }
