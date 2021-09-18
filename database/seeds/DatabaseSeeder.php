@@ -23,6 +23,9 @@ class DatabaseSeeder extends Seeder
             KombiSeeder::class,
             SPJapsSeeder::class,
             StandarSeeder::class,
+            TankpadSeeder::class,
+            BusastangSeeder::class,
+            StikerSeeder::class,
         ]);
     }
 }
