@@ -23,8 +23,8 @@
         </div>
 
     </div>
-    <div class="position-fixed bottom-0_5em w-calc-100-1em">
-        <button type="submit" id="bottomDiv" class="w-100 h-4em bg-color-orange-2 grid-1-auto">
+    <div class="position-fixed bottom-0_5em w-calc-100-2em">
+        <button type="submit" id="bottomDiv" class="btn-warning-full grid-1-auto">
 
             <span class="justify-self-center font-weight-bold">TAMBAH ITEM KE SPK</span>
 
@@ -73,8 +73,20 @@
 
 @elseif($tipe === 'spjap')
     @include('spk.js_inserting_spjap')
-@endif
+    
+@elseif($tipe === 'std')
+    @include('spk.js_inserting_std')
 
+@elseif($tipe === 'tankpad')
+    @include('spk.js_inserting_tankpad')
+
+@elseif($tipe === 'busastang')
+    @include('spk.js_inserting_busastang')
+
+@elseif($tipe === 'stiker')
+    @include('spk.js_inserting_stiker')
+
+@endif
 
 <script>
 

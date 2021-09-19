@@ -108,6 +108,9 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
         <a href="/spk/inserting_spjap" class="productType position-absolute transform-translate--50_0 circle-L bg-color-grey grid-1-auto justify-items-center" style="top:10em;left:30%">
             <span class="font-size-0_8em text-center fw-bold">SP<br>Jap</span>
         </a>
+        <a href="/spk/inserting_stiker" class="productType position-absolute transform-translate--50_0 circle-L bg-color-grey grid-1-auto justify-items-center" style="top:10em;left:70%">
+            <span class="font-size-0_8em text-center fw-bold">Stiker</span>
+        </a>
         <div style="height:50vh;visibility:hidden;"></div>
         <div class="position-absolute top-5em left-50 transform-translate--50_0 grid-1-auto justify-items-center" onclick="toggleProductType();">
             <div class="circle-medium bg-color-orange-2 grid-1-auto justify-items-center">

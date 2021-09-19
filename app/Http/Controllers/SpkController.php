@@ -9,6 +9,8 @@ use App\Jahit;
 use App\Kombi;
 use App\SPJap;
 use App\Standar;
+use App\Stiker;
+use App\Tankpad;
 use App\Ukuran;
 use App\Variasi;
 use Illuminate\Http\Request;
@@ -196,27 +198,16 @@ class SpkController extends Controller
 
     public function inserting_std()
     {
-        $label_spjaps = $this->fetchSpjap()->label_spjaps();
-        $d_bahan_a = $this->fetchBahan()->d_bahan_a();
-        $d_bahan_b = $this->fetchBahan()->d_bahan_b();
+        $label_stds = $this->fetchStandar()->label_stds();
 
         $element_properties = "
         <br>
-        Pilih Tipe Bahan:
-        <div id='div_pilih_tipe_bhn'>
-            <select id='tipe_bahan' name='tipe_bhn' class='form-select' onchange='setAutocomplete_D_Bahan();'>
-                <option value='A'>Bahan(A)</option>
-                <option value='B'>Bahan(B)</option>
-            </select>
+        Pilih Standar:
+        <div id='div_pilih_standar'>
+        <input type='text' id='standar' name='standar' class='input-normal' style='border-radius:5px;'>
+        <input type='hidden' id='standar_id' name='standar_id'>
         </div>
         <br>
-        Pilih Bahan:
-        <div id='div_pilih_bahan'>
-        <input type='text' id='bahan' name='bahan' class='input-normal' style='border-radius:5px;'>
-        <input type='hidden' id='bahan_id' name='bahan_id'>
-        </div>
-        <br>
-        <div id='div_pilih_spjap'></div>
         <div class='mt-1em' id='div_ta_ktrg'></div>
         <div class='mt-1em' id='div_input_jml'></div>
         ";
@@ -227,11 +218,96 @@ class SpkController extends Controller
         ";
 
         $data = [
-            'judul' => 'SJ SixPack/Japstyle',
-            'tipe' => 'spjap',
-            'spjaps' => $label_spjaps,
-            'd_bahan_a' => $d_bahan_a,
-            'd_bahan_b' => $d_bahan_b,
+            'judul' => 'SJ Standar',
+            'tipe' => 'std',
+            'stds' => $label_stds,
+            'element_properties' => $element_properties,
+            'available_options' => $available_options,
+        ];
+        return view('spk.inserting_spk_item-2', $data);
+    }
+
+    public function inserting_tankpad()
+    {
+        $label_tankpad = $this->fetchTankpad()->label_tp();
+
+        $element_properties = "
+        <br>
+        Pilih Tankpad:
+        <div id='div_pilih_tankpad'>
+        <input type='text' id='tankpad' name='tankpad' class='input-normal' style='border-radius:5px;'>
+        <input type='hidden' id='tankpad_id' name='tankpad_id'>
+        </div>
+        <br>
+        <div class='mt-1em' id='div_ta_ktrg'></div>
+        <div class='mt-1em' id='div_input_jml'></div>
+        ";
+
+        $available_options = "
+        <div style='display:inline-block' id='div_option_jml'></div>
+        <div style='display:inline-block' id='div_option_ktrg'></div>
+        ";
+
+        $data = [
+            'judul' => 'Tankpad',
+            'tipe' => 'tankpad',
+            'tankpads' => $label_tankpad,
+            'element_properties' => $element_properties,
+            'available_options' => $available_options,
+        ];
+        return view('spk.inserting_spk_item-2', $data);
+    }
+
+    public function inserting_busastang()
+    {
+
+        $element_properties = "
+        <br>
+        <div id='div_input_busastang'>
+        <input type='text' id='standar' name='standar' class='input-normal' style='border-radius:5px;' value='Busa-Stang' readonly>
+        </div>
+        <br>
+        <div class='mt-1em' id='div_ta_ktrg'></div>
+        <div class='mt-1em' id='div_input_jml'></div>
+        ";
+
+        $available_options = "
+        <div style='display:inline-block' id='div_option_jml'></div>
+        <div style='display:inline-block' id='div_option_ktrg'></div>
+        ";
+
+        $data = [
+            'judul' => 'Busa-Stang',
+            'tipe' => 'busastang',
+            'element_properties' => $element_properties,
+            'available_options' => $available_options,
+        ];
+        return view('spk.inserting_spk_item-2', $data);
+    }
+
+    public function inserting_stiker()
+    {
+        $label_stiker = $this->fetchStiker()->label_stiker();
+
+        $element_properties = "
+        <br>
+        <div id='div_input_stiker'>
+        <input type='text' id='stiker' name='stiker' class='input-normal' style='border-radius:5px;'>
+        </div>
+        <br>
+        <div class='mt-1em' id='div_ta_ktrg'></div>
+        <div class='mt-1em' id='div_input_jml'></div>
+        ";
+
+        $available_options = "
+        <div style='display:inline-block' id='div_option_jml'></div>
+        <div style='display:inline-block' id='div_option_ktrg'></div>
+        ";
+
+        $data = [
+            'judul' => 'Stiker',
+            'tipe' => 'stiker',
+            'stikers' => $label_stiker,
             'element_properties' => $element_properties,
             'available_options' => $available_options,
         ];
@@ -244,32 +320,73 @@ class SpkController extends Controller
 
         // dump($post);
 
-        // $table->id();
-        // $table->string('tipe', 50);
-        // $table->bigInteger('tipe_id');
-        // $table->foreignId('bahan_id');
-        // $table->foreignId('variasi_id');
-        // $table->foreignId('ukuran_id');
-        // $table->foreignId('jahit_id');
-        // $table->foreignId('std_id');
-        // $table->foreignId('kombi_id');
-        // $table->foreignId('busastang_id');
-        // $table->foreignId('tankpad_id');
-        // $table->string('nama');
-        // $table->string('nama_nota');
-        // $table->string('jumlah');
-        // $table->integer('harga');
-        // $table->integer('ktrg')->nullable();
-        // 'kombi_id' => $post['kombi_id'],
-        // 'busastang_id' => $post['busastang_id'],
-        // 'tankpad_id' => $post['tankpad_id'],
+        /**
+         * Menentukan semua variable yang nantinya akan diinsert ke table temp_spk_item
+         * Banyak variable akan di set value nya menjadi NULL
+         */
+        /*
+        $table->id();
+        $table->string('tipe', 50);
+        $table->foreignId('bahan_id')->nullable();
+        $table->foreignId('variasi_id')->nullable();
+        $table->foreignId('ukuran_id')->nullable();
+        $table->foreignId('jahit_id')->nullable();
+        $table->foreignId('std_id')->nullable();
+        $table->foreignId('kombi_id')->nullable();
+        $table->foreignId('busastang_id')->nullable();
+        $table->foreignId('tankpad_id')->nullable();
+        $table->foreignId('spjap_id')->nullable();
+        $table->foreignId('stiker_id')->nullable();
+        $table->string('nama');
+        $table->string('nama_nota');
+        $table->string('jumlah');
+        $table->integer('harga');
+        $table->string('ktrg')->nullable();
+        */
+
+        $tipe = $post['tipe'];
+        $jumlah = $post['jumlah'];
         $ktrg = null;
-        if ($post['ktrg'] !== null) {
-            $ktrg = trim($post['ktrg']);
+        $bahan_id = $variasi_id = $ukuran_id = $jahit_id = null;
+        $standar_id = $kombi_id = $busastang_id = $tankpad_id = $spjap_id = $stiker_id = null;
+
+        if (isset($post['bahan_id'])) {
+            $bahan_id = $post['bahan_id'];
         }
-        $ukuran_id = null;
-        $jahit_id = null;
-        if ($post['tipe'] === 'varia') {
+        if (isset($post['variasi_id'])) {
+            $variasi_id = $post['variasi_id'];
+        }
+        if (isset($post['ukuran_id'])) {
+            $ukuran_id = $post['ukuran_id'];
+        }
+        if (isset($post['jahit_id'])) {
+            $jahit_id = $post['jahit_id'];
+        }
+        if (isset($post['standar_id'])) {
+            $standar_id = $post['standar_id'];
+        }
+        if (isset($post['kombi_id'])) {
+            $kombi_id = $post['kombi_id'];
+        }
+        if (isset($post['busastang_id'])) {
+            $busastang_id = $post['busastang_id'];
+        }
+        if (isset($post['tankpad_id'])) {
+            $tankpad_id = $post['tankpad_id'];
+        }
+        if (isset($post['spjap_id'])) {
+            $spjap_id = $post['spjap_id'];
+        }
+        if (isset($post['stiker_id'])) {
+            $stiker_id = $post['stiker_id'];
+        }
+        if (isset($post['ktrg'])) {
+            $ktrg = $post['ktrg'];
+        }
+
+        // dd($tipe);
+
+        if ($tipe === 'varia') {
             $variasi = json_decode($post['variasi'], true);
             $harga = $post['bahan_harga'] + $variasi['harga'];
             $nama = "$post[bahan] $variasi[nama]";
@@ -292,19 +409,33 @@ class SpkController extends Controller
             // dump($harga);
             // dump($nama_nota);
             // dd($nama);
-            DB::table('temp_spk_produk')->insert([
-                'tipe' => $post['tipe'],
-                'bahan_id' => $post['bahan_id'],
-                'variasi_id' => $variasi['id'],
-                'ukuran_id' => $ukuran_id,
-                'jahit_id' => $jahit_id,
-                'nama' => $nama,
-                'nama_nota' => $nama_nota,
-                'jumlah' => $post['jumlah'],
-                'harga' => $harga,
-                'ktrg' => $ktrg,
-            ]);
         }
+
+        if ($tipe === 'kombinasi') {
+            $nama = $post['kombi'];
+            $nama_nota = $nama;
+            $harga = $post['kombi_harga'];
+        }
+
+
+        DB::table('temp_spk_produk')->insert([
+            'tipe' => $tipe,
+            'bahan_id' => $bahan_id,
+            'variasi_id' => $variasi_id,
+            'ukuran_id' => $ukuran_id,
+            'jahit_id' => $jahit_id,
+            'standar_id' => $standar_id,
+            'kombi_id' => $kombi_id,
+            'busastang_id' => $busastang_id,
+            'tankpad_id' => $tankpad_id,
+            'spjap_id' => $spjap_id,
+            'stiker_id' => $stiker_id,
+            'nama' => $nama,
+            'nama_nota' => $nama_nota,
+            'jumlah' => $jumlah,
+            'harga' => $harga,
+            'ktrg' => $ktrg,
+        ]);
 
         $spk_item = DB::table('temp_spk_produk')->get();
         $data = ['spks' => $post, 'spk_item' => $spk_item];
@@ -351,6 +482,18 @@ class SpkController extends Controller
     {
         $std = new Standar();
         return $std;
+    }
+
+    public function fetchTankpad()
+    {
+        $tp = new Tankpad();
+        return $tp;
+    }
+
+    public function fetchStiker()
+    {
+        $stiker = new Stiker();
+        return $stiker;
     }
     /**
      * Show the form for creating a new resource.

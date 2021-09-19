@@ -24,10 +24,12 @@ class TempSpkProduk extends Migration
             $table->foreignId('variasi_id')->nullable();
             $table->foreignId('ukuran_id')->nullable();
             $table->foreignId('jahit_id')->nullable();
-            $table->foreignId('std_id')->nullable();
+            $table->foreignId('standar_id')->nullable();
             $table->foreignId('kombi_id')->nullable();
             $table->foreignId('busastang_id')->nullable();
             $table->foreignId('tankpad_id')->nullable();
+            $table->foreignId('spjap_id')->nullable();
+            $table->foreignId('stiker_id')->nullable();
             $table->string('nama');
             $table->string('nama_nota');
             $table->string('jumlah');

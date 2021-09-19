@@ -256,31 +256,54 @@ class StandarSeeder extends Seeder
             'alas' => 0,
         ]];
 
+        $harga_jahit_kepala = 1000;
+        $harga_jahit_samping = 1500;
+        $harga_press = 1500;
+        $harga_alas = 1500;
         $variasi_std_harga = [[
             'variasi_standar' => 'jahit_kepala',
-            'harga' => 1500
+            'harga' => $harga_jahit_kepala
         ], [
             'variasi_standar' => 'jahit_samping',
-            'harga' => 1500
+            'harga' => $harga_jahit_samping
         ], [
             'variasi_standar' => 'press',
-            'harga' => 1500
+            'harga' => $harga_press
         ], [
             'variasi_standar' => 'alas',
-            'harga' => 1500
+            'harga' => $harga_alas
         ]];
 
         for ($i = 0; $i < count($standar); $i++) {
             DB::table('standars')->insert([
                 'nama' => $standar[$i]['nama'],
-                'harga_dasar' => $standar[$i]['harga_dasar']
+                'harga_dasar' => $standar[$i]['harga']
             ]);
-            DB::table('standar_harga_dasar')->insert([
+
+            $harga = $standar[$i]['harga'];
+
+            if ($standar_variasi[$i]['jahit_samping'] === 1) {
+                $harga += $harga_jahit_samping;
+            }
+            if ($standar_variasi[$i]['press'] === 1) {
+                $harga += $harga_press;
+            }
+            if ($standar_variasi[$i]['alas'] === 1) {
+                $harga += $harga_alas;
+            }
+            DB::table('standar_variasi_harga')->insert([
                 'standar_id' => $standar_variasi[$i]['standar_id'],
                 'jahit_kepala' => $standar_variasi[$i]['jahit_kepala'],
                 'jahit_samping' => $standar_variasi[$i]['jahit_samping'],
                 'press' => $standar_variasi[$i]['press'],
                 'alas' => $standar_variasi[$i]['alas'],
+                'harga' => $harga
+            ]);
+        }
+        for ($j = 0; $j < count($variasi_std_harga); $j++) {
+            DB::table('variasi_std_harga')->insert([
+                'variasi_standar' => $variasi_std_harga[$j]['variasi_standar'],
+                'harga' => $variasi_std_harga[$j]['harga'],
             ]);
         }
     }

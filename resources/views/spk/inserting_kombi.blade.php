@@ -16,15 +16,15 @@
     <br><br>
 
 
-    <div id="divAvailableOptions" class="position-fixed bottom-5em w-calc-100-1em">
+    <div id="divAvailableOptions" class="position-fixed bottom-6em w-calc-100-1em">
         Available options:
         <div id="container_options">
             {!! $available_options !!}
         </div>
 
     </div>
-    <div class="position-fixed bottom-0_5em w-calc-100-1em">
-        <button type="submit" id="bottomDiv" class="w-100 h-4em bg-color-orange-2 grid-1-auto">
+    <div class="position-fixed bottom-0_5em w-calc-100-2em">
+        <button type="submit" id="bottomDiv" class="btn-warning-full grid-1-auto">
 
             <span class="justify-self-center font-weight-bold">TAMBAH ITEM KE SPK</span>
 
