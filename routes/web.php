@@ -41,7 +41,7 @@ Route::get('/about', function () {
     return view('/about/about');
 });
 
-// LOGIN & REGISTER
+// LOGIN & REGISTER coment dikit ah
 Route::get('/login', [LoginController::class, "index"])->middleware('guest')->name('login');
 Route::post('/login', [LoginController::class, "authenticate"]);
 Route::get('/register', [RegisterController::class, "index"])->middleware('guest');
