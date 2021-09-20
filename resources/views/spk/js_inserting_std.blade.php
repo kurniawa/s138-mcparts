@@ -2,12 +2,12 @@
     const stds = {!! json_encode($stds, JSON_HEX_TAG) !!};
     console.log(stds);
 
-    const pilih_stds = `
-        <div>Pilih Standar:</div>
-        <input type="text" id="standar" name="standar" class="input-normal" style="border-radius:5px;">
-        <input type="hidden" id="standar_id" name="standar_id">
-        <input type="hidden" id="standar_harga" name="standar_harga">
-    `;
+    // const pilih_stds = `
+    //     <div>Pilih Standar:</div>
+    //     <input type="text" id="standar" name="standar" class="input-normal" style="border-radius:5px;">
+    //     <input type="hidden" id="standar_id" name="standar_id">
+    //     <input type="hidden" id="standar_harga" name="standar_harga">
+    // `;
 
     document.getElementById("tipe").value = "std";
     // document.getElementById("div_pilih_standar").innerHTML = pilih_stds;
@@ -25,7 +25,7 @@
             $("#standar_id").val(ui.item.id);
             $("#standar_harga").val(ui.item.harga);
             // show_select_variasi();
-            show_options(available_options);
+            // show_options(available_options);
         }
     });
 

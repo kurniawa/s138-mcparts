@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Spk;
 use App\Pelanggan;
 use App\Bahan;
+use App\Busastang;
 use App\Jahit;
 use App\Kombi;
 use App\SPJap;
@@ -170,11 +171,14 @@ class SpkController extends Controller
         <br>
         Pilih Bahan:
         <div id='div_pilih_bahan'>
-        <input type='text' id='bahan' name='bahan' class='input-normal' style='border-radius:5px;'>
-        <input type='hidden' id='bahan_id' name='bahan_id'>
+            <input type='text' id='bahan' name='bahan' class='input-normal' style='border-radius:5px;'>
+            <input type='hidden' id='bahan_id' name='bahan_id'>
         </div>
         <br>
-        <div id='div_pilih_spjap'></div>
+        <div>Pilih T.Sixpack/Japstyle:</div>
+        <select id='div_pilih_spjap' name='spjap_id' class='form-select' onchange='assignSPJapIDValue(this.selectedIndex);'></select>
+        <input type='hidden' id='spjap' name='spjap'>
+        <input type='hidden' id='spjap_harga' name='spjap_harga'>
         <div class='mt-1em' id='div_ta_ktrg'></div>
         <div class='mt-1em' id='div_input_jml'></div>
         ";
@@ -185,7 +189,7 @@ class SpkController extends Controller
         ";
 
         $data = [
-            'judul' => 'SJ SixPack/Japstyle',
+            'judul' => 'SJ T.SixPack/Japstyle',
             'tipe' => 'spjap',
             'spjaps' => $label_spjaps,
             'd_bahan_a' => $d_bahan_a,
@@ -206,6 +210,7 @@ class SpkController extends Controller
         <div id='div_pilih_standar'>
         <input type='text' id='standar' name='standar' class='input-normal' style='border-radius:5px;'>
         <input type='hidden' id='standar_id' name='standar_id'>
+        <input type='hidden' id='standar_harga' name='standar_harga'>
         </div>
         <br>
         <div class='mt-1em' id='div_ta_ktrg'></div>
@@ -237,6 +242,7 @@ class SpkController extends Controller
         <div id='div_pilih_tankpad'>
         <input type='text' id='tankpad' name='tankpad' class='input-normal' style='border-radius:5px;'>
         <input type='hidden' id='tankpad_id' name='tankpad_id'>
+        <input type='hidden' id='tankpad_harga' name='tankpad_harga'>
         </div>
         <br>
         <div class='mt-1em' id='div_ta_ktrg'></div>
@@ -260,11 +266,14 @@ class SpkController extends Controller
 
     public function inserting_busastang()
     {
+        $label_busastang = $this->fetchBusastang()->label_busastang();
 
         $element_properties = "
         <br>
         <div id='div_input_busastang'>
-        <input type='text' id='standar' name='standar' class='input-normal' style='border-radius:5px;' value='Busa-Stang' readonly>
+        <input type='text' id='busastang' name='busastang' class='input-normal' style='border-radius:5px;' value='Busa-Stang'>
+        <input type='hidden' id='busastang_id' name='busastang_id'>
+        <input type='hidden' id='busastang_harga' name='busastang_harga'>
         </div>
         <br>
         <div class='mt-1em' id='div_ta_ktrg'></div>
@@ -279,6 +288,7 @@ class SpkController extends Controller
         $data = [
             'judul' => 'Busa-Stang',
             'tipe' => 'busastang',
+            'busastangs' => $label_busastang,
             'element_properties' => $element_properties,
             'available_options' => $available_options,
         ];
@@ -417,6 +427,35 @@ class SpkController extends Controller
             $harga = $post['kombi_harga'];
         }
 
+        if ($tipe === 'std') {
+            $nama = "Standar $post[standar]";
+            $nama_nota = $nama;
+            $harga = $post['standar_harga'];
+        }
+
+        if ($tipe === 'spjap') {
+            $nama = $post['spjap'];
+            $nama_nota = $nama;
+            $harga = $post['spjap_harga'];
+        }
+
+        // MELENGKAPI NAMA NOTA SEKALI LAGI
+        if ($tipe === 'varia' || $tipe === 'kombinasi' || $tipe === 'std' || $tipe === 'spjap') {
+            $nama_nota = "SJ $nama_nota";
+        }
+
+        if ($tipe === 'tankpad') {
+            $nama = "TP $post[tankpad]";
+            $nama_nota = $nama;
+            $harga = $post['tankpad_harga'];
+        }
+
+        if ($tipe === 'busastang') {
+            $nama = $post['busastang'];
+            $nama_nota = $nama;
+            $harga = $post['busastang_harga'];
+        }
+
 
         DB::table('temp_spk_produk')->insert([
             'tipe' => $tipe,
@@ -488,6 +527,12 @@ class SpkController extends Controller
     {
         $tp = new Tankpad();
         return $tp;
+    }
+
+    public function fetchBusastang()
+    {
+        $busastang = new Busastang();
+        return $busastang;
     }
 
     public function fetchStiker()
