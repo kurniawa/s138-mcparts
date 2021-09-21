@@ -8,6 +8,7 @@ use App\Bahan;
 use App\Busastang;
 use App\Jahit;
 use App\Kombi;
+use App\Produk;
 use App\SPJap;
 use App\Standar;
 use App\Stiker;
@@ -46,13 +47,7 @@ class SpkController extends Controller
     {
         $get = $request->input();
 
-        // dd($get);
-        // 1.
-        // Ternyata disini tetap membutuhkan table bantuan atau mungkin table asli untuk
-        // menyimpan data spk seperti data pelanggan dan tanggal, supaya tidak hilang ketika
-        // berpindah-pindah halaman..
-
-        // 2.
+        // #
         // Karena akan sering bolak balik halaman ini, maka butuh bantuan variable lain
         // yang akan menandakan, bahwa tidak perlu create spk lagi
 
@@ -301,8 +296,11 @@ class SpkController extends Controller
 
         $element_properties = "
         <br>
+        Pilih Stiker:
         <div id='div_input_stiker'>
         <input type='text' id='stiker' name='stiker' class='input-normal' style='border-radius:5px;'>
+        <input type='hidden' id='stiker_id' name='stiker_id'>
+        <input type='hidden' id='stiker_harga' name='stiker_harga'>
         </div>
         <br>
         <div class='mt-1em' id='div_ta_ktrg'></div>
@@ -456,6 +454,11 @@ class SpkController extends Controller
             $harga = $post['busastang_harga'];
         }
 
+        if ($tipe === 'stiker') {
+            $nama = $post['stiker'];
+            $nama_nota = $nama;
+            $harga = $post['stiker_harga'];
+        }
 
         DB::table('temp_spk_produk')->insert([
             'tipe' => $tipe,
@@ -558,7 +561,55 @@ class SpkController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = $request->all();
+        // dd($post);
+        dump($post);
+        if ($post['submit_type'] === 'proceed_spk') {
+            $spk_item = DB::table('temp_spk_produk')->get();
+            dump($spk_item);
+            $jumlah_total = 0;
+            $harga_total = 0;
+            /**Looping sekaligus insert ke produks dan produk_harga,
+             * apabila belum exist */
+            for ($i = 0; $i < count($spk_item); $i++) {
+                $jumlah_total += $spk_item[$i]['jumlah'];
+                $harga_total += $spk_item[$i]['harga'];
+                $produk = Produk::where('nama', '=', $spk_item[$i]['nama'])->first();
+                if ($produk === null) {
+                    DB::table('produks')->insert([
+                        'nama' => $spk_item['nama'],
+                        'nama_nota' => $spk_item['nama_nota'],
+                    ]);
+                }
+            }
+            $string_spk_item = json_encode($spk_item);
+            dd($string_spk_item);
+
+            /**
+             * format nomor spk= SPK.1/MCP-ADM/XXI-IX/2021
+             * 1-1-1
+             * id-pelanggan - id user - id spk
+             */
+
+            $id = DB::table('spks')->insertGetId([
+                'pelanggan_id' => $post['pelanggan_id'],
+                'reseller_id' => $post['reseller_id'],
+                'status' => 'PROSES',
+                'judul' => $post['judul'],
+                'data_produk' => $string_spk_item,
+                'jumlah_total' => $jumlah_total,
+                'harga_total' => $harga_total,
+            ]);
+
+            DB::table('spks')
+                ->where('id', $id)
+                ->update([
+                    'no_spk' => "SPK-$id"
+                ]);
+
+            $data = ['spk_item' => $spk_item, 'spks' => $post];
+            return view('spk.inserting_item-db', $data);
+        }
     }
 
     /**

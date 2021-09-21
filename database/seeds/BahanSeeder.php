@@ -55,12 +55,17 @@ class BahanSeeder extends Seeder
             'id' => 7,
             'harga' => 13000
         ], [
-            'nama' => 'K-Jeruk',
+            'nama' => 'Kulit Jeruk Hitam',
             'tipe' => 'B',
             'id' => 8,
             'harga' => 11500
         ], [
-            'nama' => 'L-Hole',
+            'nama' => 'LuckyHole Hitam',
+            'tipe' => 'B',
+            'id' => 9,
+            'harga' => 10000
+        ], [
+            'nama' => 'LuckyHole Warna',
             'tipe' => 'B',
             'id' => 9,
             'harga' => 10000

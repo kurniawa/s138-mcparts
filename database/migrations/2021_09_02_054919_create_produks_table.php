@@ -13,13 +13,17 @@ class CreateProduksTable extends Migration
      */
     public function up()
     {
+        /**
+         * tipe dan harga sudah tidak diperlukan lagi, karena tipe sudah terkandung dalam properties,
+         * dan harga nanti akan di letakkan di table produk harga
+         */
         Schema::create('produks', function (Blueprint $table) {
             $table->id();
-            $table->string('tipe', 50);
-            $table->bigInteger('tipe_id');
+            // $table->string('tipe', 50);
+            $table->string('properties');
             $table->string('nama');
             $table->string('nama_nota');
-            $table->integer('harga');
+            // $table->integer('harga');
             $table->timestamps();
         });
     }

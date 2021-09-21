@@ -17,7 +17,7 @@
             $("#stiker_id").val(ui.item.id);
             $("#stiker_harga").val(ui.item.harga);
             // show_select_variasi();
-            show_options(available_options);
+            // show_options(available_options);
         }
     });
 

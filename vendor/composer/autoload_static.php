@@ -492,6 +492,7 @@ class ComposerStaticInit80fd682ef2e262a22885b85346c6b859
         'App\\Http\\Controllers\\BahanController' => __DIR__ . '/../..' . '/app/Http/Controllers/BahanController.php',
         'App\\Http\\Controllers\\BusastangController' => __DIR__ . '/../..' . '/app/Http/Controllers/BusastangController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
+        'App\\Http\\Controllers\\DashboardController' => __DIR__ . '/../..' . '/app/Http/Controllers/DashboardController.php',
         'App\\Http\\Controllers\\EkspedisiController' => __DIR__ . '/../..' . '/app/Http/Controllers/EkspedisiController.php',
         'App\\Http\\Controllers\\JahitController' => __DIR__ . '/../..' . '/app/Http/Controllers/JahitController.php',
         'App\\Http\\Controllers\\KombiController' => __DIR__ . '/../..' . '/app/Http/Controllers/KombiController.php',

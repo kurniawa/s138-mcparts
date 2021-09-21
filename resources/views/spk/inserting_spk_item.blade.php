@@ -52,8 +52,8 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
     </div>
 </header>
 
-<form action="03-03-01-proceed-spk.php" method="POST" id="containerBeginSPK" class="m-0_5em">
-
+<form action="/spk/proceed_spk" method="POST" id="containerBeginSPK" class="m-0_5em">
+@csrf
     <div class="b-1px-solid-grey">
         <div class="text-center">
             <h2>Surat Perintah Kerja</h2>
@@ -68,21 +68,25 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
             <div>Untuk</div>
             <div>:</div>
             <div class="divSPKCustomer fw-bold">{{ $spks['nama_pelanggan'] }} - {{ $spks['daerah'] }}</div>
-            <input id="inputIDCustomer" type="hidden" name="pelanggan_id" value="">
         </div>
         <div class="grid-1-auto justify-items-right m-0_5em">
             <div>
                 <img class="w-1em" src="/img/icons/edit-grey.svg" alt="">
             </div>
         </div>
-        <input type="hidden" name="tgl_pembuatan" value="">
     </div>
-
+    
     <div class="divTitleDesc grid-1-auto justify-items-center mt-0_5em"></div>
-    <input type="hidden" name="ket_judul">
+    
+    {{-- INPUT HIDDEN YANG NANTI NYA DI KIRIM VIA POST --}}
+    <input id="inputIDCustomer" type="hidden" name="pelanggan_id" value="{{ $spks['pelanggan_id'] }}">
+    <input type="hidden" name="reseller_id" value="{{ $spks['reseller_id'] }}">
+    <input type="hidden" name="tgl_pembuatan" value="{{ $spks['tanggal'] }}">
+    <input type="hidden" name="judul" value="{{ $spks['judul'] }}">
+    <input type="hidden" name="submit_type" value="proceed_spk">
 
     <div id="divItemList" class="bt-1px-solid-grey"></div>
-    <input id="inputHargaTotalSPK" type="hidden" name="total_harga">
+    {{-- <input id="inputHargaTotalSPK" type="hidden" name="total_harga"> --}}
 
     <div id="divJmlTotal" class="text-right">
         <div id="divJmlTotal2" class="fw-bold fs-5 text-success"></div>
@@ -158,8 +162,8 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
     var htmlItemList = '';
     var totalHarga = 0;
     var jumlahTotalItem = 0;
-    var keterangan = "";
     for (var i = 0; i < spk_item.length; i++) {
+        var keterangan = "";
         if (spk_item[i].ktrg == null) {
 
         } else {
