@@ -28,7 +28,7 @@ class CreateSpksTable extends Migration
             $table->foreignId('reseller_id')->nullable()->constrained('pelanggans');
             $table->string('status', 50);
             $table->string('judul')->nullable();
-            $table->text('data_produk');
+            $table->text('data_spk_item');
             $table->integer('jumlah_total');
             $table->integer('harga_total');
             $table->foreignId('created_by')->nullable()->constrained('users');

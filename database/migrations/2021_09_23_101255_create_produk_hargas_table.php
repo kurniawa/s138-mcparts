@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class ProdukHarga extends Migration
+class CreateProdukHargasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class ProdukHarga extends Migration
      */
     public function up()
     {
-        Schema::create('produk_harga', function (Blueprint $table) {
+        Schema::create('produk_hargas', function (Blueprint $table) {
             $table->id();
             $table->foreignId('produk_id');
             $table->integer('harga');
@@ -29,6 +29,6 @@ class ProdukHarga extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('produk_harga');
+        Schema::dropIfExists('produk_hargas');
     }
 }

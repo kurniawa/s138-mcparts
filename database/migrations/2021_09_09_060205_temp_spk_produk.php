@@ -32,7 +32,7 @@ class TempSpkProduk extends Migration
             $table->foreignId('stiker_id')->nullable();
             $table->string('nama');
             $table->string('nama_nota');
-            $table->string('jumlah');
+            $table->integer('jumlah');
             $table->integer('harga');
             $table->string('ktrg')->nullable();
         });

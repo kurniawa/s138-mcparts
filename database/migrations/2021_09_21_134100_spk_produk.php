@@ -8,6 +8,7 @@ class SpkProduk extends Migration
 {
     /**
      * Run the migrations.
+     * File ini kemungkinan ga kepake lagi, jadi siap dihapus
      *
      * @return void
      */

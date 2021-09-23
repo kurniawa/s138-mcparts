@@ -261,6 +261,12 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
         $("#containerBeginSPK").toggle();
     }
 
+// RELOAD PAGE
+const reload_page =  {!! json_encode($reload_page, JSON_HEX_TAG) !!};
+console.log('reload_page: ' + reload_page);
+if (reload_page === true) {
+    window.location.reload();
+}
     
 </script>
 @endsection
