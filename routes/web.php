@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DetailSPKController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\RegisterController;
@@ -35,6 +36,7 @@ Route::get('/spk/inserting_busastang', [SpkController::class, "inserting_busasta
 Route::get('/spk/inserting_spjap', [SpkController::class, "inserting_spjap"]);
 Route::get('/spk/inserting_stiker', [SpkController::class, "inserting_stiker"]);
 Route::post('/spk/proceed_spk', [SpkController::class, "store"]);
+Route::get('/spk/detail_spk', [DetailSPKController::class, "index"]);
 
 // PELANGGAN
 Route::get('/pelanggan', [PelangganController::class, "index"]);

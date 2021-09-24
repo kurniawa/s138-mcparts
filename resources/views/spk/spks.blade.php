@@ -48,6 +48,9 @@ const spks = {!! json_encode($spks, JSON_HEX_TAG) !!};
 console.log("spks:");
 console.log(spks);
 
+const pelanggans = {!! json_encode($pelanggans, JSON_HEX_TAG) !!};
+console.log(pelanggans);
+
 if (spks == undefined || spks.length == 0) {
     console.log('Belum ada daftar SPK');
 } else {
@@ -59,11 +62,11 @@ if (spks == undefined || spks.length == 0) {
         var getYear = arrayDate[0];
         var getMonth = arrayDate[1];
         var getDay = arrayDate[2];
-        console.log('getYear: ' + getYear);
-        console.log('getMonth: ' + getMonth);
-        console.log('getDay: ' + getDay);
+        // console.log('getYear: ' + getYear);
+        // console.log('getMonth: ' + getMonth);
+        // console.log('getDay: ' + getDay);
         var subGetYear = getYear.substr(2);
-        console.log('subGetYear: ' + subGetYear);
+        // console.log('subGetYear: ' + subGetYear);
         var warnaTglPembuatan = 'bg-color-soft-red';
 
         // apabila tanggal selesai telah ada
@@ -75,11 +78,11 @@ if (spks == undefined || spks.length == 0) {
             const getMonthSls = arrayDateSls[1];
             const getDaySls = arrayDateSls[2];
 
-            console.log('getYearSls: ' + getYearSls);
-            console.log('getMonthSls: ' + getMonthSls);
-            console.log('getDaySls: ' + getDaySls);
+            // console.log('getYearSls: ' + getYearSls);
+            // console.log('getMonthSls: ' + getMonthSls);
+            // console.log('getDaySls: ' + getDaySls);
             subGetYearSls = getYearSls.substr(2);
-            console.log('subGetYearSls: ' + subGetYearSls);
+            // console.log('subGetYearSls: ' + subGetYearSls);
             warnaTglSls = 'bg-color-purple-blue';
             warnaTglPembuatan = 'bg-color-orange-2';
 
@@ -121,36 +124,37 @@ if (spks == undefined || spks.length == 0) {
         var htmlItemsEachSPK = '';
 
         const spk_item = JSON.parse(spks[i].data_spk_item);
+        console.log('spk_item');
         console.log(spk_item);
 
-        for (var k = 0; k < spk_item[i].length; k++) {
+        for (var k = 0; k < spk_item.length; k++) {
             htmlItemsEachSPK = htmlItemsEachSPK +
-                `<div>${spk_item[i][k].nama_lengkap}</div><div>${spk_contains_item[i][k].jumlah}</div>`;
+                `<div>${spk_item[k].nama}</div><div>${spk_item[k].jumlah}</div>`;
         }
 
 
         var htmlDaftarSPK =
-            `<form method='GET' action='03-03-01-detail-spk.php' class='pb-0_5em pt-0_5em bb-1px-solid-grey'>
+            `<form method='GET' action='/spk/detail_spk' class='pb-0_5em pt-0_5em bb-1px-solid-grey'>
                 <div class='grid-5-9_45_25_18_5'>
-                <div class='circle-medium grid-1-auto justify-items-center font-weight-bold' style='background-color: ${randomColor()}'>${pelanggan[i].singkatan}</div>
-                <div>${pelanggan[i].nama} - ${pelanggan[i].daerah}</div>
+                <div class='circle-medium grid-1-auto justify-items-center font-weight-bold' style='background-color: ${randomColor()}'>${pelanggans[i].singkatan}</div>
+                <div>${pelanggans[i].nama} - ${pelanggans[i].daerah}</div>
                 <div class='grid-3-auto'>
-                <div class='grid-1-auto justify-items-center ${warnaTglPembuatan} color-white b-radius-5px w-3_5em'>
-                <div class='font-size-2_5em'>${getDay}</div><div>${getMonth}-${subGetYear}</div>
+                <div class='grid-1-auto justify-items-center ${warnaTglPembuatan} b-radius-5px w-3_5em' style="color:white;">
+                <div style="font-size:2.5em">${getDay}</div><div>${getMonth}-${subGetYear}</div>
                 </div>
                 -
                 ${html_tgl_sls}
                 </div>
                 <div class='grid-1-auto'>
-                <div class='color-green justify-self-right font-size-1_2em font-weight-bold'>${spks[i].jumlah_total}</div>
-                <div class='color-grey justify-self-right'>Jumlah</div>
+                <div class='justify-self-right font-size-1_2em' style="color:green;font-weight:bold;">${spks[i].jumlah_total}</div>
+                <div class='justify-self-right' style='color:grey'>Jumlah</div>
                 </div>
                 <div class='justify-self-center'><img class='w-0_7em' src='img/icons/dropdown.svg' onclick='elementToToggle(${element_to_toggle});'></div>
                 </div>` +
             // DROPDOWN
             `<div id='divSPKItems-${i}' class='p-0_5em b-1px-solid-grey' style='display: none'>
-            <div class='font-weight-bold color-grey'>No. ${spk[i].id}</div>
-            <input type='hidden' name='id_spk' value=${spk[i].id}>
+            <div class='font-weight-bold color-grey'>No. ${spks[i].no_spk}</div>
+            <input type='hidden' name='spk_id' value=${spks[i].id}>
             <div class='grid-2-auto'>${htmlItemsEachSPK}</div>
             <div class='text-right'>
             <button type='submit' class="d-inline-block bg-color-orange-1 pl-1em pr-1em b-radius-50px" style='border: none'>

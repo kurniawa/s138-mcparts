@@ -16,7 +16,7 @@ class CreateProdukHargasTable extends Migration
     {
         Schema::create('produk_hargas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('produk_id');
+            $table->foreignId('produk_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->integer('harga');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });

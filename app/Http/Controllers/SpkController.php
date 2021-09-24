@@ -32,7 +32,15 @@ class SpkController extends Controller
         if ($reload_page === true) {
             $request->session()->put('reload_page', false);
         }
-        $data = ['spks' => Spk::all(), 'reload_page' => $reload_page];
+        $spks = Spk::limit(100)->get();
+        $pelanggans = array();
+        for ($i = 0; $i < count($spks); $i++) {
+            $pelanggan = Spk::find($spks[$i]->id)->pelanggan;
+            array_push($pelanggans, $pelanggan);
+        }
+        // $pelanggan = Pelanggan::find(3)->spk;
+        // dd($pelanggans);
+        $data = ['spks' => $spks, 'pelanggans' => $pelanggans, 'reload_page' => $reload_page];
         return view('spk/spks', $data);
     }
 
@@ -593,10 +601,10 @@ class SpkController extends Controller
             /**Looping sekaligus insert ke produks dan produk_harga,
              * apabila belum exist */
             $spk_item_simple = array();
+            $d_produk_id = array();
             for ($i = 0; $i < count($spk_item); $i++) {
                 $jumlah_total += (int)$spk_item[$i]->jumlah;
                 $harga_total += $spk_item[$i]->harga;
-                $produk = Produk::latest()->where('nama', '=', $spk_item[$i]->nama)->first();
                 // dump($produk);
                 // dump($produk['id']);
                 // MENENTUKAN PROPERTIES UNTUK PRODUK BARU DAN MENYEDERHANAKAN DATA PRODUK
@@ -692,19 +700,30 @@ class SpkController extends Controller
                     ];
                 }
                 // APABILA EXIST MAKA PERLU DI UPDATE HARGA LAMA NYA.
+                $produk = Produk::where('nama', '=', $spk_item[$i]->nama)->first();
+                // echo "produk: ";
+                // dd($produk);
                 if ($produk !== null) {
                     $produk_harga = ProdukHarga::latest()->where('produk_id', '=', $produk['id'])->first();
                     if ($produk_harga['harga'] < $spk_item[$i]->harga) {
                         // uncomment
 
-                        DB::table('produk_hargas')
-                            ->where('id', '=', $produk_harga['id'])
-                            ->update([
-                                'harga' => $spk_item[$i]->harga
-                            ]);
+                        $produk_id = DB::table('produk_hargas')->insertGetId([
+                            'produk_id' => $produk['id'],
+                            'harga' => $spk_item[$i]->harga,
+                        ]);
+                        // $produk_harga_updated = DB::table('produk_hargas')->orderBy('created_at')->first();
+                        // $produk_harga_terbaru = DB::table('produk_hargas')->latest();
 
                         // uncomment
+                        // dd($produk_harga_updated['produk_id']);
+                        // $produk_id = $produk_harga_terbaru['id'];
+                    } else {
+                        // dd($produk_harga['produk_id']);
+                        $produk_id = $produk_harga['produk_id'];
                     }
+
+                    array_push($d_produk_id, $produk_id);
                 } else {
 
                     // dump(json_encode($properties));
@@ -720,6 +739,9 @@ class SpkController extends Controller
                         'produk_id' => $produk_id,
                         'harga' => $spk_item[$i]->harga,
                     ]);
+                    // echo ('produk_id: ');
+                    // dd($produk_id);
+                    array_push($d_produk_id, $produk_id);
 
                     // uncomment
 
@@ -755,6 +777,18 @@ class SpkController extends Controller
                 ->update([
                     'no_spk' => "SPK-$spk_id"
                 ]);
+
+            // Setelah selesai insert ke SPK, maka berikutnya insert ke SPK produk
+            // dd($d_produk_id);
+            for ($j = 0; $j < count($spk_item); $j++) {
+
+                DB::table('spk_produks')->insert([
+                    'spk_id' => $spk_id,
+                    'produk_id' => $d_produk_id[$j],
+                    'jumlah' => $spk_item[$j]->jumlah,
+                    'harga' => $spk_item[$j]->harga,
+                ]);
+            }
 
             DB::table('temp_spk_produk')->truncate();
 
