@@ -5,11 +5,11 @@
 <form action="/spk/inserting_item-db" method="POST" id="form_properti_item_spk" class="m-1em">
 @csrf
     <div>
-        <h2>Tipe: {{  $judul  }}</h2>
+        <h2 id="judul"></h2>
     </div>
 
     <div id="container_properti_item_spk">
-        {!! $element_properties !!}
+        {{-- {!! $element_properties !!} --}}
         <div style="height: 30vh"></div>
     </div>
 
@@ -19,7 +19,7 @@
     <div id="divAvailableOptions" class="position-fixed bottom-5em w-calc-100-1em">
         Available options:
         <div id="container_options">
-            {!! $available_options !!}
+            {{-- {!! $available_options !!} --}}
         </div>
 
     </div>
@@ -30,7 +30,8 @@
 
         </button>
     </div>
-    <input id="tipe" type="hidden" name="tipe" value="{{ $tipe }}">
+    <input id="tipe" type="hidden" name="tipe">
+    <input id="mode" type="hidden" name="mode">
 </form>
 
 <script>
@@ -70,6 +71,9 @@
 </script>
 @if ($tipe==='kombi')
     @include('spk.js_inserting_kombi')
+
+@elseif($tipe === 'varia')
+@include('spk.js_inserting_varia')
 
 @elseif($tipe === 'spjap')
     @include('spk.js_inserting_spjap')

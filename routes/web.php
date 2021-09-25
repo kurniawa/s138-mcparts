@@ -37,6 +37,7 @@ Route::get('/spk/inserting_spjap', [SpkController::class, "inserting_spjap"]);
 Route::get('/spk/inserting_stiker', [SpkController::class, "inserting_stiker"]);
 Route::post('/spk/proceed_spk', [SpkController::class, "store"]);
 Route::get('/spk/detail_spk', [DetailSPKController::class, "index"]);
+Route::get('/spk/edit_spk_item', [DetailSPKController::class, "editSPKItem"]);
 
 // PELANGGAN
 Route::get('/pelanggan', [PelangganController::class, "index"]);

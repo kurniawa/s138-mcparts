@@ -1,25 +1,3 @@
-function deleteItems (id, table, column) {
-    let results;
-    $.ajax({
-        type: "POST",
-        url: "01-crud.php",
-        cache: false,
-        async: false,
-        data: {
-            id: id,
-            table: table,
-            column: column,
-            type: "delete"
-        },
-        success: function (responseText) {
-            console.log(responseText);
-            results = responseText;
-        }
-    });
-
-    return results;
-}
-
 // Jangan lupa pakai JSON stringify dan tanda petik satu
 // elements merupakan array dalam array dengan key ID dan time
 function elementToToggle (elements) {
@@ -175,12 +153,6 @@ function onMultipleCheckToggleWithORLogic (elements) {
 //     echo json_encode(array("insert", $msg));
 // }
 // }
-
-function randomColor () {
-    let arrayColor = ["#FFB08E", "#DEDEDE", "#D1FFCA", "#FFB800", '#706DFF'];
-    let randomIndex = Math.floor(Math.random() * arrayColor.length);
-    return arrayColor[randomIndex];
-}
 
 function goBack () {
     window.history.back();

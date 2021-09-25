@@ -22,7 +22,7 @@
         <!-- <a href="03-03-01-pembuatanNota.php?id_spk=<a?= $id_spk" id="" class="threeDotMenuItem">
             <img src="/img/icons/pencil.svg" alt=""><span>Buat Nota</span>
         </a> -->
-        <div id="deleteSPK" class="threeDotMenuItem" onclick="goToDeleteSPK();">
+        <div id="deleteSPK" class="threeDotMenuItem">
             <img src="/img/icons/trash-can.svg" alt=""><span>Cancel/Hapus SPK</span>
         </div>
         <a href="03-03-01-spk-selesai.php?id_spk=$id_spk" id="SPKSelesai" class="threeDotMenuItem">
@@ -105,20 +105,26 @@
 </div>
 
 <div id="divAddItems" class="h-9em position-relative mt-1em">
-    <a href="03-03-02-newVariaFDetailSPK.php?id_spk=$id_spk" class="productType position-absolute top-0 left-50 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
-        <span class="font-size-0_8em text-center font-weight-bold">SJ<br>Varia</span>
+    <a href="/spk/inserting_varia" class="productType position-absolute top-0 left-50 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
+        <span class="font-size-0_8em text-center">SJ<br>Varia</span>
     </a>
-    <a href="03-03-03-newKombiFDetailSPK.php?id_spk=$id_spk" class="productType position-absolute top-1em left-35 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
-        <span class="font-size-0_8em text-center font-weight-bold">SJ<br>Kombi</span>
+    <a href="/spk/inserting_kombi" class="productType position-absolute top-1em left-35 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
+        <span class="font-size-0_8em text-center">SJ<br>Kombi</span>
     </a>
-    <a href="03-03-04-sjStdFDetailSPK.php?id_spk=$id_spk" class="productType position-absolute top-1em left-65 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
-        <span class="font-size-0_8em text-center font-weight-bold">SJ<br>Std</span>
+    <a href="/spk/inserting_std" class="productType position-absolute top-1em left-65 transform-translate--50_0 circle-L bg-color-orange-1 grid-1-auto justify-items-center">
+        <span class="font-size-0_8em text-center">SJ<br>Std</span>
     </a>
-    <a href="03-03-05-TPFDetailSPK.php?id_spk=$id_spk" class="productType position-absolute top-5em left-30 transform-translate--50_0 circle-L bg-color-soft-red grid-1-auto justify-items-center">
-        <span class="font-size-0_8em text-center font-weight-bold">Tank<br>Pad</span>
+    <a href="/spk/inserting_tankpad" class="productType position-absolute top-5em left-30 transform-translate--50_0 circle-L bg-color-soft-red grid-1-auto justify-items-center">
+        <span class="font-size-0_8em text-center">Tank<br>Pad</span>
     </a>
-    <a href="03-03-06-busaStangFDetailSPK.php?id_spk=$id_spk" class="productType position-absolute top-5em left-70 transform-translate--50_0 circle-L bg-color-grey grid-1-auto justify-items-center">
-        <span class="font-size-0_8em text-center font-weight-bold">Busa<br>Stang</span>
+    <a href="/spk/inserting_busastang" class="productType position-absolute top-5em left-70 transform-translate--50_0 circle-L bg-color-grey grid-1-auto justify-items-center">
+        <span class="font-size-0_8em text-center">Busa<br>Stang</span>
+    </a>
+    <a href="/spk/inserting_spjap" class="productType position-absolute transform-translate--50_0 circle-L bg-color-grey grid-1-auto justify-items-center" style="top:10em;left:30%">
+        <span class="font-size-0_8em text-center">T.SP<br>Jap</span>
+    </a>
+    <a href="/spk/inserting_stiker" class="productType position-absolute transform-translate--50_0 circle-L bg-color-grey grid-1-auto justify-items-center" style="top:10em;left:70%">
+        <span class="font-size-0_8em text-center">Stiker</span>
     </a>
     <div class="position-absolute top-5em left-50 transform-translate--50_0 grid-1-auto justify-items-center" onclick="toggleProductType();">
         <div class="circle-medium bg-color-orange-2 grid-1-auto justify-items-center">
@@ -128,11 +134,11 @@
 
 </div>
 
-<div id="boxKeteranganTambahan" class="position-fixed bottom-5em d-inline-block mr-0_5em pt-0_5em pb-0_5em pl-1em pr-1em b-radius-5px bg-color-soft-red" onclick='showKeteranganTambahan();'>
+{{-- <div id="boxKeteranganTambahan" class="position-fixed bottom-5em d-inline-block mr-0_5em pt-0_5em pb-0_5em pl-1em pr-1em b-radius-5px bg-color-soft-red" onclick='showKeteranganTambahan();'>
     + Ktrgn Tambahan
-</div>
+</div> --}}
 
-<!-- <div id="divMarginBottom" style="height: 20vh;"></div> -->
+<div id="divMarginBottom" style="height: 20vh;"></div>
 
 
 <style>
@@ -256,7 +262,7 @@
             `<div>
             <div class='divItem p-0_5em grid-3-75_15_10 pt-0_5em pb-0_5em bb-1px-solid-grey'>
                 <div class='divItemName ${fColor}'>
-                    <span style="font-weight: bold;">${produks[i].nama}</span>
+                    <span style="">${produks[i].nama}</span>
                 </div>
                 <div class='grid-1-auto'>
                     <div class='justify-self-right' style='color:green;font-size:1.2em'>
@@ -269,8 +275,8 @@
 
             <!-- DROPDOWN -->
             <div id='divOpsiSPKItem-${i}' class='p-0_5em b-1px-solid-grey text-center' style='display: none'>
-                <button id='editSPKItem-${i}' class="d-inline-block bg-color-purple-blue pl-1em pr-1em b-radius-50px" style='border: none;' onclick="goToEditSPKItem(${i})">
-                    Edit
+                <button id='editSPKItem-${i}' class="d-inline-block bg-color-purple-blue pl-1em pr-1em b-radius-50px" style='border: none;'>
+                    <a href='/spk/edit_spk_item?spk_id=${spk.id}&spk_item_id=${spk_item[i].id}&produk_id=${produks[i].id}'>Edit</a>
                 </button>
                 <button id='hapusSPKItem-${i}' class="d-inline-block bg-color-grey pl-1em pr-1em b-radius-50px" style='border: none;' onclick=onclick='removeSPKItem(${produks[i].id});'>
                     Hapus
@@ -391,6 +397,34 @@
         $('#boxKeteranganTambahan').show();
         $('#divKeteranganTambahan').hide();
     }
+
+    // Bubble Warning
+    var deleteProperties = [{
+        title: "Yakin ingin menghapus SPK ini?",
+        yes: "Ya",
+        no: "Batal",
+        table: "spk",
+        column: "id",
+        columnValue: spk.id,
+        goBackNumber: -2,
+        goBackStatement: "Daftar SPK"
+    }];
+    
+    document.getElementById('deleteSPK').addEventListener('click', function () {
+        bubbleWarning(deleteProperties);
+    });
+
+    // THREE DOT MENU
+// keadaan awal apa aja yang di hide
+$('.divThreeDotMenuContent').hide();
+
+document.querySelector('.threeDot').addEventListener('click', function () {
+    let element = [{
+        id: '.divThreeDotMenuContent',
+        time: 300
+    }];
+    elementToToggle(element);
+});
 </script>
 @endsection
 

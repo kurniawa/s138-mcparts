@@ -4,18 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Spk;
 use App\Pelanggan;
-use App\Bahan;
-use App\Busastang;
-use App\Jahit;
-use App\Kombi;
+// use App\Bahan;
+// use App\Busastang;
+// use App\Jahit;
+// use App\Kombi;
 use App\Produk;
 use App\ProdukHarga;
-use App\SPJap;
-use App\Standar;
-use App\Stiker;
-use App\Tankpad;
-use App\Ukuran;
-use App\Variasi;
+// use App\SPJap;
+// use App\Standar;
+// use App\Stiker;
+// use App\Tankpad;
+// use App\Ukuran;
+// use App\Variasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -123,10 +123,10 @@ class SpkController extends Controller
 
     public function inserting_varia()
     {
-        $label_bahans = $this->fetchBahan()->label_bahans();
-        $varias_harga = $this->fetchVaria()->varias_harga();
-        $ukurans_harga = $this->fetchUkuran()->ukurans_harga();
-        $jahits_harga = $this->fetchJahit()->jahits_harga();
+        $label_bahans = fetchBahan()->label_bahans();
+        $varias_harga = fetchVaria()->varias_harga();
+        $ukurans_harga = fetchUkuran()->ukurans_harga();
+        $jahits_harga = fetchJahit()->jahits_harga();
 
         // dump($label_bahans);
         // dump($varias_harga);
@@ -506,64 +506,6 @@ class SpkController extends Controller
         // return $post;
     }
 
-    public function fetchBahan()
-    {
-        $bahan = new Bahan();
-        return $bahan;
-    }
-
-    public function fetchVaria()
-    {
-        $variasi = new Variasi();
-        return $variasi;
-    }
-
-    public function fetchUkuran()
-    {
-        $ukuran = new Ukuran();
-        return $ukuran;
-    }
-    public function fetchJahit()
-    {
-        $jahit = new Jahit();
-        return $jahit;
-    }
-
-    public function fetchKombi()
-    {
-        $kombi = new Kombi();
-        return $kombi;
-    }
-
-    public function fetchSpjap()
-    {
-        $spjap = new SPJap();
-        return $spjap;
-    }
-
-    public function fetchStandar()
-    {
-        $std = new Standar();
-        return $std;
-    }
-
-    public function fetchTankpad()
-    {
-        $tp = new Tankpad();
-        return $tp;
-    }
-
-    public function fetchBusastang()
-    {
-        $busastang = new Busastang();
-        return $busastang;
-    }
-
-    public function fetchStiker()
-    {
-        $stiker = new Stiker();
-        return $stiker;
-    }
     /**
      * Show the form for creating a new resource.
      *

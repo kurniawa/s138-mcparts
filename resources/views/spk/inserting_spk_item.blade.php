@@ -110,7 +110,7 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
             <span class="font-size-0_8em text-center fw-bold">Busa<br>Stang</span>
         </a>
         <a href="/spk/inserting_spjap" class="productType position-absolute transform-translate--50_0 circle-L bg-color-grey grid-1-auto justify-items-center" style="top:10em;left:30%">
-            <span class="font-size-0_8em text-center fw-bold">SP<br>Jap</span>
+            <span class="font-size-0_8em text-center fw-bold">T.SP<br>Jap</span>
         </a>
         <a href="/spk/inserting_stiker" class="productType position-absolute transform-translate--50_0 circle-L bg-color-grey grid-1-auto justify-items-center" style="top:10em;left:70%">
             <span class="font-size-0_8em text-center fw-bold">Stiker</span>

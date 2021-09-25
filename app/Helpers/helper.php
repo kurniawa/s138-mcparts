@@ -1,4 +1,16 @@
 <?php
+
+use App\Bahan;
+use App\Busastang;
+use App\Jahit;
+use App\Kombi;
+use App\SPJap;
+use App\Standar;
+use App\Stiker;
+use App\Tankpad;
+use App\Ukuran;
+use App\Variasi;
+
 function integerToRoman($integer)
 {
     // Convert the integer into an integer (just to make sure)
@@ -35,4 +47,80 @@ function integerToRoman($integer)
 
     // The Roman numeral should be built, return it
     return $result;
+}
+
+function fetchBahan()
+{
+    $bahan = new Bahan();
+    return $bahan;
+}
+
+function fetchVaria()
+{
+    $variasi = new Variasi();
+    return $variasi;
+}
+
+function fetchUkuran()
+{
+    $ukuran = new Ukuran();
+    return $ukuran;
+}
+function fetchJahit()
+{
+    $jahit = new Jahit();
+    return $jahit;
+}
+
+function fetchKombi()
+{
+    $kombi = new Kombi();
+    return $kombi;
+}
+
+function fetchSpjap()
+{
+    $spjap = new SPJap();
+    return $spjap;
+}
+
+function fetchStandar()
+{
+    $std = new Standar();
+    return $std;
+}
+
+function fetchTankpad()
+{
+    $tp = new Tankpad();
+    return $tp;
+}
+
+function fetchBusastang()
+{
+    $busastang = new Busastang();
+    return $busastang;
+}
+
+function fetchStiker()
+{
+    $stiker = new Stiker();
+    return $stiker;
+}
+
+function fetch_att_varia()
+{
+    $label_bahans = fetchBahan()->label_bahans();
+    $varias_harga = fetchVaria()->varias_harga();
+    $ukurans_harga = fetchUkuran()->ukurans_harga();
+    $jahits_harga = fetchJahit()->jahits_harga();
+
+    $att_varia = [
+        'label_bahans' => $label_bahans,
+        'varias_harga' => $varias_harga,
+        'ukurans_harga' => $ukurans_harga,
+        'jahits_harga' => $jahits_harga,
+    ];
+
+    return $att_varia;
 }
