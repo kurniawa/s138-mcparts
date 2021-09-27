@@ -124,3 +124,85 @@ function fetch_att_varia()
 
     return $att_varia;
 }
+
+function getNameProduk($tipe, $post)
+{
+    if ($tipe === 'varia') {
+        $variasi = json_decode($post['variasi'], true);
+        $variasi_id = $variasi['id'];
+        $harga = $post['bahan_harga'] + $variasi['harga'];
+        $nama = "$post[bahan] $variasi[nama]";
+        $nama_nota = $nama;
+        // dd($variasi);
+
+        $ukuran_id = null;
+        if (isset($post['ukuran'])) {
+            $ukuran = json_decode($post['ukuran'], true);
+            $harga += $ukuran['harga'];
+            $nama .= " uk.$ukuran[nama]";
+            $nama_nota .= " uk.$ukuran[nama_nota]";
+            $ukuran_id = $ukuran['id'];
+        }
+        $jahit_id = null;
+        if (isset($post['jahit'])) {
+            $jahit = json_decode($post['jahit'], true);
+            $harga += $jahit['harga'];
+            $nama .= " + jht.$jahit[nama]";
+            $nama_nota .= " + jht.$jahit[nama]";
+            $jahit_id = $jahit['id'];
+        }
+        // dump($harga);
+        // dump($nama_nota);
+        // dd($nama);
+        $data = [
+            'nama' => $nama,
+            'nama_nota' => $nama_nota,
+            'harga' => $harga,
+            'variasi_id' => $variasi_id,
+            'ukuran_id' => $ukuran_id,
+            'jahit_id' => $jahit_id,
+        ];
+        return $data;
+    }
+
+    if ($tipe === 'kombinasi') {
+        $nama = $post['kombi'];
+        $nama_nota = $nama;
+        $harga = $post['kombi_harga'];
+    }
+
+    if ($tipe === 'std') {
+        $nama = "Standar $post[standar]";
+        $nama_nota = $nama;
+        $harga = $post['standar_harga'];
+    }
+
+    if ($tipe === 'spjap') {
+        $nama = $post['spjap'];
+        $nama_nota = $nama;
+        $harga = $post['spjap_harga'];
+    }
+
+    // MELENGKAPI NAMA NOTA SEKALI LAGI
+    if ($tipe === 'varia' || $tipe === 'kombinasi' || $tipe === 'std' || $tipe === 'spjap') {
+        $nama_nota = "SJ $nama_nota";
+    }
+
+    if ($tipe === 'tankpad') {
+        $nama = "TP $post[tankpad]";
+        $nama_nota = $nama;
+        $harga = $post['tankpad_harga'];
+    }
+
+    if ($tipe === 'busastang') {
+        $nama = $post['busastang'];
+        $nama_nota = $nama;
+        $harga = $post['busastang_harga'];
+    }
+
+    if ($tipe === 'stiker') {
+        $nama = $post['stiker'];
+        $nama_nota = $nama;
+        $harga = $post['stiker_harga'];
+    }
+}

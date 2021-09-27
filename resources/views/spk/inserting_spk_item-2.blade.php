@@ -2,16 +2,17 @@
 
 @section('content')
     
-<form action="/spk/inserting_item-db" method="POST" id="form_properti_item_spk" class="m-1em">
+<form action="/spk/inserting_item-db" method="POST" id="form_spk_item" class="m-1em" name="form_spk_item">
 @csrf
     <div>
         <h2 id="judul"></h2>
     </div>
 
-    <div id="container_properti_item_spk">
+    <div id="container_property_spk_item"></div>
+    <div id="container_properti_spk_item_general">
         {{-- {!! $element_properties !!} --}}
-        <div style="height: 30vh"></div>
     </div>
+    <div style="height: 30vh"></div>
 
     <br><br>
 
@@ -26,12 +27,13 @@
     <div class="position-fixed bottom-0_5em w-calc-100-2em">
         <button type="submit" id="bottomDiv" class="btn-warning-full grid-1-auto">
 
-            <span class="justify-self-center font-weight-bold">TAMBAH ITEM KE SPK</span>
+            <span id="btn_submit" class="justify-self-center font-weight-bold">TAMBAH ITEM KE SPK</span>
 
         </button>
     </div>
     <input id="tipe" type="hidden" name="tipe">
     <input id="mode" type="hidden" name="mode">
+    <div id="container_input_hidden"></div>
 </form>
 
 <script>
@@ -58,22 +60,36 @@
     const input_jml =
         `<div id="input_jml">
             Jumlah:
-            <input type="number" name="jumlah" min="0" step="1" placeholder="Jumlah" class="p-0_5em" style="border-radius:5px;">
+            <input id='jumlah' type="number" name="jumlah" min="0" step="1" placeholder="Jumlah" class="p-0_5em" style="border-radius:5px;">
         </div>`;
 
     const ta_ktrg =
         `<div id="ta_ktrg">
             <div>Keterangan <span style="color:grey">(opsional)</span>:</div>
             <div class='text-right'><span id="close_ktrg" class='ui-icon ui-icon-closethick' onclick='alternate_show(this.id, ${props_alternate_ktrg});'></span></div>
-            <textarea class="pt-1em pl-1em text-area-mode-1" name="ktrg" id="taDesc" placeholder="Keterangan"></textarea>
+            <textarea id='ktrg' class="pt-1em pl-1em text-area-mode-1" name="ktrg" id="taDesc" placeholder="Keterangan"></textarea>
         </div>`;
     // END ELEMENT TO ALTERNATE SHOW
+
+    document.getElementById('container_properti_spk_item_general').innerHTML = `
+        <div style='display:none;' class='mt-1em' id='div_ta_ktrg'></div>
+        <div style='display:none;' class='mt-1em' id='div_input_jml'></div>
+    `;
+
+    document.getElementById('container_options').innerHTML = `
+        <div style='display:inline-block' id='div_option_jml'></div>
+        <div style='display:inline-block' id='div_option_ktrg'></div>
+    `;
 </script>
 @if ($tipe==='kombi')
     @include('spk.js_inserting_kombi')
 
 @elseif($tipe === 'varia')
-@include('spk.js_inserting_varia')
+    @if ($mode === 'edit')
+        @include('spk.js_editing_f_detail_varia')
+    @else
+        @include('spk.js_inserting_varia')
+    @endif
 
 @elseif($tipe === 'spjap')
     @include('spk.js_inserting_spjap')

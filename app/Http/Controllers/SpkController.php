@@ -729,6 +729,7 @@ class SpkController extends Controller
                     'produk_id' => $d_produk_id[$j],
                     'jumlah' => $spk_item[$j]->jumlah,
                     'harga' => $spk_item[$j]->harga,
+                    'ktrg' => $spk_item[$j]->ktrg,
                 ]);
             }
 

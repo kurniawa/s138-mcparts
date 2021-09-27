@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DetailSPKController;
+use App\Http\Controllers\EditSPKFDetail;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\RegisterController;
@@ -38,6 +39,7 @@ Route::get('/spk/inserting_stiker', [SpkController::class, "inserting_stiker"]);
 Route::post('/spk/proceed_spk', [SpkController::class, "store"]);
 Route::get('/spk/detail_spk', [DetailSPKController::class, "index"]);
 Route::get('/spk/edit_spk_item', [DetailSPKController::class, "editSPKItem"]);
+Route::post('/spk/edit_spk_item-db', [EditSPKFDetail::class, "index"]);
 
 // PELANGGAN
 Route::get('/pelanggan', [PelangganController::class, "index"]);
