@@ -222,6 +222,7 @@
     container_input_hidden.innerHTML = `
         <input type='hidden' name='spk_id' value=${spk_item.spk_id}>
         <input type='hidden' name='produk_id_old' value=${produk.id}>
+        <input type='hidden' name='spk_produk_id' value=${spk_item.id}>
     `;
 
 </script>

@@ -21,6 +21,7 @@ class SpkProduk extends Migration
             $table->id();
             $table->foreignId('spk_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('produk_id');
+            $table->string('ktrg');
             $table->integer('jumlah');
             $table->integer('harga');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
