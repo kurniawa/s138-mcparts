@@ -32,6 +32,7 @@ class SpkController extends Controller
         if ($reload_page === true) {
             $request->session()->put('reload_page', false);
         }
+
         $spks = Spk::limit(100)->get();
         $pelanggans = array();
         for ($i = 0; $i < count($spks); $i++) {

@@ -1,5 +1,6 @@
 <?php
 
+use App\SiteSetting;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +27,7 @@ class DatabaseSeeder extends Seeder
             TankpadSeeder::class,
             BusastangSeeder::class,
             StikerSeeder::class,
+            SiteSettingSeeder::class,
         ]);
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Produk;
+use App\ProdukHarga;
 use App\Spk;
 use App\SpkProduk;
 use Illuminate\Http\Request;
@@ -22,6 +23,15 @@ class EditSPKFDetail extends Controller
          * Untuk memudahkan perbandingan nya, maka kita pilih properti nama nya saja. Oleh karena itu
          * sebelumnya kita perlu untuk menyusun kembali nama dari item yang baru diedit melalui
          * fungsi baru, yakni getNameProduk yang aku taro di helper.php.
+         * 
+         * Kemungkinan yang ada:
+         * 1) produk persis sama seperti sebelumnya, serta jumlah dan keterangan pun sama
+         * 2) produk sama seperti sebelumnya, namun jumlah dan keterangan nya perlu diganti di table spk_produk
+         * 3) produk berbeda, namun sudah terdaftar di database produk, sehingga table spk_produk nya saja
+         * yang perlu diupdate
+         * 4) produk berbeda dan belum terdaftar di database produk. Ini brrti produk yang benar2 baru.
+         * Jadi pertama-tama insert terlebih dahulu di database produk, lalu insert ke db produk_harga
+         * baru setelah itu update di table spk_produk
          * 
          * Setelah mendapatkan nama yang sudah disusun, maka kita dapat mulai membandingkan, apakah
          * ini merupakan produk yang sama atau berbeda. Apabila ternyata produknya sama, maka untuk
@@ -64,25 +74,42 @@ class EditSPKFDetail extends Controller
         } else {
             dump('Produk Berbeda!');
             $produk_search = Produk::where('nama', '=', $produk_new['nama'])->first();
+            dump('mencari produk di database');
             dump($produk_search);
             if ($produk_search === null) {
-                dd('Produk Belum Terdaftar!');
+                dump('Produk Belum Terdaftar!');
 
                 // DIsini coba pake bantuan function properties
-                $produk_id = Produk::create([
+                $spk_item = [
+                    'tipe' => $post['tipe'],
+                    'jumlah' => $post['jumlah'],
+                    'ktrg' => $post['ktrg'],
+                ];
+
+                // $spk_item = json_encode($spk_item);
+                $properties = getProdukProperties($spk_item, $produk_new);
+                dump($properties);
+                // dd($properties);
+
+                $produk_new_created = Produk::create([
                     'tipe' => $post['tipe'],
                     'properties' => json_encode($properties),
-                    'nama' => $spk_item[$i]->nama,
-                    'nama_nota' => $spk_item[$i]->nama_nota,
+                    'nama' => $produk_new['nama'],
+                    'nama_nota' => $produk_new['nama_nota'],
                 ]);
-                DB::table('produk_hargas')->insert([
-                    'produk_id' => $produk_id,
-                    'harga' => $spk_item[$i]->harga,
+                dump($produk_new_created);
+                $produk_harga_new_created = ProdukHarga::create([
+                    'produk_id' => $produk_new_created['id'],
+                    'harga' => $produk_new['harga'],
                 ]);
-                // echo ('produk_id: ');
-                // dd($produk_id);
-                array_push($d_produk_id, $produk_id);
+                dump($produk_harga_new_created);
             }
         }
+
+        $request->session()->put('reload_page', true);
+        $data = [
+            'go_back_number' => -2
+        ];
+        return view('layouts.go-back-page', $data);
     }
 }

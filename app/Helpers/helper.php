@@ -158,6 +158,7 @@ function getNameProduk($tipe, $post)
             'nama' => $nama,
             'nama_nota' => $nama_nota,
             'harga' => $harga,
+            'bahan_id' => (int)$post['bahan_id'],
             'variasi_id' => $variasi_id,
             'ukuran_id' => $ukuran_id,
             'jahit_id' => $jahit_id,
@@ -206,3 +207,105 @@ function getNameProduk($tipe, $post)
         $harga = $post['stiker_harga'];
     }
 }
+
+function getProdukProperties($spk_item, $produk_new)
+{
+    if ($spk_item['tipe'] === 'varia') {
+        $properties = [
+            'bahan_id' => $produk_new['bahan_id'],
+            'variasi_id' => $produk_new['variasi_id'],
+            'ukuran_id' => $produk_new['ukuran_id'],
+            'jahit_id' => $produk_new['jahit_id'],
+        ];
+        $spk_item_simple = [
+            'bahan_id' => $produk_new['bahan_id'],
+            'variasi_id' => $produk_new['variasi_id'],
+            'ukuran_id' => $produk_new['ukuran_id'],
+            'jahit_id' => $produk_new['jahit_id'],
+            'nama' => $produk_new['nama'],
+            'nama_nota' => $produk_new['nama_nota'],
+            'jumlah' => $spk_item['jumlah'],
+            'harga' => $produk_new['harga'],
+            'ktrg' => $spk_item['ktrg'],
+        ];
+    } elseif ($spk_item['tipe'] === 'kombinasi') {
+        $properties = [
+            'kombi_id' => $produk_new['kombi_id'],
+        ];
+        $spk_item_simple = [
+            'kombi_id' => $produk_new['kombi_id'],
+            'nama' => $produk_new['nama'],
+            'nama_nota' => $produk_new['nama_nota'],
+            'harga' => $produk_new['harga'],
+            'jumlah' => $spk_item['jumlah'],
+            'ktrg' => $spk_item['ktrg'],
+        ];
+    } elseif ($spk_item['tipe'] === 'std') {
+        $properties = [
+            'standar_id' => $produk_new['standar_id'],
+        ];
+        $spk_item_simple = [
+            'standar_id' => $produk_new['standar_id'],
+            'nama' => $produk_new['nama'],
+            'nama_nota' => $produk_new['nama_nota'],
+            'harga' => $produk_new['harga'],
+            'jumlah' => $spk_item['jumlah'],
+            'ktrg' => $spk_item['ktrg'],
+        ];
+    } elseif ($spk_item['tipe'] === 'tankpad') {
+        $properties = [
+            'tankpad_id' => $produk_new['tankpad_id'],
+        ];
+        $spk_item_simple = [
+            'tankpad_id' => $produk_new['tankpad_id'],
+            'nama' => $produk_new['nama'],
+            'nama_nota' => $produk_new['nama_nota'],
+            'harga' => $produk_new['harga'],
+            'jumlah' => $spk_item['jumlah'],
+            'ktrg' => $spk_item['ktrg'],
+        ];
+    } elseif ($spk_item['tipe'] === 'busastang') {
+        $properties = [
+            'busastang_id' => $produk_new['busastang_id'],
+        ];
+        $spk_item_simple = [
+            'busastang_id' => $produk_new['busastang_id'],
+            'nama' => $produk_new['nama'],
+            'nama_nota' => $produk_new['nama_nota'],
+            'harga' => $produk_new['harga'],
+            'jumlah' => $spk_item['jumlah'],
+            'ktrg' => $spk_item['ktrg'],
+        ];
+    } elseif ($spk_item['tipe'] === 'spjap') {
+        $properties = [
+            'spjap_id' => $produk_new['spjap_id'],
+        ];
+        $spk_item_simple = [
+            'spjap_id' => $produk_new['spjap_id'],
+            'nama' => $produk_new['nama'],
+            'nama_nota' => $produk_new['nama_nota'],
+            'harga' => $produk_new['harga'],
+            'jumlah' => $spk_item['jumlah'],
+            'ktrg' => $spk_item['ktrg'],
+        ];
+    } elseif ($spk_item['tipe'] === 'stiker') {
+        $properties = [
+            'stiker_id' => $produk_new['stiker_id'],
+        ];
+        $spk_item_simple = [
+            'stiker_id' => $produk_new['stiker_id'],
+            'nama' => $produk_new['nama'],
+            'nama_nota' => $produk_new['nama_nota'],
+            'harga' => $produk_new['harga'],
+            'jumlah' => $spk_item['jumlah'],
+            'ktrg' => $spk_item['ktrg'],
+        ];
+    }
+
+    return $properties;
+}
+
+// function reloadPage(Request $request)
+// {
+    
+// }

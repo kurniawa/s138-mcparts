@@ -11,6 +11,11 @@ class DetailSPKController extends Controller
 {
     public function index(Request $request)
     {
+        $reload_page = $request->session()->get('reload_page');
+        if ($reload_page === true) {
+            $request->session()->put('reload_page', false);
+        }
+
         $get = $request->input();
         // dump($get);
         $spk = Spk::find($get['spk_id']);
