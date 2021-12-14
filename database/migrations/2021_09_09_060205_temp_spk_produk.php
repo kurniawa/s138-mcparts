@@ -29,6 +29,7 @@ class TempSpkProduk extends Migration
             $table->foreignId('busastang_id')->nullable();
             $table->foreignId('tankpad_id')->nullable();
             $table->foreignId('spjap_id')->nullable();
+            $table->string('tipe_bahan', 5)->nullable();
             $table->foreignId('stiker_id')->nullable();
             $table->string('nama');
             $table->string('nama_nota');
@@ -36,6 +37,7 @@ class TempSpkProduk extends Migration
             $table->integer('harga');
             $table->string('ktrg')->nullable();
         });
+        // Tipe bahan kalo ga A ya B, jadi tipe yang di pilih varchar dengan 5 karakter saja.
     }
 
     /**

@@ -17,7 +17,7 @@
 
 
         <div class="gridMenuItem">
-            <a class="menuIcons" href="07-01-nota.php">
+            <a class="menuIcons" href="/nota">
                 <img src="img/icons/invoice_2.svg" alt="Icon SPK">
                 <div>
                     Nota

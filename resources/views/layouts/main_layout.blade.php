@@ -186,6 +186,7 @@
         var deletePropertiesStringified = JSON.stringify(deleteProperties);
         showLightBoxGlobal(deletePropertiesStringified);
     }
+
 </script>
 
 </html>

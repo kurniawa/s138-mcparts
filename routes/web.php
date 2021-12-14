@@ -4,9 +4,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DetailSPKController;
 use App\Http\Controllers\EditSPKFDetail;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\NotaController;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\PrintOutSPK;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SpkController;
+use App\Http\Controllers\SPKItemSelesai;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,7 +27,9 @@ Route::get('/', function () {
     return view('home');
 });
 
-// SPK
+/**
+ * SPK
+ */
 Route::get('/spk', [SpkController::class, "index"]);
 Route::get('/spk/spk_baru', [SpkController::class, "spk_baru"]);
 Route::get('/spk/inserting_spk_item', [SpkController::class, "inserting_spk_item"]);
@@ -40,12 +45,23 @@ Route::post('/spk/proceed_spk', [SpkController::class, "store"]);
 Route::get('/spk/detail_spk', [DetailSPKController::class, "index"]);
 Route::get('/spk/edit_spk_item', [DetailSPKController::class, "editSPKItem"]);
 Route::post('/spk/edit_spk_item-db', [EditSPKFDetail::class, "index"]);
+Route::post('/spk/delete_spk_item', [EditSPKFDetail::class, "deleteSPKItem"]);
+Route::get('/spk/penetapan_item_selesai', [SPKItemSelesai::class, "index"]);
+Route::post('/spk/penetapan_item_selesai-db', [SPKItemSelesai::class, "setItemSelesai"]);
+// Print SPK
+Route::get('/spk/print_out_spk', [PrintOutSPK::class, "index"]);
 
 // PELANGGAN
 Route::get('/pelanggan', [PelangganController::class, "index"]);
 Route::get('/about', function () {
     return view('/about/about');
 });
+
+/**
+ * NOTA
+ */
+Route::get('/nota', [NotaController::class, 'index']);
+Route::get('/nota/nota_baru-pilih_spk', [NotaController::class, 'notaBaru_pilihSPK']);
 
 // LOGIN & REGISTER coment dikit ah
 Route::get('/login', [LoginController::class, "index"])->middleware('guest')->name('login');

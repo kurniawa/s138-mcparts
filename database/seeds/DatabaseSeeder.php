@@ -28,6 +28,8 @@ class DatabaseSeeder extends Seeder
             BusastangSeeder::class,
             StikerSeeder::class,
             SiteSettingSeeder::class,
+            ProdukSeeder::class,
+            SpkSeeder::class,
         ]);
     }
 }

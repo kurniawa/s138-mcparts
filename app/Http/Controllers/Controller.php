@@ -19,6 +19,6 @@ class Controller extends BaseController
     {
         // Fetch the Site Settings object
         $this->site_settings = SiteSetting::all();
-        View::share('site_settings', $this->site_settings);
+        // View::share('site_settings', $this->site_settings);
     }
 }

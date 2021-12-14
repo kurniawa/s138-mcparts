@@ -1,50 +1,57 @@
 <script>
     const mode = {!! json_encode($mode, JSON_HEX_TAG) !!};
+    const att_std = {!! json_encode($att_std, JSON_HEX_TAG) !!};
     const tipe = {!! json_encode($tipe, JSON_HEX_TAG) !!};
-    const stikers = {!! json_encode($stikers, JSON_HEX_TAG) !!};
-    const att_stiker = {!! json_encode($att_stiker, JSON_HEX_TAG) !!};
-    console.log(stikers);
+    const stds = {!! json_encode($stds, JSON_HEX_TAG) !!};
+    console.log('att_std');
+    console.log(att_std);
 
-    document.getElementById('container_property_spk_item').innerHTML = '<div id="div_pilih_stiker"></div>';
+    console.log('stds');
+    console.log(stds);
 
-    const element_properties = `
-    <br>
-    Pilih Stiker:
-    <div id='div_input_stiker'>
-    <input type='text' id='stiker' name='stiker' class='input-normal' style='border-radius:5px;'>
-    <input type='hidden' id='stiker_id' name='stiker_id'>
-    <input type='hidden' id='stiker_harga' name='stiker_harga'>
-    </div>
+    document.getElementById('container_property_spk_item').innerHTML = `
+        <div id='div_pilih_standar'></div>
     `;
 
-    document.getElementById("tipe").value = "stiker";
-    document.getElementById('div_pilih_stiker').innerHTML = element_properties;
+    const pilih_stds = `
+        <div>Pilih Standar:</div>
+        <input type="text" id="standar" name="standar" class="input-normal" style="border-radius:5px;">
+        <input type="hidden" id="standar_id" name="standar_id">
+        <input type="hidden" id="standar_harga" name="standar_harga">
+    `;
+
+    document.getElementById("tipe").value = "std";
+    document.getElementById("div_pilih_standar").innerHTML = pilih_stds;
     document.getElementById("div_option_jml").innerHTML = box_jml;
     document.getElementById("div_input_jml").innerHTML = input_jml;
     document.getElementById("div_option_ktrg").innerHTML = box_ktrg;
     document.getElementById("div_ta_ktrg").innerHTML = ta_ktrg;
 
+    /* 
+    Karena ini mode edit, maka kita perlu untuk menentukan value yang sesuai dengan spk_item yang ingin
+    diedit. Untuk assign value nya dibantu dengan looping. Looping ini di butuhkan karena sebelumnya
+    kita tidak get kombi_id dan harga nya. Lalu fungsi autocompletenya nanti tetap akan berjalan.
+    */
+
     var judul = '<h2>';
+
     if (mode === 'SPK_BARU') {
         judul += 'SPK Baru - ';
     } else if (mode === 'edit') {
         judul += 'Edit SPK Item - ';
-
         const spk_item = {!! json_encode($spk_item, JSON_HEX_TAG) !!};
-        console.log('spk_item');
         console.log(spk_item);
+
         const produk = {!! json_encode($produk, JSON_HEX_TAG) !!};
-        console.log('produk');
         console.log(produk);
         const produk_props = JSON.parse(produk.properties);
-        console.log('produk_props');
         console.log(produk_props);
 
-        for (let i = 0; i < stikers.length; i++) {
-            if (stikers[i].id === produk_props.stiker_id) {
-                document.getElementById('stiker').value = stikers[i].label;
-                document.getElementById('stiker_id').value = stikers[i].id; 
-                document.getElementById('stiker_harga').value = stikers[i].harga;
+        for (let i = 0; i < stds.length; i++) {
+            if (`Standar ${stds[i].label}` === produk.nama) {
+                document.getElementById('standar').value = produk.nama;
+                document.getElementById('standar_id').value = stds[i].id; 
+                document.getElementById('standar_harga').value = stds[i].harga; 
             }
         }
 
@@ -68,22 +75,22 @@
             <input type='hidden' name='spk_produk_id' value=${spk_item.id}>
         `;
     }
-    judul += 'Stiker</h2>';
-
+    judul += 'SJ Standar</h2>';
     document.getElementById('judul').innerHTML = judul;
 
     const available_options = ["box_jml", "box_ktrg"];
 
-    $("#stiker").autocomplete({
-        source: stikers,
+    $("#standar").autocomplete({
+        source: stds,
         select: function(event, ui) {
             // console.log(ui.item);
-            $("#stiker_id").val(ui.item.id);
-            $("#stiker_harga").val(ui.item.harga);
+            $("#standar_id").val(ui.item.id);
+            $("#standar_harga").val(ui.item.harga);
             // show_select_variasi();
             show_options(available_options);
         }
     });
 
+    
 
 </script>

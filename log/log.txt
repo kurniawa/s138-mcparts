@@ -1,0 +1,9 @@
+2021.12.14 - Selasa
+===================
+Kerjain dari apartemen. Tadinya masih nyari2 apa yang belum dikerjain. Lalu setelah lihat2 sepintas, langsung aja mulai kerjain halaman nota.
+
+Daftar nota masih kosong, karena belum dimasukkan fitur input nota baru.
+
+Lanjut ke pembuatan halaman nota_baru-pilih_spk.
+
+Proses: Benerin cara penambahan/pengurangan deviasi_jml yang masih salah

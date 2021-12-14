@@ -356,17 +356,25 @@ function showDD (divID, iconID) {
 
 // FUNCTION CHECKBOX CONFIRM LIST
 
-function createCheckboxConfirmList (params) {
+function createCheckboxConfirmList (params, my_csrf) {
+
+    console.log('params');
+    console.log(params);
 
     var list_html = `
         <form action="${params.form.action}" method="${params.form.method}" class="m-1em">
+        <input type="hidden" name="_token" value="${my_csrf}">
+        <table style='width:100%'>
     `;
 
     if (typeof params.form.input !== "undefined") {
+        console.log('run: if typeof params.form.input');
+
         var html_form_input = "";
         params.form.input.forEach(inp => {
             var inpClass = "";
             if (typeof inp.class !== "undefined") {
+                console.log('run: if typeof inp.class !== undefined');
                 inpClass = inp.class;
             }
             html_form_input += `<input type="${inp.type}" name="${inp.name}" value="${inp.value}" class="${inpClass}">`;
@@ -375,11 +383,13 @@ function createCheckboxConfirmList (params) {
     }
 
     var k = 0 // INDEX LIST atau obj nya
+    // console.log('list_html');
+    // console.log(list_html);
+
     var isCheckedParamsAll = new Array();
     params.object.forEach(obj => {
         list_html += `
-            <div class='bb-1px-solid-grey pb-1em pt-1em'>
-            <table style='width:100%'><tr>
+            <tr class='bb-1px-solid-grey'>
         `;
 
         var i = 0
@@ -413,7 +423,7 @@ function createCheckboxConfirmList (params) {
             }
 
             list_html += `
-                <td style="color:${color};font-weight:bold;font-size:1em;" class="${attClass}">${obj[key.name]}</td>
+                <td style="color:${color};font-weight:bold;font-size:1em;padding-bottom:1em;padding-top:1em;" class="${attClass}">${obj[key.name]}</td>
             `;
 
             var isCheckedParams = {
@@ -430,26 +440,45 @@ function createCheckboxConfirmList (params) {
             if (i == params.first_line_keys.length - 1) {
                 list_html += `
                     <td><input id="dd_checkbox-${k}" class="dd_checkbox" type="checkbox" name="${params.checkbox.name}[]" value="${obj[params.checkbox.value]}" onclick='isChecked(${isCheckedParams});'></td>
-                    </tr></table>
+                    </tr>
                 `;
             }
             i++;
         });
 
+        /**CHECKPOINT list_html */
+        console.log('list_html');
+        console.log(list_html);
+
         // DROPDOWN
         var html_dd_title = "";
         if (typeof params.dd_input_title !== "undefined") {
-            html_dd_title += `<div>${params.dd_input_title.title}${obj[params.dd_input_title.key]}</div>`;
+            html_dd_title += `<td colspan='3'><div>${params.dd_input_title.title}`;
+            if (typeof obj[params.dd_input_title.key] !== 'undefined') {
+                html_dd_title += `${obj[params.dd_input_title.key]}</div>`;
+            } else {
+                html_dd_title += `0</div>`;
+            }
         }
-        var dd_html = `<div id="dd_checkbox_show-${k}" style="display:none">
+        var dd_html = `<tr id="dd_checkbox_show-${k}" style="display:none">
         ${html_dd_title}
         <table class="b-1px-solid-grey">`;
         if (typeof params.dd_input !== "undefined") {
             params.dd_input.forEach(input => {
                 // MENENTUKAN VALUE DARI INPUT
+                // console.log('input');
+                // console.log(input);
                 var value = "";
                 if (typeof input.value.key !== "undefined") {
-                    value = obj[input.value.key];
+                    // if (input.type === 'number') {
+                    // console.log('untuk deviasi dan jml_selesai');
+                    // console.log(obj[input.value.key]);
+                    if (typeof obj[input.value.key] !== 'undefined') {
+                        value = obj[input.value.key];
+                    } else {
+                        value = 0;
+                    }
+                    // }
                 } else {
                     value = input.value;
                     // console.log("obj.jumlah");
@@ -473,16 +502,17 @@ function createCheckboxConfirmList (params) {
             });
         }
 
-        dd_html += `</table></div>`;
+        dd_html += `</table></td></tr>`;
         // END OF DROPDOWN
 
         list_html += `
-            ${dd_html}</div>
+            ${dd_html}
         `;
 
         k++;
     });
 
+    list_html += `</table>`;
     // HTML BUTTON
     html_button = `<button id="${params.button.id}" type="submit" class="btn-warning-full" style="display:none">${params.button.label}</button>`;
 
@@ -493,6 +523,7 @@ function createCheckboxConfirmList (params) {
 
     if (typeof params.container !== "undefined") {
         // console.log("run embed innerHTML");
+        // console.log(list_html);
         document.getElementById(`${params.container.id}`).innerHTML = list_html;
         isCheckedParamsAll.forEach(isCheckedParams => {
             isChecked(isCheckedParams);
@@ -505,6 +536,13 @@ function createCheckboxConfirmList (params) {
 }
 
 // Kalau checkbox nya di check maka akan muncul tombol selesai
+/**
+ * Nanti input2 yang di hide juga otomatis di disable jadi ga kebaca pada saat di post
+ * input nya nanti dalam bentuk array misal name="deviasi_jml[]".
+ * Nanti kalo ke disable otomatis array length nya jg mengikuti jadi berkurang.
+ * Nanti di file db nya tinggal diproses secara loop
+ * 
+ */
 
 function isChecked (params) {
     // console.log(params);

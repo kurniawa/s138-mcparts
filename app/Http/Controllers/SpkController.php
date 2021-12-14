@@ -18,6 +18,7 @@ use App\ProdukHarga;
 // use App\Variasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\SpkProduk;
 
 class SpkController extends Controller
 {
@@ -28,12 +29,22 @@ class SpkController extends Controller
      */
     public function index(Request $request)
     {
+        // dump($this->site_settings[0]->value);
+        // $this->site_settings[0]->value = 'TRUE';
+        // $this->site_settings->save();
+        // dump($this->site_settings[0]['value']);
         $reload_page = $request->session()->get('reload_page');
         if ($reload_page === true) {
             $request->session()->put('reload_page', false);
         }
+        // dump($reload_page);
 
-        $spks = Spk::limit(100)->get();
+        // else {
+        //     $reload_page = false;
+        // }
+
+
+        $spks = Spk::limit(100)->orderByDesc('created_at')->get();
         $pelanggans = array();
         for ($i = 0; $i < count($spks); $i++) {
             $pelanggan = Spk::find($spks[$i]->id)->pelanggan;
@@ -42,6 +53,7 @@ class SpkController extends Controller
         // $pelanggan = Pelanggan::find(3)->spk;
         // dd($pelanggans);
         $data = ['spks' => $spks, 'pelanggans' => $pelanggans, 'reload_page' => $reload_page];
+        // $data = ['spks' => $spks, 'pelanggans' => $pelanggans];
         return view('spk/spks', $data);
     }
 
@@ -128,6 +140,7 @@ class SpkController extends Controller
         $varias_harga = fetchVaria()->varias_harga();
         $ukurans_harga = fetchUkuran()->ukurans_harga();
         $jahits_harga = fetchJahit()->jahits_harga();
+        $att_varia = fetch_att_varia();
 
         // dump($label_bahans);
         // dump($varias_harga);
@@ -135,73 +148,84 @@ class SpkController extends Controller
         // dump($jahits_harga);
 
         $data = [
+            'tipe' => 'varia',
             'bahans' => $label_bahans,
             'varias' => $varias_harga,
             'ukurans' => $ukurans_harga,
             'jahits' => $jahits_harga,
+            'att_varia' => $att_varia,
+            'mode' => 'SPK_BARU',
+            'spk_item' => null,
+            'produk' => null,
         ];
-        return view('/spk/inserting_varia', $data);
+        return view('/spk/inserting_spk_item-2', $data);
     }
 
     public function inserting_kombi()
     {
-        $label_kombis = $this->fetchKombi()->label_kombis();
+        $label_kombis = fetchKombi()->label_kombis();
+        $att_kombi = fetch_att_kombi();
 
-        $element_properties = "
-        <div id='div_pilih_kombi'></div>
-        <div style='display:none;' class='mt-1em' id='div_ta_ktrg'></div>
-        <div style='display:none;' class='mt-1em' id='div_input_jml'></div>
-        ";
+        // $element_properties = "
+        // <div id='div_pilih_kombi'></div>
+        // <div style='display:none;' class='mt-1em' id='div_ta_ktrg'></div>
+        // <div style='display:none;' class='mt-1em' id='div_input_jml'></div>
+        // ";
 
-        $available_options = "
-        <div style='display:inline-block' id='div_option_jml'></div>
-        <div style='display:inline-block' id='div_option_ktrg'></div>
-        ";
+        // $available_options = "
+        // <div style='display:inline-block' id='div_option_jml'></div>
+        // <div style='display:inline-block' id='div_option_ktrg'></div>
+        // ";
 
         $data = [
-            'judul' => 'SJ Kombinasi',
             'tipe' => 'kombi',
             'kombis' => $label_kombis,
-            'element_properties' => $element_properties,
-            'available_options' => $available_options,
+            // 'element_properties' => $element_properties,
+            // 'available_options' => $available_options,
+            'att_kombi' => $att_kombi,
+            'mode' => 'SPK_BARU',
+            'spk_item' => null,
+            'produk' => null,
         ];
-        return view('spk.inserting_kombi', $data);
+
+        return view('spk.inserting_spk_item-2', $data);
     }
 
     public function inserting_spjap()
     {
-        $label_spjaps = $this->fetchSpjap()->label_spjaps();
-        $d_bahan_a = $this->fetchBahan()->d_bahan_a();
-        $d_bahan_b = $this->fetchBahan()->d_bahan_b();
+        $label_spjaps = fetchSpjap()->label_spjaps();
+        $d_bahan_a = fetchBahan()->d_bahan_a();
+        $d_bahan_b = fetchBahan()->d_bahan_b();
+        $att_spjap = fetch_att_spjap();
 
-        $element_properties = "
-        <br>
-        Pilih Tipe Bahan:
-        <div id='div_pilih_tipe_bhn'>
-            <select id='tipe_bahan' name='tipe_bhn' class='form-select' onchange='setAutocomplete_D_Bahan();'>
-                <option value='A'>Bahan(A)</option>
-                <option value='B'>Bahan(B)</option>
-            </select>
-        </div>
-        <br>
-        Pilih Bahan:
-        <div id='div_pilih_bahan'>
-            <input type='text' id='bahan' name='bahan' class='input-normal' style='border-radius:5px;'>
-            <input type='hidden' id='bahan_id' name='bahan_id'>
-        </div>
-        <br>
-        <div>Pilih T.Sixpack/Japstyle:</div>
-        <select id='div_pilih_spjap' name='spjap_id' class='form-select' onchange='assignSPJapIDValue(this.selectedIndex);'></select>
-        <input type='hidden' id='spjap' name='spjap'>
-        <input type='hidden' id='spjap_harga' name='spjap_harga'>
-        <div class='mt-1em' id='div_ta_ktrg'></div>
-        <div class='mt-1em' id='div_input_jml'></div>
-        ";
+        // $element_properties = "
+        // <br>
+        // Pilih Tipe Bahan:
+        // <div id='div_pilih_tipe_bhn'>
+        //     <select id='tipe_bahan' name='tipe_bhn' class='form-select' onchange='setAutocomplete_D_Bahan();'>
+        //         <option value='A'>Bahan(A)</option>
+        //         <option value='B'>Bahan(B)</option>
+        //     </select>
+        // </div>
+        // <br>
+        // Pilih Bahan:
+        // <div id='div_pilih_bahan'>
+        //     <input type='text' id='bahan' name='bahan' class='input-normal' style='border-radius:5px;'>
+        //     <input type='hidden' id='bahan_id' name='bahan_id'>
+        // </div>
+        // <br>
+        // <div>Pilih T.Sixpack/Japstyle:</div>
+        // <select id='div_pilih_spjap' name='spjap_id' class='form-select' onchange='assignSPJapIDValue(this.selectedIndex);'></select>
+        // <input type='hidden' id='spjap' name='spjap'>
+        // <input type='hidden' id='spjap_harga' name='spjap_harga'>
+        // <div class='mt-1em' id='div_ta_ktrg'></div>
+        // <div class='mt-1em' id='div_input_jml'></div>
+        // ";
 
-        $available_options = "
-        <div style='display:inline-block' id='div_option_jml'></div>
-        <div style='display:inline-block' id='div_option_ktrg'></div>
-        ";
+        // $available_options = "
+        // <div style='display:inline-block' id='div_option_jml'></div>
+        // <div style='display:inline-block' id='div_option_ktrg'></div>
+        // ";
 
         $data = [
             'judul' => 'SJ T.SixPack/Japstyle',
@@ -209,15 +233,20 @@ class SpkController extends Controller
             'spjaps' => $label_spjaps,
             'd_bahan_a' => $d_bahan_a,
             'd_bahan_b' => $d_bahan_b,
-            'element_properties' => $element_properties,
-            'available_options' => $available_options,
+            // 'element_properties' => $element_properties,
+            // 'available_options' => $available_options,
+            'att_spjap' => $att_spjap,
+            'mode' => 'SPK_BARU',
+            'produk' => null,
+            'spk_item' => null,
         ];
         return view('spk.inserting_spk_item-2', $data);
     }
 
     public function inserting_std()
     {
-        $label_stds = $this->fetchStandar()->label_stds();
+        $label_stds = fetchStandar()->label_stds();
+        $att_std = fetch_att_std();
 
         $element_properties = "
         <br>
@@ -241,103 +270,61 @@ class SpkController extends Controller
             'judul' => 'SJ Standar',
             'tipe' => 'std',
             'stds' => $label_stds,
-            'element_properties' => $element_properties,
-            'available_options' => $available_options,
+            // 'element_properties' => $element_properties,
+            // 'available_options' => $available_options,
+            'att_std' => $att_std,
+            'mode' => 'SPK_BARU',
+            'produk' => null,
+            'spk_item' => null,
         ];
         return view('spk.inserting_spk_item-2', $data);
     }
 
     public function inserting_tankpad()
     {
-        $label_tankpad = $this->fetchTankpad()->label_tp();
-
-        $element_properties = "
-        <br>
-        Pilih Tankpad:
-        <div id='div_pilih_tankpad'>
-        <input type='text' id='tankpad' name='tankpad' class='input-normal' style='border-radius:5px;'>
-        <input type='hidden' id='tankpad_id' name='tankpad_id'>
-        <input type='hidden' id='tankpad_harga' name='tankpad_harga'>
-        </div>
-        <br>
-        <div class='mt-1em' id='div_ta_ktrg'></div>
-        <div class='mt-1em' id='div_input_jml'></div>
-        ";
-
-        $available_options = "
-        <div style='display:inline-block' id='div_option_jml'></div>
-        <div style='display:inline-block' id='div_option_ktrg'></div>
-        ";
+        $label_tankpad = fetchTankpad()->label_tp();
+        $att_tp = fetch_att_tp();
 
         $data = [
             'judul' => 'Tankpad',
             'tipe' => 'tankpad',
             'tankpads' => $label_tankpad,
-            'element_properties' => $element_properties,
-            'available_options' => $available_options,
+            // 'element_properties' => $element_properties,
+            // 'available_options' => $available_options,
+            'att_tp' => $att_tp,
+            'mode' => 'SPK_BARU',
+            'produk' => null,
+            'spk_item' => null,
         ];
         return view('spk.inserting_spk_item-2', $data);
     }
 
     public function inserting_busastang()
     {
-        $label_busastang = $this->fetchBusastang()->label_busastang();
-
-        $element_properties = "
-        <br>
-        <div id='div_input_busastang'>
-        <input type='text' id='busastang' name='busastang' class='input-normal' style='border-radius:5px;' value='Busa-Stang'>
-        <input type='hidden' id='busastang_id' name='busastang_id'>
-        <input type='hidden' id='busastang_harga' name='busastang_harga'>
-        </div>
-        <br>
-        <div class='mt-1em' id='div_ta_ktrg'></div>
-        <div class='mt-1em' id='div_input_jml'></div>
-        ";
-
-        $available_options = "
-        <div style='display:inline-block' id='div_option_jml'></div>
-        <div style='display:inline-block' id='div_option_ktrg'></div>
-        ";
+        $label_busastang = fetchBusastang()->label_busastang();
+        $att_busastang = fetch_att_busastang();
 
         $data = [
-            'judul' => 'Busa-Stang',
+            'mode' => 'SPK_BARU',
             'tipe' => 'busastang',
             'busastangs' => $label_busastang,
-            'element_properties' => $element_properties,
-            'available_options' => $available_options,
+            'att_busastang' => $att_busastang,
         ];
         return view('spk.inserting_spk_item-2', $data);
     }
 
     public function inserting_stiker()
     {
-        $label_stiker = $this->fetchStiker()->label_stiker();
-
-        $element_properties = "
-        <br>
-        Pilih Stiker:
-        <div id='div_input_stiker'>
-        <input type='text' id='stiker' name='stiker' class='input-normal' style='border-radius:5px;'>
-        <input type='hidden' id='stiker_id' name='stiker_id'>
-        <input type='hidden' id='stiker_harga' name='stiker_harga'>
-        </div>
-        <br>
-        <div class='mt-1em' id='div_ta_ktrg'></div>
-        <div class='mt-1em' id='div_input_jml'></div>
-        ";
-
-        $available_options = "
-        <div style='display:inline-block' id='div_option_jml'></div>
-        <div style='display:inline-block' id='div_option_ktrg'></div>
-        ";
+        $label_stiker = fetchStiker()->label_stiker();
+        $att_stiker = fetch_att_stiker();
 
         $data = [
-            'judul' => 'Stiker',
+            'mode' => 'SPK_BARU',
             'tipe' => 'stiker',
             'stikers' => $label_stiker,
-            'element_properties' => $element_properties,
-            'available_options' => $available_options,
+            'att_stiker' => $att_stiker,
+            'spk_item' => null,
+            'produk' => null,
         ];
         return view('spk.inserting_spk_item-2', $data);
     }
@@ -377,7 +364,7 @@ class SpkController extends Controller
         $jumlah = $post['jumlah'];
         $ktrg = null;
         $bahan_id = $variasi_id = $ukuran_id = $jahit_id = null;
-        $standar_id = $kombi_id = $busastang_id = $tankpad_id = $spjap_id = $stiker_id = null;
+        $standar_id = $kombi_id = $busastang_id = $tankpad_id = $spjap_id = $tipe_bahan = $stiker_id = null;
 
         if (isset($post['bahan_id'])) {
             $bahan_id = $post['bahan_id'];
@@ -454,8 +441,15 @@ class SpkController extends Controller
 
         if ($tipe === 'spjap') {
             $nama = $post['spjap'];
-            $nama_nota = $nama;
             $harga = $post['spjap_harga'];
+            $tipe_bahan = $post['tipe_bahan'];
+            $bahan = $post['bahan'];
+            if ($bahan !== null) {
+                $nama = "$bahan $nama";
+            } else {
+                $nama = "Bahan($tipe_bahan) $nama";
+            }
+            $nama_nota = $nama;
         }
 
         // MELENGKAPI NAMA NOTA SEKALI LAGI
@@ -492,6 +486,7 @@ class SpkController extends Controller
             'busastang_id' => $busastang_id,
             'tankpad_id' => $tankpad_id,
             'spjap_id' => $spjap_id,
+            'tipe_bahan' => $tipe_bahan,
             'stiker_id' => $stiker_id,
             'nama' => $nama,
             'nama_nota' => $nama_nota,
@@ -530,7 +525,9 @@ class SpkController extends Controller
         dump($post);
         if ($post['submit_type'] === 'proceed_spk') {
             $spk_item = DB::table('temp_spk_produk')->get();
+            dump('spk_item');
             dump($spk_item);
+            // dd($spk_item);
             // dump($spk_item[0]);
             // dump($spk_item[1]->kombi_id);
             // dump($spk_item[2]->standar_id);
@@ -547,7 +544,7 @@ class SpkController extends Controller
             $d_produk_id = array();
             for ($i = 0; $i < count($spk_item); $i++) {
                 $jumlah_total += (int)$spk_item[$i]->jumlah;
-                $harga_total += $spk_item[$i]->harga;
+                $harga_total += $spk_item[$i]->harga * $spk_item[$i]->jumlah;
                 // dump($produk);
                 // dump($produk['id']);
                 // MENENTUKAN PROPERTIES UNTUK PRODUK BARU DAN MENYEDERHANAKAN DATA PRODUK
@@ -559,6 +556,7 @@ class SpkController extends Controller
                         'jahit_id' => $spk_item[$i]->jahit_id,
                     ];
                     $spk_item_simple[$i] = [
+                        // 'bahan' => $spk_item[$i]->bahan,
                         'bahan_id' => $spk_item[$i]->bahan_id,
                         'variasi_id' => $spk_item[$i]->variasi_id,
                         'ukuran_id' => $spk_item[$i]->ukuran_id,
@@ -620,7 +618,14 @@ class SpkController extends Controller
                 } elseif ($spk_item[$i]->tipe === 'spjap') {
                     $properties = [
                         'spjap_id' => $spk_item[$i]->spjap_id,
+                        'tipe_bahan' => $spk_item[$i]->tipe_bahan,
                     ];
+                    if ($spk_item[$i]->bahan_id !== null) {
+                        $arr_to_push = [
+                            'bahan_id' => $spk_item[$i]->bahan_id,
+                        ];
+                        array_push($properties, $arr_to_push);
+                    }
                     $spk_item_simple[$i] = [
                         'spjap_id' => $spk_item[$i]->spjap_id,
                         'nama' => $spk_item[$i]->nama,
@@ -642,6 +647,7 @@ class SpkController extends Controller
                         'ktrg' => $spk_item[$i]->ktrg,
                     ];
                 }
+
                 // APABILA EXIST MAKA PERLU DI UPDATE HARGA LAMA NYA.
                 $produk = Produk::where('nama', '=', $spk_item[$i]->nama)->first();
                 // echo "produk: ";
@@ -693,8 +699,6 @@ class SpkController extends Controller
 
             // SETELAH LOOPING, SEKARANG MULAI INSERT KE SPK
 
-            $string_spk_item_simple = json_encode($spk_item_simple);
-            dump($string_spk_item_simple);
 
             /**
              * format nomor spk= SPK.1/MCP-ADM/XXI-IX/2021
@@ -705,12 +709,13 @@ class SpkController extends Controller
 
             // uncomment
 
+
             $spk_id = DB::table('spks')->insertGetId([
                 'pelanggan_id' => $post['pelanggan_id'],
                 'reseller_id' => $post['reseller_id'],
                 'status' => 'PROSES',
                 'judul' => $post['judul'],
-                'data_spk_item' => $string_spk_item_simple,
+                // 'data_spk_item' => $string_spk_item_simple,
                 'jumlah_total' => $jumlah_total,
                 'harga_total' => $harga_total,
             ]);
@@ -722,17 +727,42 @@ class SpkController extends Controller
                 ]);
 
             // Setelah selesai insert ke SPK, maka berikutnya insert ke SPK produk
+            /**
+             * # Setelah insert ke SpkProduk, maka kita update lagi spk nya, yakni untuk kolom data_spk_item
+             * # Kenapa ga langsung aja sebelumnya udah diisi kolom nya data_spk_item?
+             * Karena di data_spk_item alangkah lebih baik apabila terdapat juga keterangan ttg: spk_produk_id
+             * yang berkaitan.
+             * # Setelah ditambahkan data spk_produk_id pada masing2 $spk_item_simple, maka kita perlu untuk
+             * stringify $spk_item_simple melalui json_encode yang ditampung pada variable $string_spk_item_simple
+             * # Setelah stringify, maka kita siap untuk update data spk
+             */
             // dd($d_produk_id);
+
+
             for ($j = 0; $j < count($spk_item); $j++) {
 
-                DB::table('spk_produks')->insert([
+                $spk_produk_id = DB::table('spk_produks')->insertGetId([
                     'spk_id' => $spk_id,
                     'produk_id' => $d_produk_id[$j],
                     'jumlah' => $spk_item[$j]->jumlah,
                     'harga' => $spk_item[$j]->harga,
                     'ktrg' => $spk_item[$j]->ktrg,
+                    'status' => 'PROSES',
                 ]);
+                $spk_produk = SpkProduk::find($spk_produk_id);
+                $spk_item_simple[$j]['spk_produk_id'] = $spk_produk_id;
+                $spk_item_simple[$j]['status'] = 'PROSES';
+                // $spk_item_simple[$j]['status'] = $spk_produk['status'];
+                // $spk_item_simple[$j]['created_at'] = $spk_produk['created_at'];
+                // $spk_item_simple[$j]['updated_at'] = $spk_produk['updated_at'];
             }
+            $string_spk_item_simple = json_encode($spk_item_simple);
+            dump('string_spk_item_simple');
+            dump($string_spk_item_simple);
+
+            $spk = Spk::find($spk_id);
+            $spk->data_spk_item = $string_spk_item_simple;
+            $spk->save();
 
             DB::table('temp_spk_produk')->truncate();
 

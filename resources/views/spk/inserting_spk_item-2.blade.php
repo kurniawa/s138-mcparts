@@ -48,6 +48,8 @@
         btn_hide: "close_ktrg",
         btn_show: "box_ktrg",
         id: "div_ta_ktrg",
+        type: "textarea",
+        opt_to_reset: "ktrg",
     };
     props_alternate_ktrg = JSON.stringify(props_alternate_ktrg);
 
@@ -82,20 +84,21 @@
     `;
 </script>
 @if ($tipe==='kombi')
-    @include('spk.js_inserting_kombi')
+    @include('spk.js_editing_f_detail_kombi')
 
 @elseif($tipe === 'varia')
-    @if ($mode === 'edit')
-        @include('spk.js_editing_f_detail_varia')
-    @else
-        @include('spk.js_inserting_varia')
-    @endif
+    @include('spk.js_editing_f_detail_varia')
 
 @elseif($tipe === 'spjap')
+@include('spk.js_editing_f_detail_spjap')
+    {{-- @if ($mode === 'edit')
+    @else
     @include('spk.js_inserting_spjap')
+    @endif --}}
     
 @elseif($tipe === 'std')
-    @include('spk.js_inserting_std')
+    {{-- @include('spk.js_inserting_std') --}}
+    @include('spk.js_editing_f_detail_std')
 
 @elseif($tipe === 'tankpad')
     @include('spk.js_inserting_tankpad')
@@ -118,6 +121,10 @@
         });
     }
 
+    /*
+    Jadi di fungsi alternate_show ini saya maunya selain dia hide elemen, dia akan juga reset value dari
+    input atau select ataupun textarea yang di hide. Reset Value jadi kosong/string kosong ""
+    */
     function alternate_show(clicked, props) {
         console.log(props);
         if (clicked === props.btn_show) {
@@ -129,9 +136,14 @@
             // console.log('hide');
             document.getElementById(props.id).style.display = "none";
             document.getElementById(props.btn_show).style.display = "block";
-            if (typeof props.opt_to_reset !== "undefined") {
-                document.getElementById(props.opt_to_reset).selectedIndex = 0;
+            if (props.type === 'textarea') {
+                document.getElementById(props.opt_to_reset).value = '';
+            } else if (props.type === 'select') {
+                console.log('opt_to_reset:');
+                console.log(props.opt_to_reset);
+                document.getElementById(props.opt_to_reset).selectedIndex = 0;   
             }
+
         }
     }
 </script>

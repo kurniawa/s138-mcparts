@@ -16,16 +16,19 @@
         <div id="editKopSPK" class="threeDotMenuItem">
             <img src="/img/icons/edit.svg" alt=""><span>Edit Kop SPK</span>
         </div>
-        <div id="downloadExcel" class="threeDotMenuItem" onclick="goToPrintOutSPK();">
-            <img src="/img/icons/download.svg" alt=""><span>Download Excel</span>
-        </div>
+        <form action="/spk/print_out_spk" method='GET'>
+            <button id="downloadExcel" type="submit" class="threeDotMenuItem">
+                <img src="/img/icons/download.svg" alt=""><span>Download Excel</span>
+            </button>
+            <input type="hidden" name="spk_id" value={{ $spk['id'] }}>
+        </form>
         <!-- <a href="03-03-01-pembuatanNota.php?id_spk=<a?= $id_spk" id="" class="threeDotMenuItem">
             <img src="/img/icons/pencil.svg" alt=""><span>Buat Nota</span>
         </a> -->
         <div id="deleteSPK" class="threeDotMenuItem">
             <img src="/img/icons/trash-can.svg" alt=""><span>Cancel/Hapus SPK</span>
         </div>
-        <a href="03-03-01-spk-selesai.php?id_spk=$id_spk" id="SPKSelesai" class="threeDotMenuItem">
+        <a href="/spk/penetapan_item_selesai?spk_id={{ $spk['id'] }}" id="SPKSelesai" class="threeDotMenuItem">
             <img src="/img/icons/edit.svg" alt=""><span>Tetapkan Item Selesai</span>
         </a>
     </div>
@@ -194,7 +197,7 @@
     var htmlSPKItem = '';
     var element_to_toggle = "";
 
-    for (var i = 0; i < produks.length; i++) {
+    for (var i = 0; i < spk_item.length; i++) {
         var action = "";
         element_to_toggle = [{
             id: `#divOpsiSPKItem-${i}`,
@@ -224,12 +227,12 @@
         console.log(jumlahSisa);
         if (jumlahSisa == 0) {
             fColor = "color-red";
-        } else if (jumlahSisa >= 0 && jumlahSisa < produks[i].jumlah) {
+        } else if (jumlahSisa >= 0 && jumlahSisa < spk_item[i].jumlah) {
             fColor = "color-blue-purple";
         }
 
         // UNTUK PENENTUAN WARNA, METODE diatas kita timpa dengan metode berikut:
-        if (produks[i].status === "PROSES") {
+        if (spk_item[i].status === "PROSES" || spk_item[i].status === null) {
             fColor = "color-red";
         } else {
             fColor = "color-blue-purple";
@@ -237,19 +240,23 @@
         // END MENENTUKAN warna nama item
 
         // MENAMPILKAN DAVIASI JUMLAH
-        var htmlDeviasiJml = "";
-        if (parseInt(produks[i].deviasi_jml) !== 0) {
-            var deviasiJml = ""
-            if (parseInt(produks[i].deviasi_jml) > 0) {
-                deviasiJml += `+${produks[i].deviasi_jml}`
+        var textContent_deviasi_jml = `${spk_item[i].jumlah} <span style='color:salmon'>`;
+        var textContent_jumlah = ``;
+        if (typeof spk_item[i].deviasi_jml !== 'undefined' && spk_item[i].deviasi_jml !== null) {
+            const deviasi_jml = spk_item[i].deviasi_jml;
+            if (deviasi_jml > 0) {
+                textContent_deviasi_jml += ` +${deviasi_jml}`;
+            } else {
+                textContent_deviasi_jml += ` ${deviasi_jml}`;
             }
-            htmlDeviasiJml += `
-                <div style:"color:black;text-align:right;font-weight:normal">${deviasiJml}</div>
-            `;
         }
-
-
-        var ktrg = produks[i].ktrg;
+        textContent_deviasi_jml += '</span>';
+        
+        textContent_jumlah += `
+            <div style:"color:black;text-align:right;font-weight:normal">${textContent_deviasi_jml}</div>
+        `;
+        
+        var ktrg = spk_item[i].ktrg;
         if (ktrg == null) {
             ktrg = "";
         } else {
@@ -257,6 +264,10 @@
         }
 
 
+/*
+Untuk Metode Edit, dia akan pindah ke link lain dengan parameter yang di pass melalui URL.
+Untuk Metode Hapus, sebaiknya tetap menggunakan form dengan method POST.
+*/
 
         htmlSPKItem = htmlSPKItem +
             `<div>
@@ -266,7 +277,7 @@
                 </div>
                 <div class='grid-1-auto'>
                     <div class='justify-self-right' style='color:green;font-size:1.2em'>
-                        ${spk_item[i].jumlah}${htmlDeviasiJml}
+                        ${textContent_jumlah}
                     </div>
                     <div class='justify-self-right' style='color:grey'>Jumlah</div>
                 </div>
@@ -278,9 +289,13 @@
                 <button id='editSPKItem-${i}' class="d-inline-block bg-color-purple-blue pl-1em pr-1em b-radius-50px" style='border: none;'>
                     <a href='/spk/edit_spk_item?spk_id=${spk.id}&spk_item_id=${spk_item[i].id}&produk_id=${produks[i].id}'>Edit</a>
                 </button>
-                <button id='hapusSPKItem-${i}' class="d-inline-block bg-color-grey pl-1em pr-1em b-radius-50px" style='border: none;' onclick=onclick='removeSPKItem(${produks[i].id});'>
+                <form action='/spk/delete_spk_item' method='POST' class='d-inline-block'>
+                @csrf
+                <button id='hapusSPKItem-${i}' class="bg-color-grey pl-1em pr-1em b-radius-50px" style='border: none;'>
                     Hapus
                 </button>
+                <input type="hidden" name="spk_item_id" value="${spk_item[i].id}">
+                </form>
                 <!--
                 <button id='notaSPKItem-${i}' class="d-inline-block bg-color-orange-1 pl-1em pr-1em b-radius-50px" style='border: none;' onclick='goToNotaSPKItem("${i}")'>
                     Buat Nota
@@ -290,11 +305,11 @@
             <div class='pl-0_5em color-blue-purple'>${ktrg}</div>
             <input type="hidden" name="spk_id" value="${spk.id}">
             <input type="hidden" name="produk_id" value="${produks[i].id}">
-            <input type="hidden" name="spk_item_id" value="${spk_item[i].id}">
             </div>
             `;
 
-        $jmlTotalSPK += parseFloat(produks[i].jumlah) + parseFloat(produks[i].deviasi_jml);
+        $jmlTotalSPK += parseFloat(spk_item[i].jumlah) + parseFloat(spk_item[i].deviasi_jml);
+        console.log(spk_item[i].jumlah, spk_item[i].deviasi_jml, $jmlTotalSPK);
     }
 
     $('#divTitleDesc').html(spk.ktrg);
@@ -425,6 +440,16 @@ document.querySelector('.threeDot').addEventListener('click', function () {
     }];
     elementToToggle(element);
 });
+
+    // Reload Page
+    const reload_page = {!! json_encode($reload_page, JSON_HEX_TAG) !!};
+    reloadPage(reload_page);
 </script>
+
+<style>
+    #downloadExcel{
+        /* display: block; */
+    }
+</style>
 @endsection
 
