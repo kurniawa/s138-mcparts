@@ -1,3 +1,26 @@
+2021-12-21 - Selasa
+===================
+Seeding Fresh
+--------------
+php artisan migrate:fresh --seed
+
+Masih berkecimpung di nota. Pemilihan SPK, form nya dibuat sebagai post. Lalu database banyak yang dibenahin.
+Next: Menampilkan list dari item yang available untuk di masukkan ke nota.
+
+2021-12-16 - Kamis
+==================
+Finished: Benerin cara penambahan/pengurangan deviasi_jml yang masih salah.
+
+QueryBuilder untuk where dengan or
+----------------------------------
+$available_spk = Spk::where('status', 'SEBAGIAN')->orWhere('status', 'SELESAI')->get();
+
+For loop syntax php blade
+-------------------------
+@for ($i = 0; $i < count($available_spk); $i++)
+    <option value="{{ $available_spk[$i]['id'] }}">{{ $available_spk[$i]['no_spk'] }}</option>
+@endfor
+
 2021.12.14 - Selasa
 ===================
 Kerjain dari apartemen. Tadinya masih nyari2 apa yang belum dikerjain. Lalu setelah lihat2 sepintas, langsung aja mulai kerjain halaman nota.

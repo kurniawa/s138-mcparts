@@ -104,10 +104,31 @@ class SPKItemSelesai extends Controller
             // dump('jumlah_akhir');
             // dump($jumlah_akhir);
             if ($deviasi_jml !== 0) {
-                $jumlah_akhir += $deviasi_jml;
-                $jumlah_total_new += $deviasi_jml;
-                $harga_total_new += $deviasi_jml * $harga_item;
+                if ((int)$spk_produk_this['deviasi_jml'] !== $deviasi_jml) {
+                    $deviasi_jml_old = $spk_produk_this['deviasi_jml'];
+                    if ($deviasi_jml_old === null) {
+                        $deviasi_jml_old = 0;
+                    }
+                    $diff_deviasi_jml = $deviasi_jml_old - $deviasi_jml;
+                    /**
+                     * misal deviasi_jml sebelumnya lebi besar daripada deviasi jmlh yang saat ini diinput:
+                     * 10 - 5 = 5
+                     * -2 - (-8) = 6
+                     * jumlah akhir yang tadinya 110 misal, menjadi:
+                     * 110 - 5 = 105
+                     * 98 - 6 = 92
+                     */
+                    $jumlah_akhir -= $diff_deviasi_jml;
+                    $jumlah_total_new -= $diff_deviasi_jml;
+                    $harga_total_new -= $diff_deviasi_jml * $harga_item;
+
+                    //
+                }
             }
+
+            // $jumlah_akhir += $deviasi_jml;
+            // $jumlah_total_new += $jumlah_akhir;
+            // $harga_total_new += $jumlah_akhir * $harga_item;
 
             if ($jml_selesai === $jumlah_akhir) {
                 $status = 'SELESAI';

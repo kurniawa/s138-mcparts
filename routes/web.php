@@ -62,6 +62,8 @@ Route::get('/about', function () {
  */
 Route::get('/nota', [NotaController::class, 'index']);
 Route::get('/nota/nota_baru-pilih_spk', [NotaController::class, 'notaBaru_pilihSPK']);
+Route::post('/nota/nota_baru-pilih_spk-pilih_nota', [NotaController::class, 'notaBaru_pilihSPK_pilihNota']);
+Route::post('/nota/notaBaru-pSPK-pNota-pItem', [NotaController::class, 'notaBaru_pSPK_pNota_pItem']);
 
 // LOGIN & REGISTER coment dikit ah
 Route::get('/login', [LoginController::class, "index"])->middleware('guest')->name('login');

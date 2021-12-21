@@ -17,8 +17,16 @@ class CreateNotasTable extends Migration
         Schema::create('notas', function (Blueprint $table) {
             $table->id();
             $table->string('no_nota', 20);
-            $table->foreignId("created_by");
-            $table->timestamp("created_at")->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans');
+            $table->foreignId('reseller_id')->nullable()->constrained('pelanggans');
+            $table->string('status', 50);
+            $table->text('data_nota_item');
+            $table->integer('harga_total');
+            $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->foreignId('updated_by')->nullable()->constrained('users');
+            $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('finished_at')->nullable();
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
     }
 

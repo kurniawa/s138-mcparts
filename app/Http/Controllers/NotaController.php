@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Nota;
+use App\Spk;
 use Illuminate\Http\Request;
+use App\SpkNotas;
 
 class NotaController extends Controller
 {
@@ -44,7 +46,59 @@ class NotaController extends Controller
          * Form pilihan spk yang ingin dibuatkan nota nya akan muncul. Daftar spk yang ada di pilihan adalah SPK dengan status "SELESAI"
          * atau "SEBAGIAN"
          */
-        $data = [];
+        $available_spk = Spk::where('status', 'SEBAGIAN')->orWhere('status', 'SELESAI')->get();
+        // dump('available_spk');
+        // dump($available_spk);
+
+        $data = [
+            'csrf' => csrf_token(),
+            'available_spk' => $available_spk,
+        ];
         return view('nota/nota_baru-pilih_spk', $data);
+    }
+
+    public function notaBaru_pilihSPK_pilihNota(Request $request)
+    {
+
+        $post = $request->input();
+        dump('post');
+        dump($post);
+
+        $spk_id = $post['spk_id'];
+        $spk_nota_this = SpkNotas::where('spk_id', $spk_id)->get();
+        dump('spk_nota dengan spk_id ini');
+        dump($spk_nota_this);
+
+        $available_nota = [];
+        for ($i = 0; $i < count($spk_nota_this); $i++) {
+            $available_nota_temp = Nota::find($spk_nota_this[$i]['nota_id']);
+            array_push($available_nota, $available_nota_temp);
+        }
+        dump('available_nota');
+        dump($available_nota);
+
+        $data = [
+            'csrf' => csrf_token(),
+            'available_nota' => $available_nota,
+            'spk_id' => $spk_id
+        ];
+        return view('nota/nota_baru-pilih_spk-pilih_nota', $data);
+    }
+
+    public function notaBaru_pSPK_pNota_pItem(Request $request)
+    {
+
+        $post = $request->input();
+        dump('post');
+        dump($post);
+
+        $spk_id = $post['spk_id'];
+
+
+        $data = [
+            'csrf' => csrf_token(),
+            // 'available_spk' => $available_spk
+        ];
+        return view('nota/nota_baru-pSPK-pNota-pItem', $data);
     }
 }
