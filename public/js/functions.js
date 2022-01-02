@@ -447,8 +447,8 @@ function createCheckboxConfirmList (params, my_csrf) {
         });
 
         /**CHECKPOINT list_html */
-        console.log('list_html');
-        console.log(list_html);
+        // console.log('list_html');
+        // console.log(list_html);
 
         // DROPDOWN
         var html_dd_title = "";
@@ -542,6 +542,17 @@ function createCheckboxConfirmList (params, my_csrf) {
  * Nanti kalo ke disable otomatis array length nya jg mengikuti jadi berkurang.
  * Nanti di file db nya tinggal diproses secara loop
  * 
+ * var isCheckedParams = {
+        id_dd: `#dd_checkbox_show-${k}`,
+        class_checkbox: ".dd_checkbox",
+        id_checkbox: `#dd_checkbox-${k}`,
+        id_button: `#${params.button.id}`
+    };
+
+    isCheckedParamsAll.push(isCheckedParams);
+
+    isCheckedParams = JSON.stringify(isCheckedParams);
+ * 
  */
 
 function isChecked (params) {
@@ -552,15 +563,18 @@ function isChecked (params) {
     // const dd = document.querySelector(params.id_dd);
 
     // SHOW DD
+    // console.log(checkbox.checked);
     if (checkbox.checked == true) {
-        // console.log(checkbox.checked);
         $(params.id_dd).show(300);
         // document.querySelector(params.id_dd).getElementsByTagName('input').disabled = false;
         $(`${params.id_dd} :input`).prop("disabled", false);
+        // console.log($(`${params.id_dd} :input`).prop("disabled"));
         // dd.style.display = "block";
     } else {
         $(params.id_dd).hide(300);
         $(`${params.id_dd} :input`).prop("disabled", true);
+        // console.log($(`${params.id_dd} :input`).prop("disabled"));
+
         // document.querySelector(params.id_dd).getElementsByTagName('input').disabled = true;
         // setTimeout(() => {
         // dd.style.display = "none";
@@ -568,12 +582,43 @@ function isChecked (params) {
     }
 
     // SHOW BUTTON
-    if (checkbox_all.length !== 0) {
-        // console.log("checked");
-        btnToShow.style.display = "block";
-    } else {
-        btnToShow.style.display = "none";
+    // console.log('btnToShow');
+    // console.log(btnToShow);
+    if (btnToShow !== null) {
+        if (checkbox_all.length !== 0) {
+            // console.log("checked");
+            btnToShow.style.display = "block";
+        } else {
+            btnToShow.style.display = "none";
+        }
+    }
+
+    if (typeof params.to_uncheck !== 'undefined') {
+        console.log('run uncheck!');
+
+        var to_uncheck = JSON.parse(params.to_uncheck);
+
+        console.log(to_uncheck);
+        document.querySelector(to_uncheck.id_checkbox).checked = false;
+        isChecked(to_uncheck);
     }
 
 }
 // END: Memunculkan tombol selesai
+
+
+/**DATE TODAY */
+
+function getDateToday () {
+    var now = new Date();
+    var month = (now.getMonth() + 1);
+    var day = now.getDate();
+    if (month < 10)
+        month = "0" + month;
+    if (day < 10)
+        day = "0" + day;
+    var today = now.getFullYear() + '-' + month + '-' + day;
+
+    return today;
+
+}

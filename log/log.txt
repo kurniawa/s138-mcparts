@@ -1,3 +1,21 @@
+2022-01-02 - Minggu
+===================
+Nonton Youtube, percakapan Bossman dengan Sandi Uno:
+* Store akan semakin sepi, semua harus beralih ke digital
+* generasi millenial memikirkan tentang sustainability
+
+Hari ini memperbaiki proses tetapkan item spk selesai dan penampilan nya. Terutama penampilan status dan deviasi_jml
+
+2021-12-23 - Kamis
+==================
+Input datetime Dengan Value sekarang
+------------------------------------
+<input type="datetime" class="input-select-option-1 pb-1em" name="tgl_pembuatan" id="inputTglPembuatan" value="{{ date('Y-m-d\TH:i:s') }}">
+
+Menggunakan JavaScript
+----------------------
+document.getElementById('date_today-1').valueAsDate = new Date();
+
 2021-12-21 - Selasa
 ===================
 Seeding Fresh

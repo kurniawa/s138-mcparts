@@ -11,7 +11,7 @@
 
     <div class="b-1px-solid-grey">
         <div class="text-center">
-            <h2>Surat Perintah Kerja</h2>
+            <h2>Nota Baru</h2>
         </div>
         <div class="grid-3-25_10_auto m-0_5em grid-row-gap-1em">
             <div>No.</div>
@@ -19,7 +19,7 @@
             <div id="divSPKNumber" class="font-weight-bold"></div>
             <div>Tanggal</div>
             <div>:</div>
-            <div id="divTglPembuatan" class="font-weight-bold"></div>
+            <div id="divTglPembuatan" class="font-weight-bold"><input type="datetime" class="input-select-option-1 pb-1em" name="tgl_pembuatan" id="inputTglPembuatan" value="{{ date('Y-m-d\TH:i:s') }}"></div>
             <div>Untuk</div>
             <div>:</div>
             <div id="divSPKCustomer" class="font-weight-bold"></div>

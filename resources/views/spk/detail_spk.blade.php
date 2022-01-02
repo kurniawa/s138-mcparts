@@ -232,21 +232,23 @@
         }
 
         // UNTUK PENENTUAN WARNA, METODE diatas kita timpa dengan metode berikut:
-        if (spk_item[i].status === "PROSES" || spk_item[i].status === null) {
-            fColor = "color-red";
-        } else {
+
+        if (spk_item[i].status === 'SELESAI') {
             fColor = "color-blue-purple";
+        } else {
+            fColor = "color-red";
         }
+
         // END MENENTUKAN warna nama item
 
-        // MENAMPILKAN DAVIASI JUMLAH
+        // MENAMPILKAN DEVIASI JUMLAH
         var textContent_deviasi_jml = `${spk_item[i].jumlah} <span style='color:salmon'>`;
         var textContent_jumlah = ``;
         if (typeof spk_item[i].deviasi_jml !== 'undefined' && spk_item[i].deviasi_jml !== null) {
             const deviasi_jml = spk_item[i].deviasi_jml;
             if (deviasi_jml > 0) {
                 textContent_deviasi_jml += ` +${deviasi_jml}`;
-            } else {
+            } else if (deviasi_jml < 0) {
                 textContent_deviasi_jml += ` ${deviasi_jml}`;
             }
         }

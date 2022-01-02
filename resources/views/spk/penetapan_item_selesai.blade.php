@@ -42,7 +42,26 @@
     </div> -->
 
 </div>
+{{-- <div id="divItemList"></div>
+
+PUSING NGELIAT FUNCTION YANG GUA BIKIN SENDIRI CUK
+GUA BUAT MANUAL LAGI AJA DAH!
+--}}
+
 <div id="divItemList"></div>
+
+<div id="divItemList2" class="p-1em">
+    <form action="/spk/penetapan_item_selesai-db" method="POST">
+        @csrf
+        <input type='checkbox' name='main_checkbox' id='main_checkbox' onclick="checkAll(this.id, 'dd');"> Pilih Semua
+        <table style="width:100%;" id="tableItemList"></table>
+
+        <div id="divMarginBottom" style="height: 20vh;"></div>
+
+        <button id="btnSelesai_new" type="submit" class="btn-warning-full" style="display:none">Konfirmasi</button>
+        <input type="hidden" name="spk_id" value="{{ $spk['id'] }}">
+    </form>
+</div>
 
 <div id="divMarginBottom" style="height: 20vh;"></div>
 <style>
@@ -72,6 +91,135 @@
 
     const my_csrf = {!! json_encode($csrf, JSON_HEX_TAG) !!};
 
+    const spk_produks = {!! json_encode($spk_produks, JSON_HEX_TAG) !!}
+    console.log('spk_produks');
+    console.log(spk_produks);
+
+    var htmlSPKItem = '';
+    var date_today = getDateToday();
+    // console.log('date_today');
+    // console.log(date_today);
+    
+    for (let i = 0; i < data_spk_item.length; i++) {
+        /*
+        htmlSPKItem: menampung element html untuk List SPK Item
+        htmlDD: Dropdown pertama, nanti nya akan disisipkan ke htmlSPKItem
+        htmlDD2: Dropdown kedua, nanti nya akan disisipkan ke htmlSPKItem
+        */
+        var htmlDD = '';
+        var htmlDD2 = '';
+        var jml_selesai = 0;
+        var deviasi_jml = 0;
+        var sisa_jml = data_spk_item[i].jumlah;
+
+        if (typeof data_spk_item[i].deviasi_jml !== 'undefined') {
+            deviasi_jml = data_spk_item[i].deviasi_jml;
+        }
+        
+        if (typeof data_spk_item[i].jml_selesai !== 'undefined') {
+            jml_selesai = data_spk_item[i].jml_selesai;
+            sisa_jml = data_spk_item[i].jumlah - jml_selesai + deviasi_jml;
+        }
+
+        // Menentukan warna
+        var fColor = 'tomato';
+
+        // Menentukan tampilan Jumlah + deviasi_jml
+        var divJml = `${data_spk_item[i].jumlah}`;
+        if (deviasi_jml !== 0) {
+            if (deviasi_jml < 0) {
+                divJml += `<span>${deviasi_jml}</span>`;
+            } else {
+                divJml += `<span>+${deviasi_jml}</span>`;
+            }
+        }
+
+        if (sisa_jml === 0) {
+            fColor = 'slateblue';
+        }
+        /*
+        Parameter untuk Dropdown kedua yang akan di kirim ke function isChecked
+        */
+       var params_dd2 = {
+           id_dd: `#DD2-${i}`,
+           class_checkbox: ".dd_checkbox",
+           id_checkbox: `#ddCheckbox2-${i}`,
+            id_button: `#none`
+        }
+
+        params_dd2 = JSON.stringify(params_dd2);
+
+        /*
+        Menentukan tahapan dari produk
+        */
+       var htmlTahapSelesai = '';
+       
+       if (spk_produks[i].jmlSelesai_kapan !== null && spk_produks[i].jmlSelesai_kapan !== '') {
+
+            var jmlSelesai_kapan_i = spk_produks[i].jmlSelesai_kapan;
+            jmlSelesai_kapan_i = JSON.parse(jmlSelesai_kapan_i);
+
+            console.log('jmlSelesai_kapan_i');
+            console.log(jmlSelesai_kapan_i);
+
+            if (jmlSelesai_kapan_i.length !== 0) {
+                for (let i2 = 0; i2 < jmlSelesai_kapan_i.length; i2++) {
+                    htmlTahapSelesai += `<option value='${jmlSelesai_kapan_i[i2].tahap}'>Tahap - ${jmlSelesai_kapan_i[i2].tahap}</option>`;
+                }
+            }
+        } else {
+            htmlTahapSelesai += '<option value="1">Tahap - 1</option>';
+        }
+
+        htmlDD += `
+            <div>Jumlah Selesai Sementara: ${jml_selesai}</div>
+            <div>Sisa Jumlah yang dapat diinput: ${sisa_jml}</div>
+            <table>
+                <tr><td>Deviasi(+/-)</td><td>:</td><td><input type='number' name='deviasi_jml[]' value=${deviasi_jml}></td></tr>
+                <tr><td>Tambah Jml. Selesai</td><td>:</td><td><input type='number' name='tbh_jml_selesai[]' value=${sisa_jml}></td></tr>
+                <tr><td>Tgl. Selesai</td><td>:</td><td><input type='date' id='date_today-${i}' name='tgl_selesai[]' value='${date_today}'></td></tr>
+                <tr><td><input type='hidden' name='spk_produk_id[]' value='${spk_produks[i].id}' disabled></td></tr>
+            </table>
+            <table>
+                <tr><td><input type='checkbox' class='dd_checkbox2' id='ddCheckbox2-${i}' name='tahapan[]' value='${i}' onclick='isChecked(${params_dd2});'></td><td>Anda ingin tambahkan tahapan?</td></tr>
+            </table>
+        `;
+
+        htmlDD2 += `
+            <table>
+                <tr><td><select name='tahap-${i}'>${htmlTahapSelesai}</select></td></tr>
+                <tr><td>Tgl. Selesai</td><td>:</td><td><input type='date' id='date_today-${i}' name='tgl_selesai_dd-${i}' value='${date_today}'></td></tr>
+            </table>
+        `;
+
+        /*
+        Parameter untuk Dropdown pertama yang akan di kirim ke function isChecked
+        */
+        
+        var params_dd = {
+            id_dd: `#DD-${i}`,
+            class_checkbox: ".dd",
+            id_checkbox: `#ddCheckbox-${i}`,
+            id_button: `#btnSelesai_new`,
+            to_uncheck: params_dd2,
+        }
+
+        params_dd = JSON.stringify(params_dd);
+
+        htmlSPKItem += `
+            <tr class='bb-1px-solid-grey'>
+                <td style='color:${fColor};font-weight:bold;font-size:1em;padding-bottom:1em;padding-top:1em;' class=''>${data_spk_item[i].nama}</td>
+                <td style='color:green;font-weight:bold;'>${divJml}</td>
+                <td><input type='checkbox' id='ddCheckbox-${i}' class='dd' onclick='isChecked(${params_dd});'></td>
+            </tr>
+            <tr id='DD-${i}' style='display:none'><td colspan=3>${htmlDD}</td></tr>
+            <tr id='DD2-${i}' style='display:none'><td colspan=3>${htmlDD2}</td></tr>
+        `;
+        
+    }
+
+    $('#tableItemList').html(htmlSPKItem);
+
     // var produk = <-?= json_encode($array_produk); ?>;
     // console.log(produk);
 
@@ -85,7 +233,6 @@
     // console.log(daftarNota);
 
     $jmlTotalSPK = 0;
-    var htmlSPKItem = '';
     var element_to_toggle = "";
 
     // for (var i = 0; i < data_spk_item.length; i++) {
@@ -165,11 +312,37 @@
 
     $('#divSPKNumber').html(spk.id);
     $('#divTitleDesc').html(spk.ktrg);
-    $('#divItemList').html(htmlSPKItem);
+    // $('#divItemList').html(htmlSPKItem);
     $('#divTglPembuatan').html(tgl_pembuatan_dmY);
     $('#divSPKCustomer').html(`${pelanggan.nama} - ${pelanggan.daerah}`);
     $('#divTitleDesc').html(spk.judul);
     $('#taKeteranganTambahan').html(spk.ktrg);
+
+    function checkAll(mainCheckbox_id, classCheckboxChilds) {
+        // console.log('mainCheckbox_id, classCheckboxChilds');
+        // console.log(mainCheckbox_id, classCheckboxChilds);
+        var checkboxChilds = document.querySelectorAll(`.${classCheckboxChilds}`);
+        // console.log(checkboxChilds);
+        // console.log(checkboxChilds[0]);
+        // console.log(checkboxChilds[0].id);
+
+        var i = 0;
+        checkboxChilds.forEach(checkboxChild => {
+            document.getElementById(checkboxChild.id).checked = true;
+
+            var params_dd = {
+                id_dd: `#DD-${i}`,
+                class_checkbox: ".dd",
+                id_checkbox: `#ddCheckbox-${i}`,
+                id_button: `#btnSelesai_new`
+            }
+
+            // params_dd = JSON.stringify(params_dd);
+            isChecked(params_dd);
+
+            i++;
+        });
+    }
 </script>
 
 
@@ -274,7 +447,10 @@ Coba cari tau, ini buat apa ya?
         }
     };
 
-    createCheckboxConfirmList(checkboxConfirmListParams, my_csrf);
+
+    // FUNGSI SEBELUMNYA:
+    // createCheckboxConfirmList(checkboxConfirmListParams, my_csrf);
+    // RUN: END
     // var htmlCheckboxList = createCheckboxConfirmList(checkboxConfirmListParams);
     // var containerCheckboxList = document.createElement('div');
     // containerCheckboxList.classList = "m-1em";

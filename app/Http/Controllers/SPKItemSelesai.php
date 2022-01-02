@@ -13,6 +13,7 @@ class SPKItemSelesai extends Controller
     public function index(Request $request)
     {
         $reload_page = $request->session()->get('reload_page');
+        // $reload_page = true;
         if ($reload_page === true) {
             $request->session()->put('reload_page', false);
         }
@@ -39,6 +40,17 @@ class SPKItemSelesai extends Controller
         $tgl_pembuatan = date('Y-m-d', strtotime($spk['created_at']));
         $tgl_pembuatan_dmY = date('d-m-Y', strtotime($tgl_pembuatan));
 
+        $spk_produks = SpkProduk::where('spk_id', $spk['id'])->get();
+        dump('spk_produks');
+        dump($spk_produks);
+
+        // $jmlSelesai_kapan = array();
+        // for ($i=0; $i < count($spk_produks); $i++) { 
+        //     if ($spk_produks[$i]['jmlSelesai_kapan'] !== null && $spk_produks[$i]['jmlSelesai_kapan'] !== '') {
+        //         array_push($jmlSelesai_kapan, )
+        //     }
+        // }
+
         $data = [
             'spk' => $spk,
             'pelanggan' => $pelanggan,
@@ -47,6 +59,7 @@ class SPKItemSelesai extends Controller
             'tgl_pembuatan_dmY' => $tgl_pembuatan_dmY,
             'csrf' => csrf_token(),
             'reload_page' => $reload_page,
+            'spk_produks' => $spk_produks,
         ];
 
         return view('spk.penetapan_item_selesai', $data);
@@ -65,6 +78,7 @@ class SPKItemSelesai extends Controller
         $post = $request->input();
         dump('post');
         dump($post);
+
         // dd($post);
 
         // 1)
@@ -82,6 +96,10 @@ class SPKItemSelesai extends Controller
         $data_spk_item_new = $data_spk_item_old;
 
         $d_spk_produk_id = $post['spk_produk_id'];
+
+        /**
+         * Jumlah total mengacu pada jumlah item seharusnya baik yang selesai atau yang belum.
+         */
         $jumlah_total_old = (int)$spk['jumlah_total'];
         $harga_total_old = (int)$spk['harga_total'];
         $jumlah_total_new = $jumlah_total_old;
@@ -93,12 +111,33 @@ class SPKItemSelesai extends Controller
             // dump('spk_produk_this');
             // dump($spk_produk_this);
             $deviasi_jml = (int)$post['deviasi_jml'][$i];
-            $jml_selesai = (int)$post['jml_selesai'][$i];
+            $tbh_jml_selesai = (int)$post['tbh_jml_selesai'][$i];
             // $jumlah_akhir adalah jumlah masing-masing item setelah adanya deviasi jumlah
-            $jumlah_akhir = $spk_produk_this['jumlah'];
+            $jumlah_akhir = $spk_produk_this['jumlah'] + $deviasi_jml;
             $harga_item = $spk_produk_this['harga'];
             $harga_total_item = 0;
-            $status = 'PROSES';
+
+            // status sebelumnya
+            $status = $spk_produk_this['status'];
+
+            $jmlSelesai_kapan = $spk_produk_this['jmlSelesai_kapan'];
+
+            $jml_selesai_old = $spk_produk_this['jml_selesai'];
+
+            $i_jmlSelesai_kapan = 0;
+
+            if ($jmlSelesai_kapan !== null && $jmlSelesai_kapan !== '') {
+                $jmlSelesai_kapan = json_decode($jmlSelesai_kapan, true);
+                $i_jmlSelesai_kapan = count($jmlSelesai_kapan);
+                /**
+                 * index dimulai dari nol, sedangkan jumlah count dimulai dari angka 1, sehingga jumlah count
+                 * dapat menjadi index tahap berikutnya.
+                 */
+            } else {
+                $jmlSelesai_kapan = array();
+                dump('jmlSelesai_kapan');
+                dump($jmlSelesai_kapan);
+            }
 
             // 2)
             // dump('jumlah_akhir');
@@ -130,18 +169,102 @@ class SPKItemSelesai extends Controller
             // $jumlah_total_new += $jumlah_akhir;
             // $harga_total_new += $jumlah_akhir * $harga_item;
 
-            if ($jml_selesai === $jumlah_akhir) {
+            $jml_selesai_new = $jml_selesai_old + $tbh_jml_selesai;
+
+            // Apabila memang ada inputan penambahan jml_selesai, jadi bukan hanya inputan deviasi_jml saja, baru dihitungin semua nya dan
+            // diubah isi JSON jmlSelesai_kapan
+
+            if ($jml_selesai_new <= $jumlah_akhir && $jml_selesai_new >= 0 && $tbh_jml_selesai !== 0) {
+                // Apabila sebelumnya memang belum ada item yang selesai
+                if (count($jmlSelesai_kapan) === 0) {
+                    $arrToPush = [
+                        'tahap' => 1,
+                        'jmlSelesai' => $tbh_jml_selesai,
+                        'tglSelesai' => date('Y-m-d', strtotime($post['tgl_selesai'][$i])),
+                    ];
+
+                    array_push($jmlSelesai_kapan, $arrToPush);
+                } else {
+                    // Apabila memang sebelumnya sudah ada yang selesai dan juga checkbox tahapan di klik
+                    if (isset($post['tahapan'])) {
+                        dump('tahapan');
+                        dump($post['tahapan']);
+
+                        // Apabila tahapan di klik, maka kita perlu tau, apakah tahapan yang dipilih adalah tahapan yang sudah
+                        // pernah dipilih sebelumnya. Kalo iya maka:
+                        // Dicari dulu index tahapan yang sudah ada di JSON array urutan ke berapa
+                        $tahap_new = (int)$post["tahap-$i"];
+
+                        $i_tahap_sama = 0;
+                        for ($i2 = 0; $i2 < count($jmlSelesai_kapan); $i2++) {
+                            if ($tahap_new === $jmlSelesai_kapan[$i2]['tahap']) {
+                                $i_tahap_sama = $i2;
+                                break;
+                            }
+                        }
+                        if ($i_tahap_sama === 0) {
+                            // disini berrti tidak ada tahap yang sama, otomatis ini merupakan tahap yang baru
+                            $arrToPush = [
+                                'tahap' => $post["tahap-$i"],
+                                'jmlSelesai' => $tbh_jml_selesai,
+                                'tglSelesai' => date('Y-m-d', strtotime($post["tgl_selesai_dd-$i"])),
+                            ];
+
+                            array_push($jmlSelesai_kapan, $arrToPush);
+                        } else {
+                            // disini brrti tahap yang sama, artinya JSON yang sebelumnya diganti dengan ini
+                            $jmlSelesai_kapan[$i_tahap_sama] = [
+                                'tahap' => $post["tahap-$i"],
+                                'jmlSelesai' => $tbh_jml_selesai,
+                                'tglSelesai' => date('Y-m-d', strtotime($post["tgl_selesai_dd-$i"])),
+                            ];
+                        }
+
+                        // dump('arrToPush');
+                        // dd($arrToPush);
+                    } else {
+                    }
+                }
+            } else {
+
+                if ($jml_selesai_new > $jumlah_akhir) {
+                    dump('ada error di perhitungan');
+                    dump('Jumlah item yang telah selesai, melebihi jumlah item yang telah ditetapkan sebelumnya!');
+                    $request->session()->put('reload_page', true);
+
+                    $data = [
+                        'go_back_number' => -2,
+                    ];
+
+                    return view('layouts.go-back-page', $data);
+                }
+            }
+
+            if ($jml_selesai_new === $jumlah_akhir) {
                 $status = 'SELESAI';
-            } elseif ($jml_selesai !== 0) {
+            } elseif ($jml_selesai_new !== 0) {
                 $status = 'SEBAGIAN';
             }
 
             $spk_produk_this->deviasi_jml = $deviasi_jml;
-            $spk_produk_this->jml_selesai = $jml_selesai;
+            $spk_produk_this->jml_selesai = $jml_selesai_new;
+
+            // Supaya di database tetap null di bagian jmlSelesai_kapan nya, apabila memang tidak ada perubahan
+            if (count($jmlSelesai_kapan) !== 0) {
+                $spk_produk_this->jmlSelesai_kapan = json_encode($jmlSelesai_kapan);
+            }
+
             $spk_produk_this->status = $status;
 
             $finished_at = date('Y-m-d', strtotime($post['tgl_selesai'][$i]));
-            $spk_produk_this->finished_at = $finished_at;
+            // $spk_produk_this->finished_at = $finished_at;
+
+            /**
+             * Cara update kolom baru: jmlSelesai_kapan, nota_jml_kapan dan status_nota
+             * Cara updatenya berbeda karena jmlSelesai_kapan dan nota_jml_kapan berbentuk string json
+             */
+            // $jmlSelesai_kapan_this = $spk_produk_this->jmlSelesai_kapan;
+
 
             $spk_produk_this->save();
 
@@ -173,7 +296,7 @@ class SPKItemSelesai extends Controller
             dump($index_data_spk_item);
 
             $data_spk_item_new[$index_data_spk_item]['deviasi_jml'] = $deviasi_jml;
-            $data_spk_item_new[$index_data_spk_item]['jml_selesai'] = $jml_selesai;
+            $data_spk_item_new[$index_data_spk_item]['jml_selesai'] = $jml_selesai_new;
             $data_spk_item_new[$index_data_spk_item]['status'] = $status;
         }
 
@@ -184,7 +307,7 @@ class SPKItemSelesai extends Controller
         dump('UPDATE STATUS SPK: spk_produk');
         dump($spk_produk);
 
-        $spk_status = 'PROSES';
+        $spk_status = $spk->status;
 
         for ($i = 0; $i < count($spk_produk); $i++) {
             if ($spk_produk[$i]['status'] !== 'PROSES') {

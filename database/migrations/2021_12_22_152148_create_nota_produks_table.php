@@ -5,16 +5,18 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class NotaProduk extends Migration
+class CreateNotaProduksTable extends Migration
 {
     /**
      * Run the migrations.
-     *
+     * Ini nanti nya akan seperti spk_produks, dimana akan dibikin bentuk json nya yang di tampung pada nota, supaya tidak banyak menggunakan
+     * kapasitas database
+     * 
      * @return void
      */
     public function up()
     {
-        Schema::create('nota_produk', function (Blueprint $table) {
+        Schema::create('nota_produks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('spk_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('produk_id');
@@ -36,6 +38,6 @@ class NotaProduk extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('nota_produk');
+        Schema::dropIfExists('nota_produks');
     }
 }

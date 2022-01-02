@@ -136,7 +136,7 @@ if (spks == undefined || spks.length == 0) {
                 const deviasi_jml = spk_item[k].deviasi_jml;
                 if (deviasi_jml < 0) {
                     textContent_jumlah += ` ${deviasi_jml}`;
-                } else {
+                } else if (deviasi_jml > 0) {
                     textContent_jumlah += ` +${deviasi_jml}`;
                 }
             }
