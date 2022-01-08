@@ -163,9 +163,12 @@ GUA BUAT MANUAL LAGI AJA DAH!
             console.log(jmlSelesai_kapan_i);
 
             if (jmlSelesai_kapan_i.length !== 0) {
-                for (let i2 = 0; i2 < jmlSelesai_kapan_i.length; i2++) {
-                    htmlTahapSelesai += `<option value='${jmlSelesai_kapan_i[i2].tahap}'>Tahap - ${jmlSelesai_kapan_i[i2].tahap}</option>`;
+                let i2 = 0
+                for ( i2 ; i2 < jmlSelesai_kapan_i.length; i2++) {
+                    htmlTahapSelesai += `<option value=${jmlSelesai_kapan_i[i2].tahap}>Tahap - ${jmlSelesai_kapan_i[i2].tahap}</option>`;
                 }
+                i2++;
+                htmlTahapSelesai += `<option value=${i2}>Tahap - ${i2}</option>`;
             }
         } else {
             htmlTahapSelesai += '<option value="1">Tahap - 1</option>';
@@ -175,9 +178,9 @@ GUA BUAT MANUAL LAGI AJA DAH!
             <div>Jumlah Selesai Sementara: ${jml_selesai}</div>
             <div>Sisa Jumlah yang dapat diinput: ${sisa_jml}</div>
             <table>
-                <tr><td>Deviasi(+/-)</td><td>:</td><td><input type='number' name='deviasi_jml[]' value=${deviasi_jml}></td></tr>
-                <tr><td>Tambah Jml. Selesai</td><td>:</td><td><input type='number' name='tbh_jml_selesai[]' value=${sisa_jml}></td></tr>
-                <tr><td>Tgl. Selesai</td><td>:</td><td><input type='date' id='date_today-${i}' name='tgl_selesai[]' value='${date_today}'></td></tr>
+                <tr><td>Deviasi(+/-)</td><td>:</td><td><input type='number' name='deviasi_jml[]' value=${deviasi_jml} disabled></td></tr>
+                <tr><td>Tambah Jml. Selesai</td><td>:</td><td><input type='number' name='tbh_jml_selesai[]' value=${sisa_jml} disabled></td></tr>
+                <tr><td>Tgl. Selesai</td><td>:</td><td><input type='date' id='date_today-${i}' name='tgl_selesai[]' value='${date_today}' disabled></td></tr>
                 <tr><td><input type='hidden' name='spk_produk_id[]' value='${spk_produks[i].id}' disabled></td></tr>
             </table>
             <table>

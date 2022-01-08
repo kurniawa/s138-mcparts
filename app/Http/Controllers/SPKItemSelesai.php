@@ -174,7 +174,9 @@ class SPKItemSelesai extends Controller
             // Apabila memang ada inputan penambahan jml_selesai, jadi bukan hanya inputan deviasi_jml saja, baru dihitungin semua nya dan
             // diubah isi JSON jmlSelesai_kapan
 
-            if ($jml_selesai_new <= $jumlah_akhir && $jml_selesai_new >= 0 && $tbh_jml_selesai !== 0) {
+            // 305, 160
+            dump($jml_selesai_new, $jumlah_akhir);
+            if ($jml_selesai_new <= $jumlah_akhir && $jml_selesai_new >= 0 && $tbh_jml_selesai > 0) {
                 // Apabila sebelumnya memang belum ada item yang selesai
                 if (count($jmlSelesai_kapan) === 0) {
                     $arrToPush = [
@@ -188,12 +190,14 @@ class SPKItemSelesai extends Controller
                     // Apabila memang sebelumnya sudah ada yang selesai dan juga checkbox tahapan di klik
                     if (isset($post['tahapan'])) {
                         dump('tahapan');
-                        dump($post['tahapan']);
+                        $i_tahapan = $post['tahapan'][$i];
+                        dump($i_tahapan);
 
                         // Apabila tahapan di klik, maka kita perlu tau, apakah tahapan yang dipilih adalah tahapan yang sudah
                         // pernah dipilih sebelumnya. Kalo iya maka:
                         // Dicari dulu index tahapan yang sudah ada di JSON array urutan ke berapa
-                        $tahap_new = (int)$post["tahap-$i"];
+                        $tahap_new = (int)$post["tahap-$i_tahapan"];
+                        dump('tahap_new: ', $tahap_new);
 
                         $i_tahap_sama = 0;
                         for ($i2 = 0; $i2 < count($jmlSelesai_kapan); $i2++) {
@@ -205,7 +209,7 @@ class SPKItemSelesai extends Controller
                         if ($i_tahap_sama === 0) {
                             // disini berrti tidak ada tahap yang sama, otomatis ini merupakan tahap yang baru
                             $arrToPush = [
-                                'tahap' => $post["tahap-$i"],
+                                'tahap' => $tahap_new,
                                 'jmlSelesai' => $tbh_jml_selesai,
                                 'tglSelesai' => date('Y-m-d', strtotime($post["tgl_selesai_dd-$i"])),
                             ];
@@ -223,6 +227,99 @@ class SPKItemSelesai extends Controller
                         // dump('arrToPush');
                         // dd($arrToPush);
                     } else {
+                    }
+                }
+            } else if ($tbh_jml_selesai < 0 && $jumlah_akhir >= $tbh_jml_selesai) {
+                // INI ADALAH KASUS PENGURANGAN. Untuk masuk ke instruksi disini, maka $tbh_jml_selesai harus minus dan $jumlah_akhir harus >= dari $tbh_jml_selesai
+                // Disini juga akan diperhatikan TAHAPAN nya
+                if (isset($post['tahapan'])) {
+                    dump('tahapan');
+                    $i_tahapan = $post['tahapan'][$i];
+                    dump($i_tahapan);
+
+                    // Apabila tahapan di klik, maka kita perlu tau, apakah tahapan yang dipilih adalah tahapan yang sudah
+                    // pernah dipilih sebelumnya. Kalo iya maka:
+                    // Dicari dulu index tahapan yang sudah ada di JSON array urutan ke berapa
+                    $tahap_new = (int)$post["tahap-$i_tahapan"];
+                    dump('tahap_new: ', $tahap_new);
+
+                    $i_tahap_sama = 0;
+                    $i_tahap_sebelumnya = array();
+                    for ($i2 = 0; $i2 < count($jmlSelesai_kapan); $i2++) {
+                        if ($i2 - 1 !== 0) {
+                            $i_tahap_sebelum_temp = $i2 - 1;
+                            array_push($i_tahap_sebelumnya, $i_tahap_sebelum_temp);
+                        }
+                        if ($tahap_new === $jmlSelesai_kapan[$i2]['tahap']) {
+                            $i_tahap_sama = $i2;
+                            array_push($i_tahap_sebelumnya, $i2);
+                            break;
+                        }
+                    }
+                    if ($i_tahap_sama === 0) {
+                        // disini berrti tidak ada tahap yang sama, otomatis pemilihan tahapan akan diabaikan
+                        // akan mengurangi otomatis dari tahapan sebelumnya apabila ada.
+                        if (count($i_tahap_sebelumnya) !== 0) {
+                            $sisa_pengurangan_jml_selesai = $tbh_jml_selesai;
+                            $i_yang_perlu_hilang = array();
+                            $i_yg_prlu_edit = '?';
+
+                            for ($i3 = count($i_tahap_sebelumnya) - 1; $i3 >= 0; $i3--) {
+                                if ($jmlSelesai_kapan[$i3]['jmlSelesai'] < $sisa_pengurangan_jml_selesai) {
+                                    $sisa_pengurangan_jml_selesai = $jmlSelesai_kapan[$i3]['jmlSelesai'] + $sisa_pengurangan_jml_selesai;
+                                    // array_push($i_yang_perlu_hilang, $i3);
+                                    unset($jmlSelesai_kapan, $i3);
+                                    array_values($jmlSelesai_kapan);
+                                } else if ($jmlSelesai_kapan[$i3]['jmlSelesai'] === $sisa_pengurangan_jml_selesai) {
+                                    $sisa_pengurangan_jml_selesai = 0;
+                                    // array_push($i_yang_perlu_hilang, $i3);
+                                    unset($jmlSelesai_kapan, $i3);
+                                    array_values($jmlSelesai_kapan);
+                                } else if ($jmlSelesai_kapan[$i3]['jmlSelesai'] > $sisa_pengurangan_jml_selesai) {
+                                    $jmlSelesai_kapan[$i3]['jmlSelesai'] = $jmlSelesai_kapan[$i3]['jmlSelesai'] - $sisa_pengurangan_jml_selesai;
+                                }
+                            }
+                        }
+
+                        // $arrToPush = [
+                        //     'tahap' => $tahap_new,
+                        //     'jmlSelesai' => $tbh_jml_selesai,
+                        //     'tglSelesai' => date('Y-m-d', strtotime($post["tgl_selesai_dd-$i"])),
+                        // ];
+
+                        // array_push($jmlSelesai_kapan, $arrToPush);
+                    } else {
+                        // disini brrti tahap yang sama, artinya JSON yang sebelumnya diganti dengan ini
+                        $jmlSelesai_kapan[$i_tahap_sama] = [
+                            'tahap' => $post["tahap-$i"],
+                            'jmlSelesai' => $tbh_jml_selesai,
+                            'tglSelesai' => date('Y-m-d', strtotime($post["tgl_selesai_dd-$i"])),
+                        ];
+                    }
+
+                    // dump('arrToPush');
+                    // dd($arrToPush);
+                } else {
+                    // Disini apabila pengurangan tidak memperhatikan tahapan, otomatis pemilihan tahapan akan diabaikan
+                    // akan mengurangi otomatis dari tahapan sebelumnya apabila ada.
+                    $sisa_pengurangan_jml_selesai = $tbh_jml_selesai;
+
+                    for ($i3 = count($jmlSelesai_kapan) - 1; $i3 >= 0; $i3--) {
+                        if ($jmlSelesai_kapan[$i3]['jmlSelesai'] < $sisa_pengurangan_jml_selesai) {
+                            $sisa_pengurangan_jml_selesai = $jmlSelesai_kapan[$i3]['jmlSelesai'] + $sisa_pengurangan_jml_selesai;
+                            // array_push($i_yang_perlu_hilang, $i3);
+                            unset($jmlSelesai_kapan, $i3);
+                            array_values($jmlSelesai_kapan);
+                        } else if ($jmlSelesai_kapan[$i3]['jmlSelesai'] === $sisa_pengurangan_jml_selesai) {
+                            $sisa_pengurangan_jml_selesai = 0;
+                            // array_push($i_yang_perlu_hilang, $i3);
+                            unset($jmlSelesai_kapan, $i3);
+                            array_values($jmlSelesai_kapan);
+                            break;
+                        } else if ($jmlSelesai_kapan[$i3]['jmlSelesai'] > $sisa_pengurangan_jml_selesai) {
+                            $jmlSelesai_kapan[$i3]['jmlSelesai'] = $jmlSelesai_kapan[$i3]['jmlSelesai'] + $sisa_pengurangan_jml_selesai;
+                            break;
+                        }
                     }
                 }
             } else {

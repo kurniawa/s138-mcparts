@@ -1,3 +1,22 @@
+2022-01-04 - Selasa
+===================
+Remove JSON array item
+-----------------------
+unset($data_spk_item[$index_spk_item]);
+dump('data_spk_item setelah ada yang dihapus');
+dump($data_spk_item);
+
+/**
+    * SETELAH unset(), saya menggunakan array_values() ketika di encode.
+    * Why? Because you're unsetting array's key without re-ordering it.
+    * So after this the only way to keep that in JSON will be encode keys too.
+    * After applying array_values(), however,
+    * you'll get ordered keys (starting from 0) which can be encoded properly without including keys.
+    */
+
+$data_spk_item = json_encode(array_values($data_spk_item));
+dump($data_spk_item);
+
 2022-01-02 - Minggu
 ===================
 Nonton Youtube, percakapan Bossman dengan Sandi Uno:
@@ -10,7 +29,7 @@ Hari ini memperbaiki proses tetapkan item spk selesai dan penampilan nya. Teruta
 ==================
 Input datetime Dengan Value sekarang
 ------------------------------------
-<input type="datetime" class="input-select-option-1 pb-1em" name="tgl_pembuatan" id="inputTglPembuatan" value="{{ date('Y-m-d\TH:i:s') }}">
+<input type="datetime-local" class="input-select-option-1 pb-1em" name="tgl_pembuatan" id="inputTglPembuatan" value="{{ date('Y-m-d\TH:i:s') }}">
 
 Menggunakan JavaScript
 ----------------------

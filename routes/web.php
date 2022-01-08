@@ -63,6 +63,7 @@ Route::get('/about', function () {
 Route::get('/nota', [NotaController::class, 'index']);
 Route::get('/nota/nota_baru-pilih_spk', [NotaController::class, 'notaBaru_pilihSPK']);
 Route::post('/nota/notaBaru-pSPK-pItem', [NotaController::class, 'notaBaru_pSPK_pItem']);
+Route::post('/nota/notaBaru-pSPK-pItem-DB', [NotaController::class, 'notaBaru_pSPK_pItem_DB']);
 Route::post('/nota/notaBaru-pSPK-pNota-pItem', [NotaController::class, 'notaBaru_pSPK_pNota_pItem']);
 
 // LOGIN & REGISTER coment dikit ah

@@ -7,7 +7,7 @@
 </header>
 
 <div class="container m-1em">
-    <form action="/nota/nota_baru-pilih_spk-pilih_nota" method="post">
+    <form action="/nota/notaBaru-pSPK-pItem" method="post">
         <input type="hidden" name="_token" value="{{ $csrf }}">
         <span style="font-weight:bold">Pilihan SPK yang Sebagian atau Seluruhnya SELESAI:</span><br>
         <select name="spk_id" id="selectIDSPK" class="p-1em">
@@ -16,7 +16,7 @@
             @endfor
         </select>
         <br><br>
-        <button type="submit" class="btn-warning">Lanjut -> Pilih Nota</button>
+        <button type="submit" class="btn-warning">Lanjut -> Pilih Item</button>
     </form>
 </div>
 
