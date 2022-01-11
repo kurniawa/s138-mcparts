@@ -111,16 +111,16 @@ if (notas == undefined || notas.length == 0) {
         // HTML Item each SPK
         var htmlItemsEachSPK = '';
 
-        const spk_item = JSON.parse(notas[i].data_spk_item);
-        console.log('spk_item');
-        console.log(spk_item);
+        const nota_item = JSON.parse(notas[i].data_nota_item);
+        console.log('nota_item');
+        console.log(nota_item);
 
-        for (var k = 0; k < spk_item.length; k++) {
-            var textContent_jumlah = `${spk_item[k].jumlah}`;
+        for (var k = 0; k < nota_item.length; k++) {
+            var textContent_jumlah = `${nota_item[k].jumlah}`;
             console.log('define textContent_jumlah');
-            if (typeof spk_item[k].deviasi_jml !== 'undefined') {
+            if (typeof nota_item[k].deviasi_jml !== 'undefined') {
                 console.log('deviasi_jml is defined!');
-                const deviasi_jml = spk_item[k].deviasi_jml;
+                const deviasi_jml = nota_item[k].deviasi_jml;
                 if (deviasi_jml < 0) {
                     textContent_jumlah += ` ${deviasi_jml}`;
                 } else {
@@ -128,7 +128,7 @@ if (notas == undefined || notas.length == 0) {
                 }
             }
             htmlItemsEachSPK = htmlItemsEachSPK +
-                `<div>${spk_item[k].nama}</div><div>${textContent_jumlah}</div>`;
+                `<div>${nota_item[k].nama}</div><div>${textContent_jumlah}</div>`;
         }
 
 

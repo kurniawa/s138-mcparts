@@ -114,6 +114,8 @@ const spk = {!! json_encode($spk, JSON_HEX_TAG) !!};
         var jml_sdh_nota = 0;
         if (nota_item_av[i].nota_jml_kapan !== null && nota_item_av[i].nota_jml_kapan !== '') {
             var nota_jml_kapan = JSON.parse(nota_item_av[i].nota_jml_kapan);
+            console.log('nota_jml_kapan');
+            console.log(nota_jml_kapan);
             for (let index = 0; index < nota_jml_kapan.length; index++) {
                 jml_sdh_nota += nota_jml_kapan[index].jml_item;
             }
@@ -188,7 +190,7 @@ const spk = {!! json_encode($spk, JSON_HEX_TAG) !!};
 
         htmlDD += `
             <table>
-                <tr><td>Jml. sudah Nota</td><td>:</td><td><input type='number' name='jml_input[]' value=${jml_selesai} disabled></td></tr>
+                <tr><td>Jml. sudah Nota</td><td>:</td><td>${jml_sdh_nota}</td></tr>
                 <tr><td>Jml. ingin diinput</td><td>:</td><td><input type='number' name='jml_input[]' value=${jml_selesai} disabled></td></tr>
                 <tr><td><input type='hidden' name='spk_produk_id[]' value='${nota_item_av[i].id}' disabled></td></tr>
             </table>

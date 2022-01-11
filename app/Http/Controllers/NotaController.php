@@ -90,11 +90,11 @@ class NotaController extends Controller
          * 
          */
 
-        $post = $request->input();
-        dump('post');
-        dump($post);
+        $get = $request->input();
+        dump('get');
+        dump($get);
 
-        $spk_id = $post['spk_id'];
+        $spk_id = $get['spk_id'];
         $spk_this = Spk::find($spk_id);
         $pelanggan_this = Pelanggan::find($spk_this['pelanggan_id']);
 
@@ -159,8 +159,12 @@ class NotaController extends Controller
         $d_spk_produk_id = $post['spk_produk_id'];
 
         $data_nota_item = array();
+        $hrg_total_nota = 0;
+        $index_nota_jml_kpn = array(); // Untuk nanti setelah insert nota, bisa balik lagi ke spk_produk untuk edit nota_id
+
         for ($i = 0; $i < count($d_spk_produk_id); $i++) {
             $spk_produk = SpkProduk::find($d_spk_produk_id[$i]);
+            dump('spk_produk: ', $spk_produk);
             $produk = Produk::find($spk_produk['produk_id']);
 
             $hrg_per_item = $spk_produk['harga'];
@@ -170,6 +174,7 @@ class NotaController extends Controller
             }
 
             $hrg_total_item = (int)$hrg_per_item * (int)$post['jml_input'][$i];
+            $hrg_total_nota += $hrg_total_item;
 
             $nota_item = [
                 'produk_id' => $produk['id'],
@@ -195,28 +200,65 @@ class NotaController extends Controller
 
             // UPDATE spk_produks kolom nota_jml_kapan dan status_nota
 
+            $d_nota_jml_kapan = array();
+
+            if ($spk_produk['nota_jml_kapan'] !== null && $spk_produk['nota_jml_kapan'] !== '') {
+                $d_nota_jml_kapan = json_decode($spk_produk['nota_jml_kapan'], true);
+            }
+
             $nota_jml_kapan = [
                 'nota_id' => '',
                 'jml_item' => $post['jml_input'][$i],
                 'tgl_input' => date('Y-m-d\TH:i:s'),
             ];
 
-            $spk_produk->nota_jml_kapan = $nota_jml_kapan;
+            array_push($d_nota_jml_kapan, $nota_jml_kapan);
+
+            array_push($index_nota_jml_kpn, count($d_nota_jml_kapan) - 1);
+
+            dump('d_nota_jml_kapan: ', $d_nota_jml_kapan);
+            $spk_produk->nota_jml_kapan = $d_nota_jml_kapan;
+
             $spk_produk->save();
         }
 
+        // CEK SEMUA YANG PERLU DIINSERT
+        dump('INSERT TABLE nota');
+        dump([
+            'pelanggan_id' => $spk['pelanggan_id'],
+            'reseller_id' => $spk['reseller_id'],
+            'status' => 'PROSES',
+            'data_nota_item' => json_encode($data_nota_item),
+            'harga_total' => $hrg_total_nota,
+        ]);
+
+        dump('INSERT TABLE spk_notas', [
+            'spk_id' => $spk['id'],
+            'nota_id' => 'Dari insertGetId sebelumnya dulu',
+        ]);
+
         // MULAI INSERT
+
         $nota_id = DB::table('notas')->insertGetId([
             'pelanggan_id' => $spk['pelanggan_id'],
             'reseller_id' => $spk['reseller_id'],
             'status' => 'PROSES',
             'data_nota_item' => json_encode($data_nota_item),
+            'harga_total' => $hrg_total_nota,
         ]);
 
         DB::table('spk_notas')->insert([
             'spk_id' => $spk['id'],
             'nota_id' => $nota_id,
         ]);
+
+        for ($i3 = 0; $i3 < count($d_spk_produk_id); $i3++) {
+            $spk_produk = SpkProduk::find($d_spk_produk_id[$i]);
+            $nota_jml_kapan = json_decode($spk_produk['nota_jml_kapan'], true);
+            $nota_jml_kapan[$index_nota_jml_kpn]['nota_id'] = $nota_id;
+            $spk_produk->nota_jml_kapan = $nota_jml_kapan;
+            $spk_produk->save();
+        }
 
 
         $data = [

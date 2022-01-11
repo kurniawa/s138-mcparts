@@ -7,7 +7,7 @@
 </header>
 
 <div class="container m-1em">
-    <form action="/nota/notaBaru-pSPK-pItem" method="post">
+    <form action="/nota/notaBaru-pSPK-pItem" method="get">
         <input type="hidden" name="_token" value="{{ $csrf }}">
         <span style="font-weight:bold">Pilihan SPK yang Sebagian atau Seluruhnya SELESAI:</span><br>
         <select name="spk_id" id="selectIDSPK" class="p-1em">
