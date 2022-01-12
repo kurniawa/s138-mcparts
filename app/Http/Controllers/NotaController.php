@@ -202,8 +202,16 @@ class NotaController extends Controller
 
             $d_nota_jml_kapan = array();
 
+            $jml_sdh_nota = 0; // Concern Untuk KOLOM status_nota pada spk_produk
+
             if ($spk_produk['nota_jml_kapan'] !== null && $spk_produk['nota_jml_kapan'] !== '') {
                 $d_nota_jml_kapan = json_decode($spk_produk['nota_jml_kapan'], true);
+
+                // Concern untuk kolom status_nota pada spk_produk, maka kita perlu mengetahui jumlah item yang sudah nota
+                // supaya bisa dibandingkan dengan jumlah_item yang sebenarnya
+                for ($i2=0; $i2 < count($d_nota_jml_kapan); $i2++) { 
+                    $jml_sdh_nota += $d_nota_jml_kapan[$i2]['jml_item'];
+                }
             }
 
             $nota_jml_kapan = [
@@ -212,12 +220,24 @@ class NotaController extends Controller
                 'tgl_input' => date('Y-m-d\TH:i:s'),
             ];
 
+            $jml_sdh_nota += $post['jml_input'][$i];
+            $status_nota = 'BELUM';
+
+            $jml_total_item_ini = $spk_produk['jumlah'] + $spk_produk['deviasi_jml'];
+
+            if ($jml_sdh_nota === $jml_total_item_ini) {
+                $status_nota = 'SEMUA';
+            } else if ($jml_sdh_nota > 0) {
+                $status_nota = 'SEBAGIAN';
+            }
+
             array_push($d_nota_jml_kapan, $nota_jml_kapan);
 
             array_push($index_nota_jml_kpn, count($d_nota_jml_kapan) - 1);
 
             dump('d_nota_jml_kapan: ', $d_nota_jml_kapan);
             $spk_produk->nota_jml_kapan = $d_nota_jml_kapan;
+            $spk_produk->status_nota = $status_nota;
 
             $spk_produk->save();
         }
@@ -252,14 +272,25 @@ class NotaController extends Controller
             'nota_id' => $nota_id,
         ]);
 
+        // UPDATE spk_produk
+
         for ($i3 = 0; $i3 < count($d_spk_produk_id); $i3++) {
-            $spk_produk = SpkProduk::find($d_spk_produk_id[$i]);
+            $spk_produk = SpkProduk::find($d_spk_produk_id[$i3]);
             $nota_jml_kapan = json_decode($spk_produk['nota_jml_kapan'], true);
-            $nota_jml_kapan[$index_nota_jml_kpn]['nota_id'] = $nota_id;
+            dump('nota_jml_kapan: ', $nota_jml_kapan);
+            dump('index_nota_jml_kpn[$i3]: ', $index_nota_jml_kpn[$i3]);
+            $nota_jml_kapan[$index_nota_jml_kpn[$i3]]['nota_id'] = $nota_id;
             $spk_produk->nota_jml_kapan = $nota_jml_kapan;
+
+            dump('spk_produk_new: ', $spk_produk);
             $spk_produk->save();
         }
 
+        // UPDATE NO NOTA
+
+        $nota = Nota::find($nota_id);
+        $nota->no_nota = "N-$nota_id";
+        $nota->save();
 
         $data = [
             'go_back_number' => -1,
@@ -298,26 +329,22 @@ class NotaController extends Controller
         return view('nota/nota_baru-pilih_spk-pilih_nota', $data);
     }
 
-    public function notaBaru_pSPK_pNota_pItem(Request $request)
+    public function nota_detailNota(Request $request)
     {
-        /**
-         * SPK sudah dipilih dan di send via post. spk_id diketahui, otomatis spk_item yang berkaitan dengan spk_id juga dapat diketahui.
-         * Ada 2 kasus yang perlu ditangani via Controller dan halaman ini:
-         * 1) Nota baru
-         * 2) Nota yang sudah ada
-         * Apabila sebelumnya terpilih nota baru, maka kita perlu tau item apa saja yang ada di spk ini dan apakah item tersebut sudah sempat diinput ke nota atau
-         */
-        $post = $request->input();
-        dump('post');
-        dump($post);
+        $get = $request->input();
+        dump('get');
+        dump($get);
 
-        $spk_id = $post['spk_id'];
+        $nota_id = $get['nota_id'];
+
+        $nota = Nota::find($nota_id);
 
 
         $data = [
             'csrf' => csrf_token(),
+            'nota' => $nota,
             // 'available_spk' => $available_spk
         ];
-        return view('nota/nota_baru-pSPK-pNota-pItem', $data);
+        return view('nota/nota-detailNota', $data);
     }
 }

@@ -78,17 +78,19 @@ if (notas == undefined || notas.length == 0) {
                 <div class='grid-1-auto justify-items-center ${warnaTglSls} color-white b-radius-5px w-3_5em'>
                 <div class='font-size-2_5em'>${getDaySls}</div><div>${getMonthSls}-${subGetYearSls}</div></div>
             `;
-        } else {
-            var statusColor = "";
-            if (notas[i].status == "PROSES") {
-                statusColor = "tomato";
-            } else {
-                statusColor = "slateblue";
-            }
-            html_tgl_sls = `
-                <div style="font-weight:bold;color:${statusColor}">${notas[i].status}</div>
-            `;
         }
+        
+        // else {
+        //     var statusColor = "";
+        //     if (notas[i].status == "PROSES") {
+        //         statusColor = "tomato";
+        //     } else {
+        //         statusColor = "slateblue";
+        //     }
+        //     html_tgl_sls = `
+        //         <div style="font-weight:bold;color:${statusColor}">${notas[i].status}</div>
+        //     `;
+        // }
 
         // // MENGHITUNG Jumlah total
         // var jumlah_total_item_spk = 0;
@@ -109,7 +111,7 @@ if (notas == undefined || notas.length == 0) {
         // console.log(element_to_toggle);
 
         // HTML Item each SPK
-        var htmlItemsEachSPK = '';
+        var htmlItemsEachSPK = '<tr><th>Nama Nota</th><th>Jml.</th><th>Hrg./pcs</th><th>Hrg.T</th></tr>';
 
         const nota_item = JSON.parse(notas[i].data_nota_item);
         console.log('nota_item');
@@ -128,33 +130,38 @@ if (notas == undefined || notas.length == 0) {
                 }
             }
             htmlItemsEachSPK = htmlItemsEachSPK +
-                `<div>${nota_item[k].nama}</div><div>${textContent_jumlah}</div>`;
+                `<tr>
+                    <td>${nota_item[k].nama_nota}</td>
+                    <td>${nota_item[k].jml_item}</td>
+                    <td>${nota_item[k].hrg_per_item}</td>
+                    <td>${nota_item[k].hrg_total_item}</td>
+                </tr>`;
         }
 
 
         var htmlDaftarSPK =
-            `<form method='GET' action='/spk/detail_spk' class='pb-0_5em pt-0_5em bb-1px-solid-grey'>
+            `<form method='GET' action='/nota/nota-detailNota' class='pb-0_5em pt-0_5em bb-1px-solid-grey'>
                 <div class='grid-5-9_45_25_18_5'>
-                <div class='circle-medium grid-1-auto justify-items-center font-weight-bold' style='background-color: ${randomColor()}'>${pelanggans[i].singkatan}</div>
-                <div>${pelanggans[i].nama} - ${pelanggans[i].daerah}</div>
-                <div class='grid-3-auto'>
-                <div class='grid-1-auto justify-items-center ${warnaTglPembuatan} b-radius-5px w-3_5em' style="color:white;">
-                <div style="font-size:2.5em">${getDay}</div><div>${getMonth}-${subGetYear}</div>
-                </div>
-                -
-                ${html_tgl_sls}
-                </div>
-                <div class='grid-1-auto'>
-                <div class='justify-self-right font-size-1_2em' style="color:green;font-weight:bold;">${notas[i].jumlah_total}</div>
-                <div class='justify-self-right' style='color:grey'>Jumlah</div>
-                </div>
-                <div class='justify-self-center'><img class='w-0_7em' src='img/icons/dropdown.svg' onclick='elementToToggle(${element_to_toggle});'></div>
+                    <div class='circle-medium grid-1-auto justify-items-center font-weight-bold' style='background-color: ${randomColor()}'>${pelanggans[i].singkatan}</div>
+                    <div>${pelanggans[i].nama} - ${pelanggans[i].daerah}</div>
+                    <div class='grid-3-auto'>
+                        <div class='grid-1-auto justify-items-center ${warnaTglPembuatan} b-radius-5px w-3_5em' style="color:white;">
+                            <div style="font-size:2.5em">${getDay}</div><div>${getMonth}-${subGetYear}</div>
+                        </div>
+                        -
+                        ${html_tgl_sls}
+                    </div>
+                    <div class='grid-1-auto'>
+                        <div class='justify-self-right font-size-1_2em' style="color:green;font-weight:bold;">${formatHarga(notas[i].harga_total.toString())}</div>
+                        <div class='justify-self-right' style='color:grey'>Rp.</div>
+                    </div>
+                    <div class='justify-self-center'><img class='w-0_7em' src='img/icons/dropdown.svg' onclick='elementToToggle(${element_to_toggle});'></div>
                 </div>` +
             // DROPDOWN
             `<div id='divSPKItems-${i}' class='p-0_5em b-1px-solid-grey' style='display: none'>
-            <div class='font-weight-bold color-grey'>No. ${notas[i].no_spk}</div>
-            <input type='hidden' name='spk_id' value=${notas[i].id}>
-            <div class='grid-2-auto'>${htmlItemsEachSPK}</div>
+            <div class='font-weight-bold color-grey'>No. ${notas[i].no_nota}</div>
+            <input type='hidden' name='nota_id' value=${notas[i].id}>
+            <table style='width:100%'>${htmlItemsEachSPK}</table>
             <div class='text-right'>
             <button type='submit' class="d-inline-block bg-color-orange-1 pl-1em pr-1em b-radius-50px" style='border: none'>
             Lebih Detail >>

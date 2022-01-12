@@ -117,7 +117,7 @@ const spk = {!! json_encode($spk, JSON_HEX_TAG) !!};
             console.log('nota_jml_kapan');
             console.log(nota_jml_kapan);
             for (let index = 0; index < nota_jml_kapan.length; index++) {
-                jml_sdh_nota += nota_jml_kapan[index].jml_item;
+                jml_sdh_nota += parseInt(nota_jml_kapan[index].jml_item);
             }
         }
         // if (condition) {
