@@ -115,7 +115,7 @@ class SPKItemSelesai extends Controller
             // $jumlah_akhir adalah jumlah masing-masing item setelah adanya deviasi jumlah
             $jumlah_akhir = $spk_produk_this['jumlah'] + $deviasi_jml;
             $harga_item = $spk_produk_this['harga'];
-            $harga_total_item = 0;
+            $hrg_t = 0;
 
             // status sebelumnya
             $status = $spk_produk_this['status'];
@@ -344,7 +344,9 @@ class SPKItemSelesai extends Controller
             }
 
             $spk_produk_this->deviasi_jml = $deviasi_jml;
+            $spk_produk_this->jml_t = $jumlah_total_new;
             $spk_produk_this->jml_selesai = $jml_selesai_new;
+            $spk_produk_this->jml_blm_sls = $jumlah_total_new-$jml_selesai_new;
 
             // Supaya di database tetap null di bagian jmlSelesai_kapan nya, apabila memang tidak ada perubahan
             if (count($jmlSelesai_kapan) !== 0) {

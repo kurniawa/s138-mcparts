@@ -1,3 +1,22 @@
+2022-01-16 - Minggu
+===================
+Saat ini mempertimbangkan tambahan table yang diperlukan. Tidak hanya mengandalkan JSON saja.
+
+Saat ini saya mengalami kendala pada saat ingin meng edit jumlah item nota pada halaman detailNota
+
+Untuk mengedit jumlah item nota, kita perlu mengetahui berapa sisa item tersedia yang dapat diinput
+berapa jumlah item sudah nota nya.
+
+Relationship Constrained
+------------------------
+$table->foreignId('spk_id')->constrained()->onDelete('cascade');
+
+Apabila menekankan relasi saja tanpa define action apa ketika update atau delete:
+$table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans');
+
+Run command: ctrl + shift + p
+
+
 2022-01-04 - Selasa
 ===================
 Remove JSON array item

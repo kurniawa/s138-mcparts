@@ -17,7 +17,7 @@ class CreateSiteSettingsTable extends Migration
         Schema::create('site_settings', function (Blueprint $table) {
             $table->id();
             $table->string('setting', 50)->unique();
-            $table->string('value');
+            $table->smallInteger('value');
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
         });
     }

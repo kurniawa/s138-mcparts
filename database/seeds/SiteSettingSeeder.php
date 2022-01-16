@@ -13,7 +13,7 @@ class SiteSettingSeeder extends Seeder
     public function run()
     {
         $site_settings = [
-            ['setting' => 'reload_page', 'value' => 'FALSE']
+            ['setting' => 'load_num', 'value' => 0]
         ];
         for ($i = 0; $i < count($site_settings); $i++) {
             SiteSetting::create([

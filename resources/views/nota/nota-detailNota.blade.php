@@ -13,12 +13,18 @@
         <div class="dot"></div>
     </div>
     <div class="divThreeDotMenuContent">
-        <form method='post' action="nota/nota-editNota" id="" class="threeDotMenuItem">
+        {{-- <form method='post' action="nota/nota-editNota" id="" class="threeDotMenuItem">
             <img src="/img/icons/edit.svg" alt=""><span>Edit Nota</span>
-        </form>
+        </form> --}}
         <!-- <div id="downloadExcel" class="threeDotMenuItem" onclick="goToPrintOutSPK();">
             <img src="img/icons/download.svg" alt=""><span>Download Excel</span>
         </div> -->
+        <form action="/nota/nota-printOut" method='GET'>
+            <button id="downloadExcel" type="submit" class="threeDotMenuItem">
+                <img src="/img/icons/download.svg" alt=""><span>Print Out Nota</span>
+            </button>
+            <input type="hidden" name="nota_id" value={{ $nota['id'] }}>
+        </form>
         <div id="konfirmasiHapusNota" class="threeDotMenuItem">
             <img src="/img/icons/trash-can.svg" alt=""><span>Hapus Nota</span>
         </div>
@@ -85,7 +91,10 @@
         var htmlElementDropdown = `
         <div id="divOpsiEdit-${i}" style="display:none">
             <div><input id="checkboxShowInputJumlah-${i}" type="checkbox" onclick='onMultipleCheckToggleWithORLogic(${inputJumlahToToggle});'>Edit Jumlah</div>
-            <div id="divInputJumlah-${i}" class="mt-0_5em" style="display:none">Jumlah: <input class="p-0_5em" type="number" value="${d_nota_item[i].jml_item}"></div>
+            <div id="divInputJumlah-${i}" class="mt-0_5em" style="display:none">
+                Jumlah tersedia:
+                Jumlah Tambahan yang Ingin diinput: <input class="p-0_5em" type="number" value="${d_nota_item[i].jml_item}">
+            </div>
             <div class="mt-0_5em"><input id="checkboxShowInputNamaHrg-${i}" type="checkbox" onclick='onMultipleCheckToggleWithORLogic(${inputNamaHrgToToggle});'>Edit Nama Nota & Hrg/pcs</div>
             <div id="divInputNamaHrg-${i}" style="display:none">
                 <div class="mt-0_5em">Nama Nota: <input class="p-0_5em w-70" type="text" value="${d_nota_item[i].nama_nota}"></div>
@@ -114,8 +123,8 @@
             <div class="grid-4-10_52_18_20">
                 <div>${d_nota_item[i].jml_item}</div>
                 <div>${d_nota_item[i].nama_nota}</div>
-                <div>${d_nota_item[i].hrg_per_item}</div>
-                <div>${d_nota_item[i].hrg_total_item}</div>
+                <div>${formatHarga(d_nota_item[i].hrg_per_item.toString())}</div>
+                <div>${formatHarga(d_nota_item[i].hrg_total_item.toString())}</div>
 
                 <div>Jml.</div>
                 <div>Nama Item Pada Nota</div>
@@ -145,11 +154,21 @@
 
     $('#divDaftarItemNota').append(htmlTotalHarga);
 
+    $('.divThreeDotMenuContent').hide();
+    
     function showLightBox() {
         $('.lightBox').show();
         $('#closingGreyArea').show();
         $('.divThreeDotMenuContent').hide();
     }
+
+    document.querySelector('.threeDot').addEventListener('click', function () {
+    let element = [{
+        id: '.divThreeDotMenuContent',
+        time: 300
+    }];
+    elementToToggle(element);
+    });
 
     function closingLightBox() {
         $('.closingGreyArea').hide();

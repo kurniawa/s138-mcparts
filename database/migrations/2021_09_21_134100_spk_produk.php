@@ -32,8 +32,11 @@ class SpkProduk extends Migration
             $table->foreignId('produk_id');
             $table->string('ktrg')->nullable();
             $table->integer('jumlah');
-            $table->integer('jml_selesai')->nullable()->default(0);
             $table->integer('deviasi_jml')->nullable()->default(0);
+            $table->integer('jml_t')->nullable()->default(0);
+            $table->integer('jml_selesai')->nullable()->default(0);
+            $table->integer('jml_blm_sls')->nullable()->default(0);
+            $table->integer('jml_sdh_nota')->nullable()->default(0);
             $table->integer('harga');
             $table->integer('koreksi_harga')->nullable();
             $table->string('status', 20)->nullable(); // Status yang berkaitan dengan sudah selesai di produksi atau belum

@@ -11,6 +11,8 @@ use App\Tankpad;
 use App\Ukuran;
 use App\Variasi;
 
+$prevent_reload = 0;
+
 function integerToRoman($integer)
 {
     // Convert the integer into an integer (just to make sure)
