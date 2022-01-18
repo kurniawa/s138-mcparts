@@ -190,9 +190,9 @@ const spk = {!! json_encode($spk, JSON_HEX_TAG) !!};
 
         htmlDD += `
             <table>
-                <tr><td>Jml. sudah Nota</td><td>:</td><td>${jml_sdh_nota}</td></tr>
+                <tr><td>Jml. sudah Nota</td><td>:</td><td>${jml_sdh_nota}<input type='hidden' name='jml_sdh_nota[]' value=${jml_sdh_nota}></td></tr>
                 <tr><td>Jml. ingin diinput</td><td>:</td><td><input type='number' name='jml_input[]' value=${jml_selesai} disabled></td></tr>
-                <tr><td><input type='hidden' name='spk_produk_id[]' value='${nota_item_av[i].id}' disabled></td></tr>
+                <tr><td><input type='hidden' name='spk_produk_id[]' value='${nota_item_av[i].id}'></td></tr>
             </table>
         `;
 
@@ -220,8 +220,8 @@ const spk = {!! json_encode($spk, JSON_HEX_TAG) !!};
         htmlSPKItem += `
             <tr class='bb-1px-solid-grey'>
                 <td style='color:${fColor};font-weight:bold;font-size:1em;padding-bottom:1em;padding-top:1em;' class=''>${produks[i].nama}</td>
-                <td style='color:slateblue;font-weight:bold;'>${nota_item_av[i].jumlah + nota_item_av[i].deviasi_jml}</td>
-                <td style='color:green;font-weight:bold;'>${nota_item_av[i].jml_selesai}</td>
+                <td style='color:slateblue;font-weight:bold;'>${nota_item_av[i].jumlah + nota_item_av[i].deviasi_jml}<input type='hidden' name='jml_t[]' value='${nota_item_av[i].jumlah + nota_item_av[i].deviasi_jml}'></td>
+                <td style='color:green;font-weight:bold;'>${nota_item_av[i].jml_selesai}<input type='hidden' name='jml_av[]' value='${nota_item_av[i].jml_selesai}'></td>
                 <td><input type='checkbox' id='ddCheckbox-${i}' class='dd' onclick='isChecked(${params_dd});'></td>
             </tr>
             <tr id='DD-${i}' style='display:none'><td colspan=3>${htmlDD}</td></tr>
