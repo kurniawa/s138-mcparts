@@ -538,6 +538,7 @@ class ComposerStaticInit80fd682ef2e262a22885b85346c6b859
         'App\\Providers\\RouteServiceProvider' => __DIR__ . '/../..' . '/app/Providers/RouteServiceProvider.php',
         'App\\SPJap' => __DIR__ . '/../..' . '/app/SPJap.php',
         'App\\SiteSetting' => __DIR__ . '/../..' . '/app/SiteSetting.php',
+        'App\\Sj' => __DIR__ . '/../..' . '/app/Sj.php',
         'App\\Spk' => __DIR__ . '/../..' . '/app/Spk.php',
         'App\\SpkNotas' => __DIR__ . '/../..' . '/app/SpkNotas.php',
         'App\\SpkProduk' => __DIR__ . '/../..' . '/app/SpkProduk.php',

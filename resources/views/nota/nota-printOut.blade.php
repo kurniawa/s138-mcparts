@@ -132,7 +132,7 @@
     for (var i = 0; i < d_nota_item.length; i++) {
         var htmlItem =
             `
-        <tr class='tr-border-left-right height-1_5em'><td>${formatHarga(d_nota_item[i].jml_item)}</td><td>${d_nota_item[i].nama_nota}</td><td>${formatHarga(d_nota_item[i].hrg_per_item.toString())}</td><td>${formatHarga(d_nota_item[i].hrg_total_item.toString())}</td></tr>
+        <tr class='tr-border-left-right height-1_5em'><td>${formatHarga(d_nota_item[i].jml_item.toString())}</td><td>${d_nota_item[i].nama_nota}</td><td>${formatHarga(d_nota_item[i].hrg_per_item.toString())}</td><td>${formatHarga(d_nota_item[i].hrg_total_item.toString())}</td></tr>
         `;
         $('#tableItemNota').append(htmlItem);
     }

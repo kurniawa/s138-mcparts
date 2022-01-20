@@ -46,13 +46,20 @@ class SpkController extends Controller
 
         $spks = Spk::limit(100)->orderByDesc('created_at')->get();
         $pelanggans = array();
+        $resellers = array();
         for ($i = 0; $i < count($spks); $i++) {
             $pelanggan = Spk::find($spks[$i]->id)->pelanggan;
+            if ($spks[$i]->reseller_id !== null && $spks[$i]->reseller_id !== '') {
+                $reseller = Pelanggan::find($spks[$i]->reseller_id);
+                array_push($resellers, $reseller);
+            } else {
+                array_push($resellers, 'none');
+            }
             array_push($pelanggans, $pelanggan);
         }
         // $pelanggan = Pelanggan::find(3)->spk;
         // dd($pelanggans);
-        $data = ['spks' => $spks, 'pelanggans' => $pelanggans, 'reload_page' => $reload_page];
+        $data = ['spks' => $spks, 'pelanggans' => $pelanggans, 'resellers' => $resellers, 'reload_page' => $reload_page];
         // $data = ['spks' => $spks, 'pelanggans' => $pelanggans];
         return view('spk/spks', $data);
     }

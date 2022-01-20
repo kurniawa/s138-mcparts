@@ -60,6 +60,7 @@ return array(
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
     'App\\SPJap' => $baseDir . '/app/SPJap.php',
     'App\\SiteSetting' => $baseDir . '/app/SiteSetting.php',
+    'App\\Sj' => $baseDir . '/app/Sj.php',
     'App\\Spk' => $baseDir . '/app/Spk.php',
     'App\\SpkNotas' => $baseDir . '/app/SpkNotas.php',
     'App\\SpkProduk' => $baseDir . '/app/SpkProduk.php',

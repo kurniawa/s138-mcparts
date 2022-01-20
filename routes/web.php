@@ -68,6 +68,13 @@ Route::get('/nota/notaBaru-pSPK-pItem', [NotaController::class, 'notaBaru_pSPK_p
 Route::post('/nota/notaBaru-pSPK-pItem-DB', [NotaController::class, 'notaBaru_pSPK_pItem_DB']);
 Route::get('/nota/nota-detailNota', [NotaController::class, 'nota_detailNota']);
 Route::get('/nota/nota-printOut', [NotaController::class, 'nota_printOut']);
+Route::post('/nota/nota-hapus', [NotaController::class, 'nota_hapus']);
+
+
+/**
+ * SURAT JALAN
+ */
+Route::get('/sj', [NotaController::class, 'index']);
 
 // LOGIN & REGISTER coment dikit ah
 Route::get('/login', [LoginController::class, "index"])->middleware('guest')->name('login');

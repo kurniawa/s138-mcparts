@@ -2,10 +2,10 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
-class CreateNotasTable extends Migration
+class CreateSjsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,14 +14,14 @@ class CreateNotasTable extends Migration
      */
     public function up()
     {
-        Schema::create('notas', function (Blueprint $table) {
+        Schema::create('sjs', function (Blueprint $table) {
             $table->id();
-            $table->string('no_nota', 20);
+            $table->string('no_sj', 20);
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('no action');
             $table->foreignId('reseller_id')->nullable()->constrained('pelanggans')->onDelete('no action');
-            $table->string('status', 50);
+            $table->string('status', 50); // PROSES ATAU TERKIRIM
             $table->text('data_nota_item');
-            $table->integer('harga_total');
+            $table->smallInteger('colly');
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
@@ -37,6 +37,6 @@ class CreateNotasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('notas');
+        Schema::dropIfExists('sjs');
     }
 }

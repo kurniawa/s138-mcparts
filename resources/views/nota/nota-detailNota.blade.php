@@ -25,9 +25,16 @@
             </button>
             <input type="hidden" name="nota_id" value={{ $nota['id'] }}>
         </form>
-        <div id="konfirmasiHapusNota" class="threeDotMenuItem">
+        <form action="/nota/nota-hapus" method='POST'>
+            @csrf
+            <button id="hapusNota" type="submit" class="threeDotMenuItem" style="width: 100%">
+                <img src="/img/icons/trash-can.svg" alt=""><span>Hapus Nota</span>
+            </button>
+            <input type="hidden" name="nota_id" value={{ $nota['id'] }}>
+        </form>
+        {{-- <div id="konfirmasiHapusNota" class="threeDotMenuItem">
             <img src="/img/icons/trash-can.svg" alt=""><span>Hapus Nota</span>
-        </div>
+        </div> --}}
         <!-- <div id="deleteSPK" class="threeDotMenuItem" onclick="goToDeleteSPK();">
             <img src="img/icons/trash-can.svg" alt=""><span>Cancel/Hapus SPK</span>
         </div> -->

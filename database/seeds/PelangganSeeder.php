@@ -15,7 +15,7 @@ class PelangganSeeder extends Seeder
         $pelanggan = [
             ['nama' => '3 Putra Motor', 'alamat' => 'Jl. Sutoyo 5 No. 140, Kel. Teluk Dalam, Kec. Banjar Barat, Banjarmasin', 'daerah' => 'Banjarmasin', 'no_kontak' => '0822 5363 3222', 'pulau' => 'Kalimantan', 'reseller_id' => null],
             ['nama' => 'Akong', 'alamat' => 'Pluit, Jakarta', 'daerah' => 'Pluit', 'no_kontak' => '0812 9120 0168', 'pulau' => 'Jawa', 'reseller_id' => null],
-            ['nama' => 'Akong-Karya Motor', 'alamat' => 'Jl. Jurung No.6, Simpang Wahidin, Medan', 'daerah' => 'Medan', 'no_kontak' => '', 'pulau' => 'Sumatra', 'reseller_id' => 2],
+            ['nama' => 'Karya Motor', 'alamat' => 'Jl. Jurung No.6, Simpang Wahidin, Medan', 'daerah' => 'Medan', 'no_kontak' => '', 'pulau' => 'Sumatra', 'reseller_id' => 2],
             ['nama' => 'Karya Motor', 'alamat' => 'Jl. Jurung No.6, Simpang Wahidin, Medan', 'daerah' => 'Medan', 'no_kontak' => '', 'pulau' => 'Sumatra', 'reseller_id' => null]
         ];
 

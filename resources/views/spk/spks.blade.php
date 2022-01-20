@@ -49,7 +49,12 @@ console.log("spks:");
 console.log(spks);
 
 const pelanggans = {!! json_encode($pelanggans, JSON_HEX_TAG) !!};
+console.log("pelanggans");
 console.log(pelanggans);
+
+const resellers = {!! json_encode($resellers, JSON_HEX_TAG) !!};
+console.log("resellers");
+console.log(resellers);
 
 if (spks == undefined || spks.length == 0) {
     console.log('Belum ada daftar SPK');

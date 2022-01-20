@@ -16,8 +16,8 @@ class CreateSpkNotasTable extends Migration
     {
         Schema::create('spk_notas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("spk_id");
-            $table->foreignId("nota_id");
+            $table->foreignId("spk_id")->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId("nota_id")->nullable()->constrained()->onDelete('cascade');
         });
     }
 

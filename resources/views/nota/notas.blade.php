@@ -133,8 +133,8 @@ if (notas == undefined || notas.length == 0) {
                 `<tr>
                     <td>${nota_item[k].nama_nota}</td>
                     <td>${nota_item[k].jml_item}</td>
-                    <td>${nota_item[k].hrg_per_item}</td>
-                    <td>${nota_item[k].hrg_total_item}</td>
+                    <td>${formatHarga(nota_item[k].hrg_per_item.toString())}</td>
+                    <td>${formatHarga(nota_item[k].hrg_total_item.toString())}</td>
                 </tr>`;
         }
 

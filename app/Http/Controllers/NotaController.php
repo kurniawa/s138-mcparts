@@ -114,6 +114,20 @@ class NotaController extends Controller
          * dan juga lebih lengkap karena disertai juga dengan nama nya, maka kita consider jg untuk ambil data dari table spk
          */
         $nota_item_av = SpkProduk::where('spk_id', $spk_id)->where('status_nota', 'BELUM')->orWhere('status_nota', 'SEBAGIAN')->get();
+        
+        // FILTER BERIKUTNYA ADALAH APAKAH ADA JUMLAH YANG SUDAH NOTA?
+        
+        // for ($i0=0; $i0 < count($nota_item_av); $i0++) { 
+        //     if ($nota_item_av[$i0]['jml_sdh_nota'] !== 0) {
+        //         if ($nota_item_av[$i0]['jml_sdh_nota'] < $nota_item_av[$i0]['jml_selesai']) {
+        //             # code...
+        //         } else {
+        //             unset($nota_item_av[$i0]);
+        //             $nota_item_av = json_encode(array_values($nota_item_av));
+        //         }
+        //     }
+        // }
+
         dump('nota_item_av');
         dump($nota_item_av);
         // dd($nota_item_av);
@@ -175,18 +189,25 @@ class NotaController extends Controller
          * JUGA APABILA jml_input <= jml_av
          */
         $d_spk_produk_id = array();
+        $d_jml_input = array();
+        // $d_jml_av = array();
 
         for ($i0 = 0; $i0 < count($post['spk_produk_id']); $i0++) {
             if ((int)$post['jml_input'][$i0] > 0 && (int)$post['jml_input'][$i0] <= (int)$post['jml_av'][$i0]) {
                 array_push($d_spk_produk_id, $post['spk_produk_id'][$i0]);
+                array_push($d_jml_input, (int)$post['jml_input'][$i0]);
+                // array_push($d_jml_av, (int)$post['jml_av'][$i0]);
             }
         }
 
         dump('d_spk_produk_id:', $d_spk_produk_id);
         // dd('d_spk_produk_id:', $d_spk_produk_id);
 
-        // dump('count($d_spk_produk_id):', count($d_spk_produk_id));
-        dd('count($d_spk_produk_id):', count($d_spk_produk_id));
+        dump('count($d_spk_produk_id):', count($d_spk_produk_id));
+        // dd('count($d_spk_produk_id):', count($d_spk_produk_id));
+
+        dump('$d_jml_input:', $d_jml_input);
+        // dd('$d_jml_input:', $d_jml_input);
 
         $data_nota_item = array();
         $hrg_total_nota = 0;
@@ -205,13 +226,13 @@ class NotaController extends Controller
                 $hrg_per_item += $spk_produk['koreksi_harga'];
             }
 
-            $hrg_total_item = (int)$hrg_per_item * (int)$post['jml_input'][$i];
+            $hrg_total_item = (int)$hrg_per_item * (int)$d_jml_input[$i];
             $hrg_total_nota += $hrg_total_item;
 
             $nota_item = [
                 'produk_id' => $produk['id'],
                 'nama_nota' => $produk['nama_nota'],
-                'jml_item' => $post['jml_input'][$i],
+                'jml_item' => $d_jml_input[$i],
                 'hrg_per_item' => $hrg_per_item,
                 'hrg_total_item' => $hrg_total_item,
             ];
@@ -225,7 +246,7 @@ class NotaController extends Controller
             // DB::table('nota_produks')->insert([
             //     'spk_id' => $spk['id'],
             //     'produk_id' => $produk['id'],
-            //     'jumlah' => $post['jml_input'][$i],
+            //     'jumlah' => $d_jml_input[$i],
             //     'harga' => $hrg_per_item,
             //     'koreksi_harga' => $spk_produk['koreksi_harga'],
             // ]);
@@ -249,11 +270,11 @@ class NotaController extends Controller
 
             $nota_jml_kapan = [
                 'nota_id' => '',
-                'jml_item' => $post['jml_input'][$i],
+                'jml_item' => $d_jml_input[$i],
                 'tgl_input' => date('Y-m-d\TH:i:s'),
             ];
 
-            $jml_sdh_nota += $post['jml_input'][$i];
+            $jml_sdh_nota += $d_jml_input[$i];
             $status_nota = 'BELUM';
 
             $jml_total_item_ini = $spk_produk['jumlah'] + $spk_produk['deviasi_jml'];
@@ -281,7 +302,7 @@ class NotaController extends Controller
             // to comment
             $spkcpnota_id = DB::table('spkcp_notas')->insertGetId([
                 'spkcp_id' => $spk_produk['id'],
-                'jml' => $post['jml_input'][$i]
+                'jml' => $d_jml_input[$i]
             ]);
 
             array_push($d_spkcpnota_id, $spkcpnota_id);
@@ -390,37 +411,6 @@ class NotaController extends Controller
         return view('layouts.go-back-page', $data);
     }
 
-    public function notaBaru_pilihSPK_pilihNota(Request $request)
-    {
-        /**
-         * Setelah pilih SPK, maka sudah semestinya langsung ke pilih Item
-         */
-
-        $post = $request->input();
-        dump('post');
-        dump($post);
-
-        $spk_id = $post['spk_id'];
-        $spk_nota_this = SpkNotas::where('spk_id', $spk_id)->get();
-        dump('spk_nota dengan spk_id ini');
-        dump($spk_nota_this);
-
-        $available_nota = [];
-        for ($i = 0; $i < count($spk_nota_this); $i++) {
-            $available_nota_temp = Nota::find($spk_nota_this[$i]['nota_id']);
-            array_push($available_nota, $available_nota_temp);
-        }
-        dump('available_nota');
-        dump($available_nota);
-
-        $data = [
-            'csrf' => csrf_token(),
-            'available_nota' => $available_nota,
-            'spk_id' => $spk_id
-        ];
-        return view('nota/nota_baru-pilih_spk-pilih_nota', $data);
-    }
-
     public function nota_detailNota(Request $request)
     {
         $get = $request->input();
@@ -438,7 +428,7 @@ class NotaController extends Controller
 
         $d_spkNota = SpkNotas::where('nota_id', $nota_id)->get();
 
-        dump('d_spkNota: ', $d_spkNota);
+        // dump('d_spkNota: ', $d_spkNota);
 
         for ($i = 0; $i < count($d_spkNota); $i++) {
         }
@@ -478,5 +468,26 @@ class NotaController extends Controller
             // 'available_spk' => $available_spk
         ];
         return view('nota/nota-printOut', $data);
+    }
+
+    public function nota_hapus(Request $request)
+    {
+        $post = $request->input();
+        dump('post');
+        dump($post);
+
+        $nota_id = $post['nota_id'];
+
+        $nota = Nota::find($nota_id);
+
+        $data = [
+            'csrf' => csrf_token(),
+            'nota' => $nota,
+            'go_back_number' => -2,
+            // 'available_spk' => $available_spk
+        ];
+
+        return view('layouts.go-back-page', $data);
+
     }
 }

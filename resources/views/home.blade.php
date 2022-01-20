@@ -25,8 +25,8 @@
             </a>
         </div>
         <div class="gridMenuItem">
-            <a class="menuIcons" href="08-01-surat-jalan.php">
-                <img src="img/icons/letter.svg" alt="Icon SPK">
+            <a class="menuIcons" href="/sj">
+                <img src="/img/icons/letter.svg" alt="Icon SPK">
                 <div>
                     Surat<br>Jalan
                 </div>
