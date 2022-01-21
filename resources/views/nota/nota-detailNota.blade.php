@@ -25,16 +25,16 @@
             </button>
             <input type="hidden" name="nota_id" value={{ $nota['id'] }}>
         </form>
-        <form action="/nota/nota-hapus" method='POST'>
+        {{-- <form action="/nota/nota-hapus" method='POST'>
             @csrf
-            <button id="hapusNota" type="submit" class="threeDotMenuItem" style="width: 100%">
+            <button id="hapusNota" type="submit" class="threeDotMenuItem" id="konfirmasiHapusNota" style="width: 100%">
                 <img src="/img/icons/trash-can.svg" alt=""><span>Hapus Nota</span>
             </button>
             <input type="hidden" name="nota_id" value={{ $nota['id'] }}>
-        </form>
-        {{-- <div id="konfirmasiHapusNota" class="threeDotMenuItem">
+        </form> --}}
+        <div id="konfirmasiHapusNota" class="threeDotMenuItem">
             <img src="/img/icons/trash-can.svg" alt=""><span>Hapus Nota</span>
-        </div> --}}
+        </div>
         <!-- <div id="deleteSPK" class="threeDotMenuItem" onclick="goToDeleteSPK();">
             <img src="img/icons/trash-can.svg" alt=""><span>Cancel/Hapus SPK</span>
         </div> -->
@@ -183,20 +183,64 @@
     }
 
     document.getElementById("konfirmasiHapusNota").addEventListener("click", function() {
-        var deleteProperties = [{
+        var deleteProperties = {
             title: "Yakin ingin menghapus Nota ini?",
             yes: "Ya",
             no: "Batal",
-            table: "nota",
+            table: "notas",
             column: "id",
-            columnValue: idNota,
+            columnValue: nota.id,
             goBackNumber: -2,
             goBackStatement: "Daftar Nota"
-        }];
+        };
 
         var deletePropertiesStringified = JSON.stringify(deleteProperties);
         showLightBoxGlobal(deletePropertiesStringified);
-    });;
+    });
+
+    function showLightBoxGlobal(deletePropertiesStrigified) {
+        $('.divThreeDotMenuContent').hide();
+
+        var deleteProperties = JSON.parse(deletePropertiesStrigified);
+        var divLightBoxGlobal = document.createElement("div");
+        divLightBoxGlobal.id = "divLightBoxGlobal";
+        var htmlDivLightBoxGlobal = `
+            <div class="grid-2-10_auto">
+                <div><img src="/img/icons/speech-bubble.svg" alt="" style="width: 2em;"></div>
+                <div class="font-weight-bold">${deleteProperties.title}</div>
+            </div>
+            <br><br>
+            <div class="grid-2-auto">
+                <form action="/nota/nota-hapus" method='POST'>
+                    
+                    <button id="hapusNota" type="submit" class="threeDotMenuItem btn-1 bg-color-soft-red" id="konfirmasiHapusNota" style="width: 100%">
+                        <img src="/img/icons/trash-can.svg" alt=""><span>${deleteProperties.yes}</span>
+                    </button>
+                    <input type="hidden" name="nota_id" value=${deleteProperties.columnValue}>
+                </form>
+                
+                <button class="text-center btn-1 bg-color-orange-1" onclick='lightBoxGlobalNo();'>
+                    <span>${deleteProperties.no}</span>
+                </button>
+            </div>
+        `;
+        divLightBoxGlobal.innerHTML = htmlDivLightBoxGlobal;
+
+        var divClosingGreyAreaGlobal = document.createElement("div");
+        divClosingGreyAreaGlobal.id = "divClosingGreyAreaGlobal";
+        // var htmlDivClosingGreyAreaGlobal = `
+        // <div id="divClosingGreyAreaGlobal"></div>
+        // `;
+        // divClosingGreyAreaGlobal.innerHTML(htmlDivClosingGreyAreaGlobal);
+
+        // <a href="DELETE-OneItemGlobalFromTable.php?table=${deleteProperties.table}&column=${deleteProperties.column}&columnValue=${deleteProperties.columnValue}&goBackNumber=${deleteProperties.goBackNumber}&goBackStatement=${deleteProperties.goBackStatement}" class="text-center btn-1 bg-color-soft-red">
+        //     <span>${deleteProperties.yes}</span>
+        // </a>
+
+        document.body.appendChild(divClosingGreyAreaGlobal);
+        document.body.appendChild(divLightBoxGlobal);
+
+    }
 </script>
 
 <style>
