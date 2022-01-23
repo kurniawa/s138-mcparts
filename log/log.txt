@@ -1,3 +1,8 @@
+2022-01-23 - Minggu
+===================
+
+<input type="hidden" name="_token" value="${my_csrf}">
+
 2022-01-20 - Kamis
 ==================
 php artisan make:model --help

@@ -65,6 +65,8 @@
     console.log("d_nota_item");
     console.log(d_nota_item);
 
+    const my_csrf = {!! json_encode($csrf, JSON_HEX_TAG) !!};
+
 
     for (var i = 0; i < d_nota_item.length; i++) {
         var nomorUrutItem = i + 1;
@@ -188,8 +190,10 @@
             yes: "Ya",
             no: "Batal",
             table: "notas",
-            column: "id",
+            column: "nota_id",
             columnValue: nota.id,
+            action: "/nota/nota-hapus",
+            csrf: my_csrf,
             goBackNumber: -2,
             goBackStatement: "Daftar Nota"
         };
@@ -211,12 +215,12 @@
             </div>
             <br><br>
             <div class="grid-2-auto">
-                <form action="/nota/nota-hapus" method='POST'>
-                    
-                    <button id="hapusNota" type="submit" class="threeDotMenuItem btn-1 bg-color-soft-red" id="konfirmasiHapusNota" style="width: 100%">
-                        <img src="/img/icons/trash-can.svg" alt=""><span>${deleteProperties.yes}</span>
+                <form action="${deleteProperties.action}" method='POST'>
+                    <input type="hidden" name="_token" value="${deleteProperties.csrf}">
+                    <button type="submit" class="btn-1 bg-color-soft-red" style="width:100%">
+                        <img src="/img/icons/trash-can.svg" style="width:1em" alt=""><span>${deleteProperties.yes}</span>
                     </button>
-                    <input type="hidden" name="nota_id" value=${deleteProperties.columnValue}>
+                    <input type="hidden" name="${deleteProperties.column}" value=${deleteProperties.columnValue}>
                 </form>
                 
                 <button class="text-center btn-1 bg-color-orange-1" onclick='lightBoxGlobalNo();'>

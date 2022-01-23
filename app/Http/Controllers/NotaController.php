@@ -402,7 +402,7 @@ class NotaController extends Controller
         }
 
         $data = [
-            'go_back_number' => -1,
+            'go_back_number' => -2,
         ];
 
         $load_num->value = $load_num['value'] + 1;
@@ -476,12 +476,65 @@ class NotaController extends Controller
         dump('post');
         dump($post);
 
-        $nota_id = $post['nota_id'];
+        $nota_id = (int)$post['nota_id'];
 
         $nota = Nota::find($nota_id);
+        /**
+         * Setelah nota, kita cari relasi nya dengan spkcp_nota untuk memperoleh spkcp_id. sehingga
+         * bisa ketemu dengan spk_produk yang berkaitan.
+         */
+        $spkcp_notas = SpkcpNota::where('nota_id', $nota_id)->get();
+        // dump("spkcp_notas: $spkcp_notas");
+        dump("spkcp_notas");
+        dump($spkcp_notas);
+        // dd($spkcp_notas);
+
+        for ($i0=0; $i0 < count($spkcp_notas); $i0++) {
+            dump("LOOP - $i0");
+            $spk_produk = SpkProduk::find($spkcp_notas[$i0]['spkcp_id']);
+            $jml_selesai_old = $spk_produk['jml_selesai'];
+            dump("jml_selesai_old: $jml_selesai_old");
+            $jml_selesai_new = $jml_selesai_old - $spkcp_notas[$i0]['jml'];
+            dump("jml_selesai_new: $jml_selesai_new");
+
+            /**
+             * Disini concern untuk data json nya yang nota_jml_kapan. Pilih array yang nota_id nya sesuai,
+             * lalu dari sana, kurangi jumlah nya, sesuai dengan jumlah dari nota_item yang dihapus.
+             */
+
+            $nota_jml_kapan = json_decode($spk_produk['nota_jml_kapan'], true);
+            dump("nota_jml_kapan");
+            dump($nota_jml_kapan);
+            $i_nota_jml_kapan_toDelete = '?';
+            for ($i1=0; $i1 < count($nota_jml_kapan); $i1++) { 
+                if ($nota_jml_kapan[$i1]['nota_id'] === $nota_id) {
+                    $i_nota_jml_kapan_toDelete = $i1;
+                    break;
+                }
+            }
+            dump("i_nota_jml_kapan_toDelete: $i_nota_jml_kapan_toDelete");
+            unset($nota_jml_kapan[$i_nota_jml_kapan_toDelete]);
+
+            $nota_jml_kapan = array_values($nota_jml_kapan);
+            dump("nota_jml_kapan (2)");
+            dump($nota_jml_kapan);
+
+            if (count($nota_jml_kapan) === 0) {
+                $nota_jml_kapan = null;
+            }
+
+            dump("nota_jml_kapan (3)");
+            dump($nota_jml_kapan);
+
+            $spk_produk->nota_jml_kapan = $nota_jml_kapan;
+            // $spk_produk->save();
+
+            dump("END LOOP - $i0");
+        }
+
+        // $nota->delete();
 
         $data = [
-            'csrf' => csrf_token(),
             'nota' => $nota,
             'go_back_number' => -2,
             // 'available_spk' => $available_spk

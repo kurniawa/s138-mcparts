@@ -113,7 +113,8 @@ class SPKItemSelesai extends Controller
             $deviasi_jml = (int)$post['deviasi_jml'][$i];
             $tbh_jml_selesai = (int)$post['tbh_jml_selesai'][$i];
             // $jumlah_akhir adalah jumlah masing-masing item setelah adanya deviasi jumlah
-            $jumlah_akhir = $spk_produk_this['jumlah'] + $deviasi_jml;
+            $jumlah_akhir = $spk_produk_this['jumlah'];
+            dump("jumlah_akhir=$jumlah_akhir");
             $harga_item = $spk_produk_this['harga'];
             $hrg_t = 0;
 
@@ -148,7 +149,9 @@ class SPKItemSelesai extends Controller
                     if ($deviasi_jml_old === null) {
                         $deviasi_jml_old = 0;
                     }
+                    dump('$diff_deviasi_jml = $deviasi_jml_old - $deviasi_jml');
                     $diff_deviasi_jml = $deviasi_jml_old - $deviasi_jml;
+                    dump("$diff_deviasi_jml = $deviasi_jml_old - $deviasi_jml");
                     /**
                      * misal deviasi_jml sebelumnya lebi besar daripada deviasi jmlh yang saat ini diinput:
                      * 10 - 5 = 5
@@ -163,6 +166,7 @@ class SPKItemSelesai extends Controller
 
                     //
                 }
+
             }
 
             // $jumlah_akhir += $deviasi_jml;
@@ -175,7 +179,7 @@ class SPKItemSelesai extends Controller
             // diubah isi JSON jmlSelesai_kapan
 
             // 305, 160
-            dump($jml_selesai_new, $jumlah_akhir);
+            dump("jml_selesai_new = $jml_selesai_new, jml_akhir = $jumlah_akhir");
             if ($jml_selesai_new <= $jumlah_akhir && $jml_selesai_new >= 0 && $tbh_jml_selesai > 0) {
                 // Apabila sebelumnya memang belum ada item yang selesai
                 if (count($jmlSelesai_kapan) === 0) {
@@ -343,10 +347,13 @@ class SPKItemSelesai extends Controller
                 $status = 'SEBAGIAN';
             }
 
+            dump("jml_blm_sls = jumlah_akhir - jml_selesai_new");
+            dump("$jumlah_akhir - $jml_selesai_new");
+
             $spk_produk_this->deviasi_jml = $deviasi_jml;
-            $spk_produk_this->jml_t = $jumlah_total_new;
+            $spk_produk_this->jml_t = $jumlah_akhir;
             $spk_produk_this->jml_selesai = $jml_selesai_new;
-            $spk_produk_this->jml_blm_sls = $jumlah_total_new-$jml_selesai_new;
+            $spk_produk_this->jml_blm_sls = $jumlah_akhir-$jml_selesai_new;
 
             // Supaya di database tetap null di bagian jmlSelesai_kapan nya, apabila memang tidak ada perubahan
             if (count($jmlSelesai_kapan) !== 0) {
