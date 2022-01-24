@@ -8,6 +8,7 @@ use App\Http\Controllers\NotaController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PrintOutSPK;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\SjController;
 use App\Http\Controllers\SpkController;
 use App\Http\Controllers\SPKItemSelesai;
 use Illuminate\Support\Facades\Route;
@@ -74,7 +75,8 @@ Route::post('/nota/nota-hapus', [NotaController::class, 'nota_hapus']);
 /**
  * SURAT JALAN
  */
-Route::get('/sj', [NotaController::class, 'index']);
+Route::get('/sj', [SjController::class, 'index']);
+Route::get('/sj/sjBaru-pCust', [SjController::class, 'sjBaru_pCust']);
 
 // LOGIN & REGISTER coment dikit ah
 Route::get('/login', [LoginController::class, "index"])->middleware('guest')->name('login');

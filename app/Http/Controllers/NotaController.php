@@ -18,10 +18,6 @@ class NotaController extends Controller
     //
     public function index(Request $request)
     {
-        // dump($this->site_settings[0]->value);
-        // $this->site_settings[0]->value = 'TRUE';
-        // $this->site_settings->save();
-        // dump($this->site_settings[0]['value']);
 
         // Metode untuk reset value pada pencegahan reload pada insert dan update DB
         $load_num = SiteSetting::find(1);
@@ -114,9 +110,9 @@ class NotaController extends Controller
          * dan juga lebih lengkap karena disertai juga dengan nama nya, maka kita consider jg untuk ambil data dari table spk
          */
         $nota_item_av = SpkProduk::where('spk_id', $spk_id)->where('status_nota', 'BELUM')->orWhere('status_nota', 'SEBAGIAN')->get();
-        
+
         // FILTER BERIKUTNYA ADALAH APAKAH ADA JUMLAH YANG SUDAH NOTA?
-        
+
         // for ($i0=0; $i0 < count($nota_item_av); $i0++) { 
         //     if ($nota_item_av[$i0]['jml_sdh_nota'] !== 0) {
         //         if ($nota_item_av[$i0]['jml_sdh_nota'] < $nota_item_av[$i0]['jml_selesai']) {
@@ -402,7 +398,7 @@ class NotaController extends Controller
         }
 
         $data = [
-            'go_back_number' => -2,
+            'go_back_number' => -3,
         ];
 
         $load_num->value = $load_num['value'] + 1;
@@ -476,6 +472,10 @@ class NotaController extends Controller
         dump('post');
         dump($post);
 
+        $load_num = SiteSetting::find(1);
+        dump('load_num');
+        dump($load_num);
+
         $nota_id = (int)$post['nota_id'];
 
         $nota = Nota::find($nota_id);
@@ -484,18 +484,25 @@ class NotaController extends Controller
          * bisa ketemu dengan spk_produk yang berkaitan.
          */
         $spkcp_notas = SpkcpNota::where('nota_id', $nota_id)->get();
-        // dump("spkcp_notas: $spkcp_notas");
         dump("spkcp_notas");
         dump($spkcp_notas);
         // dd($spkcp_notas);
 
-        for ($i0=0; $i0 < count($spkcp_notas); $i0++) {
+        for ($i0 = 0; $i0 < count($spkcp_notas); $i0++) {
             dump("LOOP - $i0");
             $spk_produk = SpkProduk::find($spkcp_notas[$i0]['spkcp_id']);
-            $jml_selesai_old = $spk_produk['jml_selesai'];
-            dump("jml_selesai_old: $jml_selesai_old");
-            $jml_selesai_new = $jml_selesai_old - $spkcp_notas[$i0]['jml'];
-            dump("jml_selesai_new: $jml_selesai_new");
+            $jml_sdh_nota_old = $spk_produk['jml_sdh_nota'];
+            dump("jml_sdh_nota_old: $jml_sdh_nota_old");
+            $jml_sdh_nota_new = $jml_sdh_nota_old - $spkcp_notas[$i0]['jml'];
+            dump("jml_sdh_nota_new: $jml_sdh_nota_new");
+
+            $spk_produk->jml_sdh_nota = $jml_sdh_nota_new;
+            if ($jml_sdh_nota_new === 0) {
+                $spk_produk->status_nota = 'BELUM';
+            } else {
+                $spk_produk->status_nota = 'SEBAGIAN';
+            }
+            dump("spk_produk->status_nota: $spk_produk->status_nota");
 
             /**
              * Disini concern untuk data json nya yang nota_jml_kapan. Pilih array yang nota_id nya sesuai,
@@ -506,7 +513,7 @@ class NotaController extends Controller
             dump("nota_jml_kapan");
             dump($nota_jml_kapan);
             $i_nota_jml_kapan_toDelete = '?';
-            for ($i1=0; $i1 < count($nota_jml_kapan); $i1++) { 
+            for ($i1 = 0; $i1 < count($nota_jml_kapan); $i1++) {
                 if ($nota_jml_kapan[$i1]['nota_id'] === $nota_id) {
                     $i_nota_jml_kapan_toDelete = $i1;
                     break;
@@ -527,20 +534,25 @@ class NotaController extends Controller
             dump($nota_jml_kapan);
 
             $spk_produk->nota_jml_kapan = $nota_jml_kapan;
-            // $spk_produk->save();
+
+            if ($load_num['value'] === 0) {
+                $spk_produk->save();
+            }
 
             dump("END LOOP - $i0");
         }
 
-        // $nota->delete();
+        if ($load_num['value'] === 0) {
+            $nota->delete();
+        }
 
         $data = [
-            'nota' => $nota,
             'go_back_number' => -2,
-            // 'available_spk' => $available_spk
         ];
 
-        return view('layouts.go-back-page', $data);
+        $load_num->value = $load_num['value'] + 1;
+        $load_num->save();
 
+        return view('layouts.go-back-page', $data);
     }
 }
