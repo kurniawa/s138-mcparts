@@ -19,7 +19,8 @@ class CreateNotasTable extends Migration
             $table->string('no_nota', 20);
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('no action');
             $table->foreignId('reseller_id')->nullable()->constrained('pelanggans')->onDelete('no action');
-            $table->string('status', 50);
+            $table->string('status_bayar', 50)->default('BELUM BAYAR');
+            $table->string('status_sj', 50)->default('BELUM SJ');
             $table->text('data_nota_item');
             $table->integer('harga_total');
             $table->foreignId('created_by')->nullable()->constrained('users');

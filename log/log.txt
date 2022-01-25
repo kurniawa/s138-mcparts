@@ -1,3 +1,17 @@
+2022-01-25 - Selasa
+===================
+Ternary Operator: One line if statement
+---------------------------------------
+condition ? true_expression : false_expression
+
+ex:
+const age = 20;
+
+const age_group = age < 18 ? "Child" : "Adult";
+
+ex 2:
+(prev) ? console.log(prev.value): null;
+-------------------------------------------------
 Angong Niu Huang Wan
 Pien Shi Huang
 jiu namphak jok

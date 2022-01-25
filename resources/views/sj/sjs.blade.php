@@ -2,8 +2,11 @@
 
 @section('content')
     
-<header class="header grid-2-auto">
+<header class="header grid-3-auto">
     <img class="w-0_8em ml-1_5em" src="img/icons/back-button-white.svg" alt="" onclick="goBack();">
+    <div>
+        <h2 style="color: white">SJ</h2>
+    </div>
     <div class="justify-self-right pr-0_5em">
         <a href="/sj/sjBaru-pCust" id="btn-spk-baru" class="btn-atas-kanan2">
             + Buat Surat Jalan Baru

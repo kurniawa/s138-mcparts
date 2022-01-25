@@ -337,7 +337,6 @@ class NotaController extends Controller
                 $nota_id = DB::table('notas')->insertGetId([
                     'pelanggan_id' => $spk['pelanggan_id'],
                     'reseller_id' => $spk['reseller_id'],
-                    'status' => 'PROSES',
                     'data_nota_item' => json_encode($data_nota_item),
                     'harga_total' => $hrg_total_nota,
                 ]);
@@ -390,6 +389,7 @@ class NotaController extends Controller
             // to-comment
             $nota = Nota::find($nota_id);
             $nota->no_nota = "N-$nota_id";
+
 
             if ($load_num['value'] === 0) {
                 // to-comment

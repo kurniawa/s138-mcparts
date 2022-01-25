@@ -111,7 +111,7 @@ if (notas == undefined || notas.length == 0) {
         // console.log(element_to_toggle);
 
         // HTML Item each SPK
-        var htmlItemsEachSPK = '<tr><th>Nama Nota</th><th>Jml.</th><th>Hrg./pcs</th><th>Hrg.T</th></tr>';
+        var htmlItemsEachSPK = '<tr><th>Nama Nota</th><th>Jml.</th><th>Hrg./pcs</th><th>Hrg.t</th></tr>';
 
         const nota_item = JSON.parse(notas[i].data_nota_item);
         console.log('nota_item');
