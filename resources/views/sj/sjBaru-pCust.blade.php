@@ -92,10 +92,10 @@
 
         params_dd = JSON.stringify(params_dd);
 
+            // <tr class='bb-1px-solid-grey'><td><input type='radio' name='pCust' value='test'>test</td></tr>
         htmlCusts += `
-            <tr class='bb-1px-solid-grey'><td><input type='radio' name='pCust' value='${cust.id}'>${cust.nama}</td></tr>
+            <tr class='bb-1px-solid-grey'><td><input type='radio' name='pCust' value='${cust.id}' onclick='pNota_showDD("DD-${i0}");'>${cust.nama}</td></tr>
             <!-- <tr class='bb-1px-solid-grey'><td><input type='radio' name='pCust' value='test'>test</td></tr> -->
-            <tr class='bb-1px-solid-grey'><td><input type='radio' name='pCust' value='test'>test</td></tr>
             <tr id='DD-${i0}' style='display:none'><td colspan=3>${htmlDD}</td></tr>
             <tr id='DD2-${i0}' style='display:none'><td colspan=3>${htmlDD2}</td></tr>
         `;
@@ -105,22 +105,31 @@
 
     $('#tableItemList').html(htmlCusts);
 
-    var rad_pCust = document.form_pCust_pNota.pCust;
-    console.log('rad_pCust');
-    console.log(rad_pCust);
-    for (var i = 0; i < rad_pCust.length; i++) {
-        rad_pCust[i].addEventListener('click', function() {
-            console.log(this);
-            
-        });
-        // rad_pCust[i].addEventListener('change', function() {
-        //     (prev) ? console.log(prev.value): null;
-        //     if (this !== prev) {
-        //         prev = this;
-        //     }
-        //     console.log(this.value)
-        // });
+    var radio_pCust = document.form_pCust_pNota.pCust;
+    console.log('radio_pCust');
+    console.log(radio_pCust);
+
+    function pNota_showDD(DD_id) {
+        console.log(`DD_id: ${DD_id}`);
+        // $DD.show();
     }
+    // for (var i = 0; i < radio_pCust.length; i++) {
+    //     radio_pCust[i].addEventListener('click', function() {
+    //         console.log(`i: ${i}`);
+    //         console.log(this);
+    //         $DD = document.getElementById(`DD-${i}`);
+    //         console.log($DD);
+    //         // $DD.show();
+            
+    //     });
+    //     // radio_pCust[i].addEventListener('change', function() {
+    //     //     (prev) ? console.log(prev.value): null;
+    //     //     if (this !== prev) {
+    //     //         prev = this;
+    //     //     }
+    //     //     console.log(this.value)
+    //     // });
+    // }
 
     $jmlTotalSPK = 0;
     var element_to_toggle = "";
