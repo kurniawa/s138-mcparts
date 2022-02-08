@@ -59,6 +59,49 @@
         htmlDD: Dropdown pertama, nanti nya akan disisipkan ke htmlCusts
         htmlDD2: Dropdown kedua, nanti nya akan disisipkan ke htmlCusts
         */
+        var notas = JSON.parse(custs_notas[i0].notas);
+        /*
+        variable dinamakan dengan sebutan jamak, karena bisa jadi pelanggan tersebut dibuatkan
+        beberapa nota yang memang belum ada surat jalan nya.
+        */
+        console.log('notas:');
+        console.log(notas);
+
+        var htmlCheckboxNotas = '';
+        for (let i_checkboxNota = 0; i_checkboxNota < notas.length; i_checkboxNota++) {
+            var notaItem = JSON.parse(notas[i_checkboxNota].data_nota_item)
+            console.log('nota_item');
+            console.log(notaItem);
+
+            var htmlDataNotaItem = '';
+            for (let i_notaItem = 0; i_notaItem < notaItem.length; i_notaItem++) {
+                htmlDataNotaItem += `
+                <tr>
+                <td>${notaItem[i_notaItem].nama_nota}</td>
+                <td>${formatHarga(notaItem[i_notaItem].jml_item.toString())}</td>
+                <td>${formatHarga(notaItem[i_notaItem].hrg_per_item.toString())}</td>
+                <td>${formatHarga(notaItem[i_notaItem].hrg_total_item.toString())}</td>
+                </tr>
+                `;
+            }
+
+            htmlCheckboxNotas += `
+            <tr>
+            <td class='p-2'><input type='checkbox' name='' value=''></td>
+            <td class='p-2'>${notas[i_checkboxNota].no_nota}</td>
+            <td class='p-2'>Harga.T: Rp. ${formatHarga(notas[i_checkboxNota].harga_total.toString())},-</td>
+            <td class='p-2'><img class='w-0_7em' src='/img/icons/dropdown.svg'></td>
+            </tr>
+            <tr>
+                <td colspan=4>
+                    <table style='width:100%'>
+                        <tr><th>Nama</th><th>Jml.</th><th>Hrg./pcs</th><th>Hrg.t</th></tr>
+                        ${htmlDataNotaItem}
+                    </table>
+                </td>
+            </tr>
+            `;
+        }
 
         /*
         Parameter untuk Dropdown kedua yang akan di kirim ke function isChecked
@@ -71,10 +114,8 @@
         var htmlDD = '';
 
         htmlDD += `
-            <table>
-                <tr><td></td></tr>
-                <tr><td>Jml. ingin diinput</td><td>:</td><td><input type='number' name='jml_input[]'></td></tr>
-                <tr><td><input type='hidden' name='spk_produk_id[]'></td></tr>
+            <table style='width:100%'>
+                ${htmlCheckboxNotas}
             </table>
         `;
 
@@ -94,10 +135,11 @@
 
             // <tr class='bb-1px-solid-grey'><td><input type='radio' name='pCust' value='test'>test</td></tr>
         htmlCusts += `
-            <tr class='bb-1px-solid-grey'><td><input type='radio' name='pCust' value='${cust.id}' onclick='pNota_showDD("DD-${i0}");'>${cust.nama}</td></tr>
+            <tr class='bb-1px-solid-grey'><td><input type='radio' name='pCust' value='${cust.id}' onclick='pNota_showDD("DD-${i0}", ${i0});'>${cust.nama}</td></tr>
             <!-- <tr class='bb-1px-solid-grey'><td><input type='radio' name='pCust' value='test'>test</td></tr> -->
             <tr id='DD-${i0}' style='display:none'><td colspan=3>${htmlDD}</td></tr>
             <tr id='DD2-${i0}' style='display:none'><td colspan=3>${htmlDD2}</td></tr>
+            <tr class='bb-1px-solid-grey'><td></td></tr>
         `;
         
             // <tr id='DD2-${i}' style='display:none'><td colspan=3>${htmlDD2}</td></tr>
@@ -109,8 +151,11 @@
     console.log('radio_pCust');
     console.log(radio_pCust);
 
-    function pNota_showDD(DD_id) {
-        console.log(`DD_id: ${DD_id}`);
+    function pNota_showDD(DD_id, DD_index) {
+        console.log(`DD_id: ${DD_id}; DD_index: ${DD_index}`);
+        // var nota = JSON.parse(custs_notas[DD_index].notas);
+        // console.log(nota);
+        $(`#${DD_id}`).show(300);
         // $DD.show();
     }
     // for (var i = 0; i < radio_pCust.length; i++) {
