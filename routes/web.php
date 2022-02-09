@@ -77,6 +77,7 @@ Route::post('/nota/nota-hapus', [NotaController::class, 'nota_hapus']);
  */
 Route::get('/sj', [SjController::class, 'index']);
 Route::get('/sj/sjBaru-pCust', [SjController::class, 'sjBaru_pCust']);
+Route::post('/sj/sjBaru-pCust-DB', [SjController::class, 'sjBaru_pCust_DB']);
 
 // LOGIN & REGISTER coment dikit ah
 Route::get('/login', [LoginController::class, "index"])->middleware('guest')->name('login');

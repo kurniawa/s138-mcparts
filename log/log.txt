@@ -1,3 +1,23 @@
+2022-02-09 - Rabu
+=================
+JQUERY Flip image rotate dropdown
+----------------------------------
+$selectedDiv = $("#divDetailDropDown-" + id);
+$selectedDiv.toggle(400);
+
+setTimeout(() => {
+    if ($selectedDiv.css("display") === "block") {
+        $("#divDropdown-" + id + " img").attr("src", "img/icons/dropup.svg");
+    } else {
+        $("#divDropdown-" + id + " img").attr("src", "img/icons/dropdown.svg");
+    }
+}, 450);
+
+Get class from element
+----------------------
+document.getElementById("id").className
+this.className
+
 2022-01-25 - Selasa
 ===================
 Ternary Operator: One line if statement

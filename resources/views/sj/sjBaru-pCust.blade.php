@@ -24,14 +24,14 @@
 
 </div>
 <div id="divItemList2" class="p-1em">
-    <form action="/nota/notaBaru-pSPK-pItem-DB" method="POST" name="form_pCust_pNota">
+    <form action="/sj/sjBaru-pCust-DB" method="POST" name="form_pCust_pNota">
         @csrf
         {{-- <input type='checkbox' name='main_checkbox' id='main_checkbox' onclick="checkAll(this.id, 'dd');"> Pilih Semua --}}
         <table style="width:100%;" id="tableItemList"></table>
 
         <div id="divMarginBottom" style="height: 20vh;"></div>
 
-        <button id="btnSelesai_new" type="submit" class="btn-warning-full" style="display:none">Konfirmasi</button>
+        <button id="btnKonfirmasi" type="submit" class="btn-warning-full" style="display:none">Konfirmasi</button>
     </form>
 </div>
 
@@ -87,12 +87,15 @@
 
             htmlCheckboxNotas += `
             <tr>
-            <td class='p-2'><input type='checkbox' name='' value=''></td>
+            <td class='p-2'>
+                <input type='checkbox' name='' value='' onclick='showBtnKonfirmasi(this.className, "iptHidden_notaID-${i0}")' class='c-boxPNota-${i0}'>
+                <input type="hidden" name="nota_id[]" value=${notas[i_checkboxNota].id} class='iptHidden_notaID-${i0}' disabled>
+            </td>
             <td class='p-2'>${notas[i_checkboxNota].no_nota}</td>
             <td class='p-2'>Harga.T: Rp. ${formatHarga(notas[i_checkboxNota].harga_total.toString())},-</td>
-            <td class='p-2'><img class='w-0_7em' src='/img/icons/dropdown.svg'></td>
+            <td class='p-2' onclick='showNotaItem("DD2-${i0}${i_checkboxNota}", "ddImgRotate-${i0}${i_checkboxNota}")'><img class='w-0_7em' src='/img/icons/dropdown.svg' id='ddImgRotate-${i0}${i_checkboxNota}'></td>
             </tr>
-            <tr>
+            <tr id='DD2-${i0}${i_checkboxNota}' style='display:none'>
                 <td colspan=4>
                     <table style='width:100%'>
                         <tr><th>Nama</th><th>Jml.</th><th>Hrg./pcs</th><th>Hrg.t</th></tr>
@@ -106,10 +109,6 @@
         /*
         Parameter untuk Dropdown kedua yang akan di kirim ke function isChecked
         */
-        var htmlDD2 = '';
-        htmlDD2 += `
-        
-        `;
 
         var htmlDD = '';
 
@@ -135,10 +134,9 @@
 
             // <tr class='bb-1px-solid-grey'><td><input type='radio' name='pCust' value='test'>test</td></tr>
         htmlCusts += `
-            <tr class='bb-1px-solid-grey'><td><input type='radio' name='pCust' value='${cust.id}' onclick='pNota_showDD("DD-${i0}", ${i0});'>${cust.nama}</td></tr>
+            <tr class='bb-1px-solid-grey DD'><td><input type='radio' name='pCust' value='${cust.id}' onclick='pNota_showDD("DD-${i0}", ${i0});'>${cust.nama}</td></tr>
             <!-- <tr class='bb-1px-solid-grey'><td><input type='radio' name='pCust' value='test'>test</td></tr> -->
             <tr id='DD-${i0}' style='display:none'><td colspan=3>${htmlDD}</td></tr>
-            <tr id='DD2-${i0}' style='display:none'><td colspan=3>${htmlDD2}</td></tr>
             <tr class='bb-1px-solid-grey'><td></td></tr>
         `;
         
@@ -152,11 +150,59 @@
     console.log(radio_pCust);
 
     function pNota_showDD(DD_id, DD_index) {
-        console.log(`DD_id: ${DD_id}; DD_index: ${DD_index}`);
+        const radioDD = document.querySelectorAll(".DD");
+        for (let i_radio = 0; i_radio < radioDD.length; i_radio++) {
+            // console.log('i_radio: ' + i_radio);
+            // console.log('DD_index: ' + DD_index);
+            if (DD_index !== i_radio) {
+                $(`#DD-${i_radio}`).hide();
+                var cBoxes_toUncheck = document.querySelectorAll(`#DD-${i_radio} input[type=checkbox]`);
+                var inputHidden_toDisable = document.querySelectorAll(`#DD-${i_radio} input[type=hidden]`);
+                for (let i_cBoxes_toUncheck = 0; i_cBoxes_toUncheck < cBoxes_toUncheck.length; i_cBoxes_toUncheck++) {
+                    cBoxes_toUncheck[i_cBoxes_toUncheck].checked = false;
+                    inputHidden_toDisable[i_cBoxes_toUncheck].disabled = true;
+                    showBtnKonfirmasi(cBoxes_toUncheck[i_cBoxes_toUncheck].className, inputHidden_toDisable[i_cBoxes_toUncheck].className);
+                }
+            }            
+        }
+        // console.log(`DD_id: ${DD_id}; DD_index: ${DD_index}`);
         // var nota = JSON.parse(custs_notas[DD_index].notas);
         // console.log(nota);
         $(`#${DD_id}`).show(300);
         // $DD.show();
+    }
+
+    function showNotaItem(idNotaItem, idRotateImg) {
+        // console.log(idNotaItem);
+        console.log(idRotateImg);
+        $selectedElement = $(`#${idNotaItem}`);
+        if ($selectedElement.css('display') === 'none') {
+            $selectedElement.show(300);
+            $("#" + idRotateImg).attr("src", "/img/icons/dropup.svg");
+        } else {
+            $selectedElement.hide();
+            $("#" + idRotateImg).attr("src", "/img/icons/dropdown.svg");
+        }
+
+    }
+
+    function showBtnKonfirmasi(c_box_class, ipt_hidden_class) {
+        console.log(c_box_class);
+        var arr_indexInputToEnable = new Array();
+        var c_boxes = document.querySelectorAll(`.${c_box_class}`);
+        var ipt_hidden = document.querySelectorAll(`.${ipt_hidden_class}`);
+        // console.log(c_boxes)
+        for (let i_cBox = 0; i_cBox < c_boxes.length; i_cBox++) {
+            if (c_boxes[i_cBox].checked === true) {
+                arr_indexInputToEnable.push(i_cBox);
+                ipt_hidden[i_cBox].disabled = false;
+            }
+        }
+        if (arr_indexInputToEnable.length > 0) {
+            document.getElementById("btnKonfirmasi").style.display = "block";
+        } else {
+            document.getElementById("btnKonfirmasi").style.display = "none";
+        }
     }
     // for (var i = 0; i < radio_pCust.length; i++) {
     //     radio_pCust[i].addEventListener('click', function() {
