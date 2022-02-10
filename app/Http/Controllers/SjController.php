@@ -8,6 +8,7 @@ use App\Pelanggan;
 use App\SiteSetting;
 use App\Sj;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SjController extends Controller
 {
@@ -75,18 +76,64 @@ class SjController extends Controller
     public function sjBaru_pCust_DB(Request $request)
     {
         $load_num = SiteSetting::find(1);
-        if ($load_num !== 0) {
-            $load_num->value = 0;
-            $load_num->save();
-        }
+        // if ($load_num !== 0) {
+        //     $load_num->value = 0;
+        //     $load_num->save();
+        // }
 
-        $show_comment = true;
+        $show_dump = true;
+        $hide_dump = true;
+        $run_db = false;
+        $load_num_ignore = true;
+        // Pada development mode, load number boleh diignore. Yang perlu diperhatikan adalah
+        // insert dan update database supaya tidak berantakan
+
+        if ($load_num->value > 0 && $load_num_ignore === false) {
+            $run_db = false;
+        }
 
         $post = $request->input();
-        if ($show_comment === true) {
+        if ($show_dump === true) {
             dump('post');
-            dd($post);
+            dump($post);
         }
+
+        for ($iL_notaID = 0; $iL_notaID < count($post['nota_id']); $iL_notaID++) {
+            $nota = Nota::find($post['nota_id'][$iL_notaID]);
+            if ($show_dump === true) {
+                dump("nota-$iL_notaID:");
+                dump($nota);
+            }
+            $nota_items = json_decode($nota['data_nota_item'], true);
+            dump("nota_items-$iL_notaID");
+            dump($nota_items);
+
+            $reseller_id = null;
+            if ($nota['reseller_id'] !== null) {
+                $reseller_id = $nota['reseller_id'];
+            }
+
+            if ($show_dump === true) {
+                // Sebelum mulai input ke DB, cek dlu apakah sudah benar semua
+                dump([
+                    'pelanggan_id' => $nota['pelanggan_id'],
+                    'reseller_id' => $reseller_id,
+                    'status' => 'SJ DIBUAT - BLM KIRIM',
+                    'data_nota_item' => json_encode($nota_items),
+                ]);
+            }
+
+            if ($run_db === true) {
+                $sj_id = DB::table('sjs')->insertGetId([
+                    'pelanggan_id' => $nota['pelanggan_id'],
+                    'reseller_id' => $reseller_id,
+                    'status' => 'SJ DIBUAT - BLM KIRIM',
+                    'data_nota_item' => json_encode($nota_items),
+                ]);
+            }
+        }
+
+        dd('end');
 
         $notas_blm_kirim_gr_cust = Nota::where('status_sj', 'BELUM SJ')->orderByDesc('created_at')->groupBy('pelanggan_id')->get();
         dump('notas_blm_kirim_gr_cust');

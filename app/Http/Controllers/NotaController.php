@@ -168,10 +168,21 @@ class NotaController extends Controller
         // Tindakan pencegahan salah kepencet reload
         $load_num = SiteSetting::find(1);
 
+        $show_dump = true;
+        $hide_dump = true;
+        $run_db = false;
+        $load_num_ignore = true;
+
+        if ($load_num->value > 0 && $load_num_ignore === false) {
+            $run_db = false;
+        }
+
         $post = $request->input();
-        dump('post');
-        dump($post);
-        // dd($post);
+        if ($show_dump === true) {
+            dump('post');
+            dump($post);
+            // dd($post);
+        }
         /**
          * Mulai insert ke table notas, maka kita perlu mengetahui pelanggan_id, reseller_id terlebih dahulu.
          * Ini diketahui dari SPK
@@ -224,16 +235,6 @@ class NotaController extends Controller
 
             $hrg_total_item = (int)$hrg_per_item * (int)$d_jml_input[$i];
             $hrg_total_nota += $hrg_total_item;
-
-            $nota_item = [
-                'produk_id' => $produk['id'],
-                'nama_nota' => $produk['nama_nota'],
-                'jml_item' => $d_jml_input[$i],
-                'hrg_per_item' => $hrg_per_item,
-                'hrg_total_item' => $hrg_total_item,
-            ];
-
-            array_push($data_nota_item, $nota_item);
 
             // MULAI INSERT KE nota_produks
             // Disini aku sementara mau abaikan dulu table nota_produks, karena sudah ada json nya di table notas
@@ -301,9 +302,20 @@ class NotaController extends Controller
                 'jml' => $d_jml_input[$i]
             ]);
 
+            $nota_item = [
+                'spkcpnota_id' => $spkcpnota_id,
+                'produk_id' => $produk['id'],
+                'nama_nota' => $produk['nama_nota'],
+                'jml_item' => $d_jml_input[$i],
+                'hrg_per_item' => $hrg_per_item,
+                'hrg_total_item' => $hrg_total_item,
+            ];
+
+            array_push($data_nota_item, $nota_item);
+
             array_push($d_spkcpnota_id, $spkcpnota_id);
             // to recomment
-            array_push($d_spkcpnota_id, $i);
+            // array_push($d_spkcpnota_id, $i);
         }
 
         // CEK SEMUA YANG PERLU DIINSERT
