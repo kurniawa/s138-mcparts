@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Pelanggan;
+use App\SiteSetting;
 use App\Spk;
 use Illuminate\Http\Request;
 use App\SpkProduk;
@@ -67,6 +68,22 @@ class SPKItemSelesai extends Controller
 
     public function setItemSelesai(Request $request)
     {
+        $load_num = SiteSetting::find(1);
+        // if ($load_num !== 0) {
+        //     $load_num->value = 0;
+        //     $load_num->save();
+        // }
+
+        $show_dump = true;
+        $show_hidden_dump = false;
+        $run_db = true;
+        $load_num_ignore = true;
+        // Pada development mode, load number boleh diignore. Yang perlu diperhatikan adalah
+        // insert dan update database supaya tidak berantakan
+
+        if ($load_num->value > 0 && $load_num_ignore === false) {
+            $run_db = false;
+        }
         /**
          * Ketika men set item spk selesai, yang perlu diperhatikan adalah:
          * 1) Item yang di set sebagai selesai, berupa array, jadi penanganan nya dengan
@@ -76,8 +93,10 @@ class SPKItemSelesai extends Controller
          * 
          */
         $post = $request->input();
-        dump('post');
-        dump($post);
+        if ($show_dump === true) {
+            dump('post');
+            dump($post);
+        }
 
         // dd($post);
 
@@ -342,8 +361,18 @@ class SPKItemSelesai extends Controller
 
             if ($jml_selesai_new === $jumlah_akhir) {
                 $status = 'SELESAI';
+                if ($show_hidden_dump === true) {
+                    dump("status: $status");
+                }
             } elseif ($jml_selesai_new !== 0) {
                 $status = 'SEBAGIAN';
+                if ($show_hidden_dump === true) {
+                    dump("status: $status");
+                }
+            }
+
+            if ($show_hidden_dump === true) {
+                dump("status: $status");
             }
 
             dump("jml_blm_sls = jumlah_akhir - jml_selesai_new");
@@ -370,8 +399,9 @@ class SPKItemSelesai extends Controller
              */
             // $jmlSelesai_kapan_this = $spk_produk_this->jmlSelesai_kapan;
 
-
-            $spk_produk_this->save();
+            if ($run_db === true) {
+                $spk_produk_this->save();
+            }
 
             /**
              * UPDATE DATABASE SPK
@@ -414,11 +444,21 @@ class SPKItemSelesai extends Controller
 
         $spk_status = $spk->status;
 
+        $jml_status_selesai_of_spk_produk = 0;
         for ($i = 0; $i < count($spk_produk); $i++) {
-            if ($spk_produk[$i]['status'] !== 'PROSES') {
-                $spk_status = 'SEBAGIAN';
-                break;
+            if ($spk_produk[$i]['status'] === 'SELESAI') {
+                $jml_status_selesai_of_spk_produk++;
             }
+        }
+
+        if ($jml_status_selesai_of_spk_produk === 0) {
+            $spk_status = 'PROSES';
+        } elseif ($jml_status_selesai_of_spk_produk === count($spk_produk)) {
+            $spk_status = 'SELESAI';
+        } elseif ($jml_status_selesai_of_spk_produk > 0 && $jml_status_selesai_of_spk_produk < count($spk_produk)) {
+            $spk_status = 'SEBAGIAN';
+        } else {
+            $spk_status = 'ENTAH APA YANG TERJADI';
         }
 
 
@@ -433,13 +473,19 @@ class SPKItemSelesai extends Controller
         $spk->jumlah_total = $jumlah_total_new;
         $spk->harga_total = $harga_total_new;
         $spk->status = $spk_status;
-        $spk->save();
+
+        if ($run_db === true) {
+            $spk->save();
+        }
 
         $request->session()->put('reload_page', true);
 
         $data = [
             'go_back_number' => -2,
         ];
+
+        $load_num->value += 1;
+        $load_num->save();
 
         return view('layouts.go-back-page', $data);
     }

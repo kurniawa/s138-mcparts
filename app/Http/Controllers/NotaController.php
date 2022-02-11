@@ -109,7 +109,12 @@ class NotaController extends Controller
          * nota_item_available Tadinya di ambil langsung dari table SpkProduk. Namun karena di table spk terdapat data yang sama
          * dan juga lebih lengkap karena disertai juga dengan nama nya, maka kita consider jg untuk ambil data dari table spk
          */
-        $nota_item_av = SpkProduk::where('spk_id', $spk_id)->where('status_nota', 'BELUM')->orWhere('status_nota', 'SEBAGIAN')->get();
+        $nota_item_av = SpkProduk::where('spk_id', $spk_id)
+            ->where(function ($query) {
+                $query->where('status_nota', 'BELUM')
+                    ->orWhere('status_nota', 'SEBAGIAN');
+            })
+            ->get();
 
         // FILTER BERIKUTNYA ADALAH APAKAH ADA JUMLAH YANG SUDAH NOTA?
 

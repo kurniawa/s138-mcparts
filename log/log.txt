@@ -1,3 +1,14 @@
+2022-02-11 - Jumat
+==================
+Logical Grouping
+----------------
+$nota_item_av = SpkProduk::where('spk_id', $spk_id)
+->where(function ($query) {
+    $query->where('status_nota', 'BELUM')
+        ->orWhere('status_nota', 'SEBAGIAN');
+})
+->get();
+
 2022-02-09 - Rabu
 =================
 JQUERY Flip image rotate dropdown

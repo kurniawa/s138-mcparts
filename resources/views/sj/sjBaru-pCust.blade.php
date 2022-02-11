@@ -134,7 +134,7 @@
 
             // <tr class='bb-1px-solid-grey'><td><input type='radio' name='pCust' value='test'>test</td></tr>
         htmlCusts += `
-            <tr class='bb-1px-solid-grey DD'><td><input type='radio' name='pCust' value='${cust.id}' onclick='pNota_showDD("DD-${i0}", ${i0});'>${cust.nama}</td></tr>
+            <tr class='bb-1px-solid-grey DD'><td><input id='rad_pCust-${i0}' type='radio' name='pCust' value='${cust.id}' onclick='pNota_showDD("DD-${i0}", ${i0});'> <label for='rad_pCust-${i0}'>${cust.nama}</label></td></tr>
             <!-- <tr class='bb-1px-solid-grey'><td><input type='radio' name='pCust' value='test'>test</td></tr> -->
             <tr id='DD-${i0}' style='display:none'><td colspan=3>${htmlDD}</td></tr>
             <tr class='bb-1px-solid-grey'><td></td></tr>
@@ -187,7 +187,7 @@
     }
 
     function showBtnKonfirmasi(c_box_class, ipt_hidden_class) {
-        console.log(c_box_class);
+        // console.log(c_box_class);
         var arr_indexInputToEnable = new Array();
         var c_boxes = document.querySelectorAll(`.${c_box_class}`);
         var ipt_hidden = document.querySelectorAll(`.${ipt_hidden_class}`);
