@@ -20,8 +20,8 @@ class CreateSjsTable extends Migration
             $table->foreignId('pelanggan_id')->nullable()->constrained('pelanggans')->onDelete('no action');
             $table->foreignId('reseller_id')->nullable()->constrained('pelanggans')->onDelete('no action');
             $table->string('status', 50); // PROSES ATAU TERKIRIM
-            $table->text('data_nota_item');
-            $table->smallInteger('colly');
+            $table->text('json_sj_item');
+            $table->smallInteger('colly_T')->nullable();
             $table->foreignId('created_by')->nullable()->constrained('users');
             $table->foreignId('updated_by')->nullable()->constrained('users');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

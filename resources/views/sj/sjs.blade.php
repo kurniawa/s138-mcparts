@@ -47,7 +47,7 @@ if (sjs == undefined || sjs.length == 0) {
     for (var i = 0; i < sjs.length; i++) {
         // console.log(sjs[i].created_at);
         // const SJDate = sjs[i].created_at.split('T')[0];
-        const SJDate = sjs[i].created_at.split(' ')[0];
+        const SJDate = sjs[i].created_at.split('T')[0];
         console.log(SJDate);
         var arrayDate = SJDate.split('-');
         var getYear = arrayDate[0];
@@ -114,18 +114,18 @@ if (sjs == undefined || sjs.length == 0) {
         // console.log(element_to_toggle);
 
         // HTML Item each SPK
-        var htmlItemsEachSPK = '<tr><th>Nama Nota</th><th>Jml.</th><th>Hrg./pcs</th><th>Hrg.T</th></tr>';
+        var htmlItemsEachSPK = '<tr><th>Nama Produk</th><th>Jml.</th><th>Koli</th></tr>';
 
-        const nota_item = JSON.parse(sjs[i].data_nota_item);
-        console.log('nota_item');
-        console.log(nota_item);
+        const sj_item = JSON.parse(sjs[i].json_sj_item);
+        console.log('sj_item');
+        console.log(sj_item);
 
-        for (var k = 0; k < nota_item.length; k++) {
-            var textContent_jumlah = `${nota_item[k].jumlah}`;
+        for (var k = 0; k < sj_item.length; k++) {
+            var textContent_jumlah = `${sj_item[k].jumlah}`;
             console.log('define textContent_jumlah');
-            if (typeof nota_item[k].deviasi_jml !== 'undefined') {
+            if (typeof sj_item[k].deviasi_jml !== 'undefined') {
                 console.log('deviasi_jml is defined!');
-                const deviasi_jml = nota_item[k].deviasi_jml;
+                const deviasi_jml = sj_item[k].deviasi_jml;
                 if (deviasi_jml < 0) {
                     textContent_jumlah += ` ${deviasi_jml}`;
                 } else {
@@ -134,16 +134,15 @@ if (sjs == undefined || sjs.length == 0) {
             }
             htmlItemsEachSPK = htmlItemsEachSPK +
                 `<tr>
-                    <td>${nota_item[k].nama_nota}</td>
-                    <td>${nota_item[k].jml_item}</td>
-                    <td>${formatHarga(nota_item[k].hrg_per_item.toString())}</td>
-                    <td>${formatHarga(nota_item[k].hrg_total_item.toString())}</td>
+                    <td>${sj_item[k].nama_nota}</td>
+                    <td>${sj_item[k].jml_item}</td>
+                    <td>${sj_item[k].colly}</td>
                 </tr>`;
         }
 
 
         var htmlDaftarSPK =
-            `<form method='GET' action='/nota/nota-detailNota' class='pb-0_5em pt-0_5em bb-1px-solid-grey'>
+            `<form method='GET' action='/sj/sj-detailSJ' class='pb-0_5em pt-0_5em bb-1px-solid-grey'>
                 <div class='grid-5-9_45_25_18_5'>
                     <div class='circle-medium grid-1-auto justify-items-center font-weight-bold' style='background-color: ${randomColor()}'>${pelanggans[i].singkatan}</div>
                     <div>${pelanggans[i].nama} - ${pelanggans[i].daerah}</div>
@@ -155,15 +154,15 @@ if (sjs == undefined || sjs.length == 0) {
                         ${html_tgl_sls}
                     </div>
                     <div class='grid-1-auto'>
-                        <div class='justify-self-right font-size-1_2em' style="color:green;font-weight:bold;">${formatHarga(sjs[i].harga_total.toString())}</div>
-                        <div class='justify-self-right' style='color:grey'>Rp.</div>
+                        <div class='justify-self-right font-size-1_2em' style="color:green;font-weight:bold;">${sjs[i].colly_T}</div>
+                        <div class='justify-self-right' style='color:grey'>Koli T</div>
                     </div>
                     <div class='justify-self-center'><img class='w-0_7em' src='img/icons/dropdown.svg' onclick='elementToToggle(${element_to_toggle});'></div>
                 </div>` +
             // DROPDOWN
             `<div id='divSPKItems-${i}' class='p-0_5em b-1px-solid-grey' style='display: none'>
-            <div class='font-weight-bold color-grey'>No. ${sjs[i].no_nota}</div>
-            <input type='hidden' name='nota_id' value=${sjs[i].id}>
+            <div class='font-weight-bold color-grey'>No. ${sjs[i].no_sj}</div>
+            <input type='hidden' name='sj_id' value=${sjs[i].id}>
             <table style='width:100%'>${htmlItemsEachSPK}</table>
             <div class='text-right'>
             <button type='submit' class="d-inline-block bg-color-orange-1 pl-1em pr-1em b-radius-50px" style='border: none'>
