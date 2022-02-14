@@ -30,18 +30,6 @@ class PelangganSeeder extends Seeder
             ]);
         }
 
-        $pelanggan_ekspedisi = [
-            ['pelanggan_id' => 1, 'ekspedisi_id' => 1],
-            ['pelanggan_id' => 3, 'ekspedisi_id' => 2]
-        ];
-
-        for ($i = 0; $i < count($pelanggan_ekspedisi); $i++) {
-            DB::table('pelanggan_ekspedisi')->insert([
-                'pelanggan_id' => $pelanggan_ekspedisi[$i]['pelanggan_id'],
-                'ekspedisi_id' => $pelanggan_ekspedisi[$i]['ekspedisi_id'],
-            ]);
-        }
-
         // $pelanggan_reseller = [
         //     ['nama' => 'Akong - Karya Motor', 'reseller_id' => 2, 'pelanggan_id' => 3]
         // ];

@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-class PelangganEkspedisi extends Migration
+class CreatePelangganEkspedisisTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class PelangganEkspedisi extends Migration
      */
     public function up()
     {
-        Schema::create('pelanggan_ekspedisi', function (Blueprint $table) {
+        Schema::create('pelanggan_ekspedisis', function (Blueprint $table) {
             $table->id();
             $table->foreignId('pelanggan_id');
             $table->foreignId('ekspedisi_id');
@@ -30,6 +30,6 @@ class PelangganEkspedisi extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pelanggan_ekspedisi');
+        Schema::dropIfExists('pelanggan_ekspedisis');
     }
 }

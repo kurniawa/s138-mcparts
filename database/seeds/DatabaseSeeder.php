@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PelangganSeeder::class,
             EkspedisiSeeder::class,
+            PelangganEkspedisi::class,
             BahanSeeder::class,
             VariasiSeeder::class,
             UkuranSeeder::class,

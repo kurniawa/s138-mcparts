@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Ekspedisi;
 use App\Http\Controllers\Controller;
 use App\Nota;
 use App\Pelanggan;
@@ -9,6 +10,7 @@ use App\SiteSetting;
 use App\Sj;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\PelangganEkspedisi;
 
 class SjController extends Controller
 {
@@ -126,7 +128,7 @@ class SjController extends Controller
             // SETELAH INPUT KE SJ, MAKA KITA PERLU INPUT KE spkcpnotasj
             // BELUM DIKERJAKAN: SORTING PRODUK & PENGGABUNGAN PRODUK YANG SAMA
 
-            for ($i_notaItem=0; $i_notaItem < count($nota_items); $i_notaItem++) {
+            for ($i_notaItem = 0; $i_notaItem < count($nota_items); $i_notaItem++) {
                 $colly = null;
 
                 $sj_item = [
@@ -163,7 +165,7 @@ class SjController extends Controller
             $sj_barusan_input->no_sj = "SJ-$sj_id";
             $sj_barusan_input->save();
 
-            for ($i_notaItemsGabungan=0; $i_notaItemsGabungan < count($sj_items_gabungan); $i_notaItemsGabungan++) { 
+            for ($i_notaItemsGabungan = 0; $i_notaItemsGabungan < count($sj_items_gabungan); $i_notaItemsGabungan++) {
                 DB::table('spkcpnotsjs')->insert([
                     'spkcpnota_id' => $sj_items_gabungan[$i_notaItemsGabungan]['spkcpnota_id'],
                     'sj_id' => $sj_id,
@@ -207,8 +209,16 @@ class SjController extends Controller
         }
 
         $get = $request->input();
-        
+
         $sj = Sj::find($get['sj_id']);
+        $pelanggan = Pelanggan::find($sj['pelanggan_id']);
+        $reseller = null;
+        $pelanggan_ekspedisi = PelangganEkspedisi::where('pelanggan_id', $pelanggan['id'])->get();
+        $ekspedisi = Ekspedisi::find($pelanggan_ekspedisi['ekspedisi_id']);
+
+        if ($sj['reseller_id'] !== null) {
+            $reseller = Pelanggan::find($sj['reseller_id']);
+        }
 
         if ($show_dump === true) {
             dump('get');
@@ -219,10 +229,11 @@ class SjController extends Controller
 
         $data = [
             'sj' => $sj,
+            'pelanggan' => $pelanggan,
+            'reseller' => $reseller,
             'csrf' => csrf_token()
         ];
 
         return view('sj.sj-detailSJ', $data);
     }
 }
-

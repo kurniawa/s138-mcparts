@@ -45,6 +45,31 @@
     <img class="w-2em" src="/img/icons/pencil.svg" alt="">
     <h2 class="">Detail Surat Jalan: {{ $sj['no_sj'] }} </h2>
 </div>
+
+<div class="grid-2-50_50 grid-row-gap-0_5em grid-column-gap-0_5em ml-0_5em mr-0_5em">
+    <div class="b-1px-solid-grey">
+
+        <div class="h-10em">
+            <div class="grid-1-auto justify-items-center">
+                <img class="w-2_5em" src="/img/icons/address.svg" alt="">
+            </div>
+            <div id="customerInfo" class="mt-0_5em font-size-0_9em font-weight-bold">Alamat Customer</div>
+        </div>
+
+    </div>
+
+    <div class='b-1px-solid-grey'>
+
+        <div class='h-10em'>
+            <div class='grid-1-auto justify-items-center'>
+                <img class='w-2_5em' src='/img/icons/truck_2.svg' alt=''>
+            </div>
+            <div id='customerExpedition-$index' class='mt-0_5em font-size-0_9em font-weight-bold'>Info Ekspedisi</div>
+        </div>
+
+    </div>
+</div>
+
 <div id="divDaftarItemsj" class="p-0_5em"></div>
 
 <style>
@@ -57,15 +82,24 @@
 </style>
 
 <script>
+    const show_console = true;
+
     const sj = {!! json_encode($sj, JSON_HEX_TAG) !!};
-    console.log("sj");
-    console.log(sj);
-
     const d_sj_item = JSON.parse(sj['json_sj_item']);
-    console.log("d_sj_item");
-    console.log(d_sj_item);
-
     const my_csrf = {!! json_encode($csrf, JSON_HEX_TAG) !!};
+    const pelanggan = {!! json_encode($pelanggan, JSON_HEX_TAG) !!};
+    const reseller = {!! json_encode($reseller, JSON_HEX_TAG) !!};
+
+    if (show_console === true) {
+        console.log("sj");
+        console.log(sj);
+        console.log("d_sj_item");
+        console.log(d_sj_item);
+        console.log("pelanggan");
+        console.log(pelanggan);
+        console.log("reseller");
+        console.log(reseller);
+    }
 
 
     for (var i = 0; i < d_sj_item.length; i++) {
