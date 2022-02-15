@@ -1,3 +1,19 @@
+2022-02-15 - Selasa
+===================
+Integrity constraint violation: 1452 Cannot add or update a child row:
+a foreign key constraint fails (`s138_mcparts`.`pelanggan_ekspedisis`, CONSTRAINT `pelanggan_ekspedisis_ekspedisi_id_foreign
+` FOREIGN KEY (`ekspedisi_id`) REFERENCES `ekspedisis` (`id`) ON DELETE CASCADE)
+(SQL: insert into `pelanggan_ekspedisis` (`pelanggan_id`, `ekspedisi_id`) values (3, 2))
+
+Ga boleh ada Mass Assignment, jadi di Model nya harus ditambahkan:
+protected $guarded = ['id'];
+
+atau
+
+protected $fillable = [];
+
+Ternyata masalahnya ada di Seeder nya, dimana ekspedisi dengan id=2 memang ga ada, belum diinput.
+
 2022-02-11 - Jumat
 ==================
 Logical Grouping

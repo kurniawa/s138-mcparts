@@ -213,8 +213,7 @@ class SjController extends Controller
         $sj = Sj::find($get['sj_id']);
         $pelanggan = Pelanggan::find($sj['pelanggan_id']);
         $reseller = null;
-        $pelanggan_ekspedisi = PelangganEkspedisi::where('pelanggan_id', $pelanggan['id'])->get();
-        $ekspedisi = Ekspedisi::find($pelanggan_ekspedisi['ekspedisi_id']);
+        $pelanggan_ekspedisi = PelangganEkspedisi::where('pelanggan_id', $pelanggan['id'])->where('ket', 'UTAMA')->get();
 
         if ($sj['reseller_id'] !== null) {
             $reseller = Pelanggan::find($sj['reseller_id']);
@@ -225,6 +224,8 @@ class SjController extends Controller
             dump($get);
             dump('sj:');
             dump($sj);
+            dump('pelanggan_ekspedisi:');
+            dump($pelanggan_ekspedisi);
         }
 
         $data = [
