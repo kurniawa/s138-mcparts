@@ -1,6 +1,6 @@
 // Jangan lupa pakai JSON stringify dan tanda petik satu
 // elements merupakan array dalam array dengan key ID dan time
-function elementToToggle (elements) {
+function elementToToggle(elements) {
     console.log(elements);
     for (const element of elements) {
         if ($(element.id).css("display") == "none") {
@@ -11,7 +11,7 @@ function elementToToggle (elements) {
     }
 }
 
-function getLastID (table) {
+function getLastID(table) {
     var results;
     $.ajax({
         type: "POST",
@@ -20,17 +20,17 @@ function getLastID (table) {
         async: false,
         data: {
             table: table,
-            type: "last"
+            type: "last",
         },
         success: function (responseText) {
             console.log(responseText);
             results = responseText;
-        }
+        },
     });
     return results;
 }
 
-function liveSearch (key, table, column) {
+function liveSearch(key, table, column) {
     let results;
     $.ajax({
         type: "POST",
@@ -41,41 +41,38 @@ function liveSearch (key, table, column) {
             key: key,
             table: table,
             column: column,
-            type: "live-search"
+            type: "live-search",
         },
         success: function (responseText) {
             console.log(responseText);
             results = responseText;
-        }
+        },
     });
     return results;
 }
 
-function formatDate (date) {
+function formatDate(date) {
     var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
+        month = "" + (d.getMonth() + 1),
+        day = "" + d.getDate(),
         year = d.getFullYear();
 
-    if (month.length < 2)
-        month = '0' + month;
-    if (day.length < 2)
-        day = '0' + day;
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
 
-    return [day, month, year].join('-');
+    return [day, month, year].join("-");
 }
 
-
-function formatHarga (harga) {
-    console.log(harga);
-    let hargaRP = '';
+function formatHarga(harga) {
+    // console.log(harga);
+    let hargaRP = "";
     let akhir = harga.length;
     let posisi = akhir - 3;
-    let jmlTitik = Math.ceil((harga.length / 3) - 1);
-    console.log(jmlTitik);
+    let jmlTitik = Math.ceil(harga.length / 3 - 1);
+    // console.log(jmlTitik);
     for (let i = 0; i < jmlTitik; i++) {
-        hargaRP = '.' + harga.slice(posisi, akhir) + hargaRP;
-        console.log(hargaRP);
+        hargaRP = "." + harga.slice(posisi, akhir) + hargaRP;
+        // console.log(hargaRP);
         akhir = posisi;
         posisi = akhir - 3;
     }
@@ -83,12 +80,21 @@ function formatHarga (harga) {
     return hargaRP;
 }
 
-function onCheckToggle (elements) {
+function formatNewLine(line) {
+    arr_line = line.split("[br]");
+    var string_formated = "";
+    arr_line.forEach((new_line) => {
+        string_formated += new_line + "<br>";
+    });
+    return string_formated;
+}
+
+function onCheckToggle(elements) {
     // console.log(elements);
     for (const element of elements) {
         console.log("(element.idCheckbox).is(':checked')");
-        console.log($(element.idCheckbox).is(':checked'));
-        if ($(element.idCheckbox).is(':checked') == true) {
+        console.log($(element.idCheckbox).is(":checked"));
+        if ($(element.idCheckbox).is(":checked") == true) {
             $(element.elementToToggle).show(element.time);
         } else {
             $(element.elementToToggle).hide(element.time);
@@ -96,7 +102,7 @@ function onCheckToggle (elements) {
     }
 }
 
-function onMultipleCheckToggleWithORLogic (elements) {
+function onMultipleCheckToggleWithORLogic(elements) {
     // console.log(elements);
     for (const element of elements) {
         // console.log("(element.idCheckbox).is(':checked')");
@@ -105,13 +111,13 @@ function onMultipleCheckToggleWithORLogic (elements) {
         var lengthIdCheckbox = element.idCheckboxORLogic.length;
         for (let i = 0; i < lengthIdCheckbox; i++) {
             if (i == 0) {
-                if ($(element.idCheckboxORLogic[0]).is(':checked') == true) {
+                if ($(element.idCheckboxORLogic[0]).is(":checked") == true) {
                     $(element.elementToToggle).show(element.time);
                 } else {
                     $(element.elementToToggle).toggle(element.time);
                 }
             }
-            if ($(element.idCheckboxORLogic[i]).is(':checked') == true) {
+            if ($(element.idCheckboxORLogic[i]).is(":checked") == true) {
                 sumCheckboxIsChecked++;
             }
         }
@@ -154,21 +160,21 @@ function onMultipleCheckToggleWithORLogic (elements) {
 // }
 // }
 
-function goBack () {
+function goBack() {
     window.history.back();
 }
 
-function windowHistoryGo (params) {
+function windowHistoryGo(params) {
     window.history.go(parseInt(params));
 }
 
-function goTo (link) {
+function goTo(link) {
     window.location.href = `${link}`;
 }
 
 // FUNCTION CREATE LIST
 
-function createList (params) {
+function createList(params) {
     var grid_num = params.keys.length + 1;
     // var list_html = `
     //     <div class='grid-${grid_num}-auto'>
@@ -179,16 +185,16 @@ function createList (params) {
 
     console.log(params.keys);
 
-    var k = 0 // INDEX LIST atau obj nya
-    params.json_obj.forEach(obj => {
+    var k = 0; // INDEX LIST atau obj nya
+    params.json_obj.forEach((obj) => {
         list_html += `
             <div>
             <table style='width:100%'><tr>
         `;
 
-        var i = 0
+        var i = 0;
         // Menentukan banyaknya kolom atau td dalam satu row
-        params.keys.forEach(key => {
+        params.keys.forEach((key) => {
             list_html += `
                 <td>${obj[key]}</td>
             `;
@@ -205,8 +211,8 @@ function createList (params) {
         // DROPDOWN
         var dd_html = `<div id="dd-${k}" class="b-1px-solid-grey p-1em" style="display:none">`;
         if (typeof params.dd_keys !== "undefined") {
-            params.dd_keys.forEach(dd_key => {
-                var icon = '';
+            params.dd_keys.forEach((dd_key) => {
+                var icon = "";
                 if (dd_key == "alamat") {
                     icon += `
                         <div style="display:inline-block"><img src='img/icons/real-estate.svg' style="width:2em"></div>
@@ -224,18 +230,20 @@ function createList (params) {
 
         // DROPDOWN -> BUTTON HAPUS DAN DETAIL
         var btn = '<div class="text-right">';
-        if (params.detail !== '' && typeof params.detail !== "undefined") {
+        if (params.detail !== "" && typeof params.detail !== "undefined") {
             btn += `
-                <a href='${params.detail.link}${obj[params.detail.key]}' class='btn-warning' style="display:inline-block">Detail</a>
+                <a href='${params.detail.link}${
+                obj[params.detail.key]
+            }' class='btn-warning' style="display:inline-block">Detail</a>
             `;
         }
 
-        if (params.delete !== '' && typeof params.delete !== "undefined") {
+        if (params.delete !== "" && typeof params.delete !== "undefined") {
             console.log(params.delete);
             var col = new Array();
             var colVal = new Array();
 
-            params.delete.input.forEach(inp => {
+            params.delete.input.forEach((inp) => {
                 console.log("inp");
                 console.log(inp);
                 col.push(inp.name);
@@ -251,7 +259,7 @@ function createList (params) {
                 table: params.delete.table,
                 goBackNum: params.delete.goBackNum,
                 col: col,
-                colVal: colVal
+                colVal: colVal,
             };
 
             delProps = JSON.stringify(delProps);
@@ -268,8 +276,7 @@ function createList (params) {
             //         `;
             //     }
             // });
-            btn +=
-                `
+            btn += `
                 <button class='btn-danger' onclick='showDelConfirm(${delProps});'>Hapus</button>
                 `;
             // </form>
@@ -291,7 +298,7 @@ function createList (params) {
     return list_html;
 }
 
-function showDelConfirm (delProps) {
+function showDelConfirm(delProps) {
     // delProps = JSON.parse(delProps);
     console.log("running showDelConfirm");
     var divConfirmBox = document.createElement("div");
@@ -311,8 +318,7 @@ function showDelConfirm (delProps) {
         <input type="hidden" name="columnValue[]" value="${delProps.colVal[i]}">
         `;
     }
-    htmlConfirmBox +=
-        `
+    htmlConfirmBox += `
             <input type="hidden" name="goBackNum" value="${delProps.goBackNum}">
             <input type="hidden" name="table" value="${delProps.table}">
             <button type="submit" class="btn-danger">Ya</button>
@@ -329,10 +335,9 @@ function showDelConfirm (delProps) {
 
     document.body.appendChild(closingArea);
     document.body.appendChild(divConfirmBox);
-
 }
 
-function removeElem (elements) {
+function removeElem(elements) {
     for (let i = 0; i < elements.length; i++) {
         document.querySelector(`#${elements[i]}`).remove();
     }
@@ -340,8 +345,7 @@ function removeElem (elements) {
 
 // #################################
 
-
-function showDD (divID, iconID) {
+function showDD(divID, iconID) {
     console.log(iconID);
     $(divID).toggle(400);
 
@@ -356,9 +360,8 @@ function showDD (divID, iconID) {
 
 // FUNCTION CHECKBOX CONFIRM LIST
 
-function createCheckboxConfirmList (params, my_csrf) {
-
-    console.log('params');
+function createCheckboxConfirmList(params, my_csrf) {
+    console.log("params");
     console.log(params);
 
     var list_html = `
@@ -368,13 +371,13 @@ function createCheckboxConfirmList (params, my_csrf) {
     `;
 
     if (typeof params.form.input !== "undefined") {
-        console.log('run: if typeof params.form.input');
+        console.log("run: if typeof params.form.input");
 
         var html_form_input = "";
-        params.form.input.forEach(inp => {
+        params.form.input.forEach((inp) => {
             var inpClass = "";
             if (typeof inp.class !== "undefined") {
-                console.log('run: if typeof inp.class !== undefined');
+                console.log("run: if typeof inp.class !== undefined");
                 inpClass = inp.class;
             }
             html_form_input += `<input type="${inp.type}" name="${inp.name}" value="${inp.value}" class="${inpClass}">`;
@@ -382,26 +385,26 @@ function createCheckboxConfirmList (params, my_csrf) {
         list_html += html_form_input;
     }
 
-    var k = 0 // INDEX LIST atau obj nya
+    var k = 0; // INDEX LIST atau obj nya
     // console.log('list_html');
     // console.log(list_html);
 
     var isCheckedParamsAll = new Array();
-    params.object.forEach(obj => {
+    params.object.forEach((obj) => {
         list_html += `
             <tr class='bb-1px-solid-grey'>
         `;
 
-        var i = 0
+        var i = 0;
         // Menentukan banyaknya kolom atau td dalam satu row
-        params.first_line_keys.forEach(key => {
+        params.first_line_keys.forEach((key) => {
             // MENENTUKAN WARNA TULISAN
             var color = "";
 
             if (typeof key.color !== "undefined") {
                 if (typeof key.color.requirement !== "undefined") {
                     var j = 0;
-                    key.color.requirement.value.forEach(val => {
+                    key.color.requirement.value.forEach((val) => {
                         // console.log("run foreach requirement value");
                         // console.log(obj[key.color.requirement.key], val);
                         // console.log(key.color.requirement.key);
@@ -423,14 +426,16 @@ function createCheckboxConfirmList (params, my_csrf) {
             }
 
             list_html += `
-                <td style="color:${color};font-weight:bold;font-size:1em;padding-bottom:1em;padding-top:1em;" class="${attClass}">${obj[key.name]}</td>
+                <td style="color:${color};font-weight:bold;font-size:1em;padding-bottom:1em;padding-top:1em;" class="${attClass}">${
+                obj[key.name]
+            }</td>
             `;
 
             var isCheckedParams = {
                 id_dd: `#dd_checkbox_show-${k}`,
                 class_checkbox: ".dd_checkbox",
                 id_checkbox: `#dd_checkbox-${k}`,
-                id_button: `#${params.button.id}`
+                id_button: `#${params.button.id}`,
             };
 
             isCheckedParamsAll.push(isCheckedParams);
@@ -439,7 +444,11 @@ function createCheckboxConfirmList (params, my_csrf) {
 
             if (i == params.first_line_keys.length - 1) {
                 list_html += `
-                    <td><input id="dd_checkbox-${k}" class="dd_checkbox" type="checkbox" name="${params.checkbox.name}[]" value="${obj[params.checkbox.value]}" onclick='isChecked(${isCheckedParams});'></td>
+                    <td><input id="dd_checkbox-${k}" class="dd_checkbox" type="checkbox" name="${
+                    params.checkbox.name
+                }[]" value="${
+                    obj[params.checkbox.value]
+                }" onclick='isChecked(${isCheckedParams});'></td>
                     </tr>
                 `;
             }
@@ -454,7 +463,7 @@ function createCheckboxConfirmList (params, my_csrf) {
         var html_dd_title = "";
         if (typeof params.dd_input_title !== "undefined") {
             html_dd_title += `<td colspan='3'><div>${params.dd_input_title.title}`;
-            if (typeof obj[params.dd_input_title.key] !== 'undefined') {
+            if (typeof obj[params.dd_input_title.key] !== "undefined") {
                 html_dd_title += `${obj[params.dd_input_title.key]}</div>`;
             } else {
                 html_dd_title += `0</div>`;
@@ -464,7 +473,7 @@ function createCheckboxConfirmList (params, my_csrf) {
         ${html_dd_title}
         <table class="b-1px-solid-grey">`;
         if (typeof params.dd_input !== "undefined") {
-            params.dd_input.forEach(input => {
+            params.dd_input.forEach((input) => {
                 // MENENTUKAN VALUE DARI INPUT
                 // console.log('input');
                 // console.log(input);
@@ -473,7 +482,7 @@ function createCheckboxConfirmList (params, my_csrf) {
                     // if (input.type === 'number') {
                     // console.log('untuk deviasi dan jml_selesai');
                     // console.log(obj[input.value.key]);
-                    if (typeof obj[input.value.key] !== 'undefined') {
+                    if (typeof obj[input.value.key] !== "undefined") {
                         value = obj[input.value.key];
                     } else {
                         value = 0;
@@ -525,14 +534,12 @@ function createCheckboxConfirmList (params, my_csrf) {
         // console.log("run embed innerHTML");
         // console.log(list_html);
         document.getElementById(`${params.container.id}`).innerHTML = list_html;
-        isCheckedParamsAll.forEach(isCheckedParams => {
+        isCheckedParamsAll.forEach((isCheckedParams) => {
             isChecked(isCheckedParams);
         });
-
     } else {
         return list_html;
     }
-
 }
 
 // Kalau checkbox nya di check maka akan muncul tombol selesai
@@ -555,9 +562,11 @@ function createCheckboxConfirmList (params, my_csrf) {
  * 
  */
 
-function isChecked (params) {
+function isChecked(params) {
     // console.log(params);
-    const checkbox_all = document.querySelectorAll(`${params.class_checkbox}:checked`);
+    const checkbox_all = document.querySelectorAll(
+        `${params.class_checkbox}:checked`
+    );
     const btnToShow = document.querySelector(params.id_button);
     const checkbox = document.querySelector(params.id_checkbox);
     // const dd = document.querySelector(params.id_dd);
@@ -593,8 +602,8 @@ function isChecked (params) {
         }
     }
 
-    if (typeof params.to_uncheck !== 'undefined') {
-        console.log('run uncheck!');
+    if (typeof params.to_uncheck !== "undefined") {
+        console.log("run uncheck!");
 
         var to_uncheck = JSON.parse(params.to_uncheck);
 
@@ -602,23 +611,18 @@ function isChecked (params) {
         document.querySelector(to_uncheck.id_checkbox).checked = false;
         isChecked(to_uncheck);
     }
-
 }
 // END: Memunculkan tombol selesai
 
-
 /**DATE TODAY */
 
-function getDateToday () {
+function getDateToday() {
     var now = new Date();
-    var month = (now.getMonth() + 1);
+    var month = now.getMonth() + 1;
     var day = now.getDate();
-    if (month < 10)
-        month = "0" + month;
-    if (day < 10)
-        day = "0" + day;
-    var today = now.getFullYear() + '-' + month + '-' + day;
+    if (month < 10) month = "0" + month;
+    if (day < 10) day = "0" + day;
+    var today = now.getFullYear() + "-" + month + "-" + day;
 
     return today;
-
 }

@@ -194,8 +194,8 @@ class SjController extends Controller
             $load_num->save();
         }
 
-        $show_dump = true;
-        $show_hidden_dump = true;
+        $show_dump = false;
+        $show_hidden_dump = false;
         $run_db = true;
         $load_num_ignore = true;
         // Pada development mode, load number boleh diignore. Yang perlu diperhatikan adalah
@@ -214,6 +214,7 @@ class SjController extends Controller
         $pelanggan = Pelanggan::find($sj['pelanggan_id']);
         $reseller = null;
         $pelanggan_ekspedisi = PelangganEkspedisi::where('pelanggan_id', $pelanggan['id'])->where('ket', 'UTAMA')->get();
+        $ekspedisi = Ekspedisi::find($pelanggan_ekspedisi[0]['ekspedisi_id']);
 
         if ($sj['reseller_id'] !== null) {
             $reseller = Pelanggan::find($sj['reseller_id']);
@@ -224,17 +225,75 @@ class SjController extends Controller
             dump($get);
             dump('sj:');
             dump($sj);
+            dump('pelanggan:');
+            dump($pelanggan);
             dump('pelanggan_ekspedisi:');
             dump($pelanggan_ekspedisi);
+            dump('ekspedisi:');
+            dump($ekspedisi);
         }
 
         $data = [
             'sj' => $sj,
             'pelanggan' => $pelanggan,
             'reseller' => $reseller,
+            'ekspedisi' => $ekspedisi,
             'csrf' => csrf_token()
         ];
 
         return view('sj.sj-detailSJ', $data);
+    }
+
+    public function sj_printOut(Request $request)
+    {
+        $load_num = SiteSetting::find(1);
+        if ($load_num !== 0) {
+            $load_num->value = 0;
+            $load_num->save();
+        }
+
+        $show_dump = false;
+        $show_hidden_dump = false;
+        $run_db = true;
+        $load_num_ignore = true;
+        // Pada development mode, load number boleh diignore. Yang perlu diperhatikan adalah
+        // insert dan update database supaya tidak berantakan
+        if ($show_hidden_dump === true) {
+            dump("load_num_value: " . $load_num->value);
+        }
+
+        if ($load_num->value > 0 && $load_num_ignore === false) {
+            $run_db = false;
+        }
+
+        $post = $request->input();
+        $sj = json_decode($post['sj'], true);
+        $pelanggan = json_decode($post['pelanggan'], true);
+        $reseller = json_decode($post['reseller'], true);
+        $ekspedisi = json_decode($post['ekspedisi'], true);
+
+
+        if ($show_dump === true) {
+            dump('post');
+            dump($post);
+            dump('sj:');
+            dump($sj);
+            dump('pelanggan:');
+            dump($pelanggan);
+            dump('reseller:');
+            dump($reseller);
+            dump('ekspedisi:');
+            dump($ekspedisi);
+        }
+
+        $data = [
+            'sj' => $sj,
+            'pelanggan' => $pelanggan,
+            'reseller' => $reseller,
+            'ekspedisi' => $ekspedisi,
+            'csrf' => csrf_token()
+        ];
+
+        return view('sj.sj-printOut', $data);
     }
 }

@@ -19,11 +19,15 @@
         <!-- <div id="downloadExcel" class="threeDotMenuItem" onclick="goToPrintOutSPK();">
             <img src="img/icons/download.svg" alt=""><span>Download Excel</span>
         </div> -->
-        <form action="/sj/sj-printOut" method='GET'>
+        <form action="/sj/sj-printOut" method='POST'>
             <button id="downloadExcel" type="submit" class="threeDotMenuItem">
                 <img src="/img/icons/download.svg" alt=""><span>Print Out Surat Jalan</span>
             </button>
-            <input type="hidden" name="sj_id" value={{ $sj['id'] }}>
+            <input type="hidden" name="sj" value='{{ $sj }}'>
+            <input type="hidden" name="pelanggan" value='{{ $pelanggan }}'>
+            <input type="hidden" name="reseller" value='{{ $reseller }}'>
+            <input type="hidden" name="ekspedisi" value='{{ $ekspedisi }}'>
+            @csrf
         </form>
         {{-- <form action="/sj/sj-hapus" method='POST'>
             @csrf
@@ -46,27 +50,31 @@
     <h2 class="">Detail Surat Jalan: {{ $sj['no_sj'] }} </h2>
 </div>
 
-<div class="grid-2-50_50 grid-row-gap-0_5em grid-column-gap-0_5em ml-0_5em mr-0_5em">
-    <div class="b-1px-solid-grey">
-
-        <div class="h-10em">
-            <div class="grid-1-auto justify-items-center">
-                <img class="w-2_5em" src="/img/icons/address.svg" alt="">
+<div class="table">
+    <div>
+        <div class="b-1px-solid-grey" style="width: 50%">
+    
+            <div>
+                <div class="grid-1-auto justify-items-center">
+                    <img class="w-2_5em" src="/img/icons/boy.svg" alt="">
+                </div>
+                <div id="customerInfo" class="mt-0_5em font-size-0_9em" style="font-weight: bold">Info Customer</div>
+                <div id="info_cust"></div>
             </div>
-            <div id="customerInfo" class="mt-0_5em font-size-0_9em font-weight-bold">Alamat Customer</div>
+    
         </div>
-
-    </div>
-
-    <div class='b-1px-solid-grey'>
-
-        <div class='h-10em'>
-            <div class='grid-1-auto justify-items-center'>
-                <img class='w-2_5em' src='/img/icons/truck_2.svg' alt=''>
+    
+        <div class='b-1px-solid-grey' style="width: 50%">
+    
+            <div>
+                <div class='grid-1-auto justify-items-center'>
+                    <img class='w-2_5em' src='/img/icons/truck_2.svg' alt=''>
+                </div>
+                <div id='customerExpedition-$index' class='mt-0_5em font-size-0_9em' style="font-weight: bold">Info Ekspedisi</div>
+                <div id="info_ekspedisi"></div>
             </div>
-            <div id='customerExpedition-$index' class='mt-0_5em font-size-0_9em font-weight-bold'>Info Ekspedisi</div>
+    
         </div>
-
     </div>
 </div>
 
@@ -86,9 +94,10 @@
 
     const sj = {!! json_encode($sj, JSON_HEX_TAG) !!};
     const d_sj_item = JSON.parse(sj['json_sj_item']);
-    const my_csrf = {!! json_encode($csrf, JSON_HEX_TAG) !!};
     const pelanggan = {!! json_encode($pelanggan, JSON_HEX_TAG) !!};
     const reseller = {!! json_encode($reseller, JSON_HEX_TAG) !!};
+    const ekspedisi = {!! json_encode($ekspedisi, JSON_HEX_TAG) !!};
+    const my_csrf = {!! json_encode($csrf, JSON_HEX_TAG) !!};
 
     if (show_console === true) {
         console.log("sj");
@@ -99,9 +108,46 @@
         console.log(pelanggan);
         console.log("reseller");
         console.log(reseller);
+        console.log("ekspedisi");
+        console.log(ekspedisi);
     }
 
+    var htmlInfoCust = '';
 
+    if (reseller !== null) {
+        htmlInfoCust += `
+            Reseller: ${reseller.nama} =><br>akan dicantumkan sebagai Pengirim.<br>Barang akan dikirimkan ke:
+            <br>
+            <br>
+        `;
+    }
+
+    htmlInfoCust += `
+    <div>${pelanggan.nama}</div>
+    <div>${formatNewLine(pelanggan.alamat)}</div>
+    <div>${pelanggan.no_kontak}</div>
+    `;
+
+    document.getElementById("info_cust").innerHTML = htmlInfoCust;
+
+    var htmlInfoEkspedisi = `
+        <div>${ekspedisi.nama}</div>
+        <div>${formatNewLine(ekspedisi.alamat)}</div>
+        <div>${ekspedisi.no_kontak}</div>
+    `;
+
+    document.getElementById("info_ekspedisi").innerHTML = htmlInfoEkspedisi;
+
+    // var htmlItem = `
+    //     <table>
+    //         <tr><th>Jml.</th><th>Nama Barang</th><th>Koli</th></tr>
+    // `;
+
+    var htmlItem = `
+        <div class='table'>
+            <div style='font-weight:bold'><div>Jml.</div><div>Nama Barang</div><div>Koli</div></div>
+    
+    `;
     for (var i = 0; i < d_sj_item.length; i++) {
         var nomorUrutItem = i + 1;
 
@@ -157,34 +203,23 @@
         // console.log(`d_sj_item[${i}].nama_sj: ${d_sj_item[i].nama_sj}`);
         // console.log(`d_sj_item[${i}].hrg_item: ${d_sj_item[i].hrg_item}`);
         // console.log(`d_sj_item[${i}].hrg_t: ${d_sj_item[i].hrg_t}`);
-        
-        var htmlItem =
-            `
-            <form action="07-02-editDetailsj.php" method="POST" class="bb-1px-solid-grey pb-0_5em pt-0_5em">
+        // <div class="mt-0_5em text-right">Tampilkan Opsi Edit <input id="checkboxShowOpsiEdit-${i}" type="checkbox" onclick='onCheckToggle(${opsiEditToToggle});'></div>
 
-            <div>${nomorUrutItem}.</div>
-            <div class="grid-4-10_52_18_20">
+        // ${htmlElementDropdown}
+        
+        htmlItem += `
+            <div class="bb-1px-solid-grey pb-0_5em pt-0_5em">
                 <div>${d_sj_item[i].jml_item}</div>
                 <div>${d_sj_item[i].nama_nota}</div>
-                <div>${formatHarga(d_sj_item[i].hrg_item.toString())}</div>
-                <div>${formatHarga(d_sj_item[i].hrg_t.toString())}</div>
-
-                <div>Jml.</div>
-                <div>Nama Item Pada sj</div>
-                <div>Hrg/Pcs</div>
-                <div>Harga</div>
+                <div>${d_sj_item[i].colly}</div>
             </div>
-            <div class="mt-0_5em text-right">Tampilkan Opsi Edit <input id="checkboxShowOpsiEdit-${i}" type="checkbox" onclick='onCheckToggle(${opsiEditToToggle});'></div>
-
-            ${htmlElementDropdown}
-           
-            </form>
         `;
         // console.log(htmlItem);
-        $('#divDaftarItemsj').append(htmlItem);
         // totalHarga += parseInt(d_sj_item[i].hrg_t);
     }
-
+    htmlItem += '</div>';
+    
+    $('#divDaftarItemsj').append(htmlItem);
    
 
     var htmlTotalHarga =
@@ -301,6 +336,10 @@
         background-color: white;
         padding: 1em;
     }
+
+    .table { display: table; } 
+    .table>* { display: table-row; }
+    .table>*>* { display: table-cell; }
 </style>
 
 @endsection
