@@ -16,8 +16,8 @@ class CreateSpkcpnotsjsTable extends Migration
     {
         Schema::create('spkcpnotsjs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('spkcpnota_id')->nullable()->constrained('spkcp_notas')->onDelete('NO ACTION');
-            $table->foreignId('sj_id')->nullable()->constrained()->onDelete('NO ACTION');
+            $table->foreignId('spkcpnota_id')->nullable()->constrained('spkcp_notas')->onDelete('CASCADE')->onUpdate('CASCADE');
+            $table->foreignId('sj_id')->nullable()->constrained()->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->integer('jml');
             $table->smallInteger('colly')->nullable();
         });

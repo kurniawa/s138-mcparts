@@ -296,4 +296,46 @@ class SjController extends Controller
 
         return view('sj.sj-printOut', $data);
     }
+
+    public function sj_hapus(Request $request)
+    {
+        $load_num = SiteSetting::find(1);
+
+        $show_dump = true;
+        $show_hidden_dump = false;
+        $run_db = true;
+        $load_num_ignore = true;
+
+        if ($show_hidden_dump === true) {
+            dump("load_num_value: " . $load_num->value);
+        }
+
+        if ($load_num->value > 0 && $load_num_ignore === false) {
+            $run_db = false;
+        }
+
+        $post = $request->input();
+        $sj = Sj::find($post['sj_id']);
+
+        if ($show_dump === true) {
+            dump('post');
+            dump($post);
+        }
+
+        if ($run_db === true) {
+            $sj->delete();
+        }
+
+        $data = [
+            'go_back_number' => -2,
+            'csrf' => csrf_token()
+        ];
+
+        $load_num->value += 1;
+        $load_num->save();
+
+        dump('DELETE PROSES FINISHED!');
+
+        return view('layouts.go-back-page', $data);
+    }
 }

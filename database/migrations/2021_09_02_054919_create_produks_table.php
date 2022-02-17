@@ -27,6 +27,7 @@ class CreateProduksTable extends Migration
             $table->string('properties');
             $table->string('nama');
             $table->string('nama_nota');
+            $table->smallInteger('aturan_colly')->nullable();
             // $table->integer('harga');
             // $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
         });

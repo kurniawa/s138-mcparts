@@ -1,6 +1,6 @@
 // Jangan lupa pakai JSON stringify dan tanda petik satu
 // elements merupakan array dalam array dengan key ID dan time
-function elementToToggle(elements) {
+function elementToToggle (elements) {
     console.log(elements);
     for (const element of elements) {
         if ($(element.id).css("display") == "none") {
@@ -11,7 +11,7 @@ function elementToToggle(elements) {
     }
 }
 
-function getLastID(table) {
+function getLastID (table) {
     var results;
     $.ajax({
         type: "POST",
@@ -30,7 +30,7 @@ function getLastID(table) {
     return results;
 }
 
-function liveSearch(key, table, column) {
+function liveSearch (key, table, column) {
     let results;
     $.ajax({
         type: "POST",
@@ -51,7 +51,7 @@ function liveSearch(key, table, column) {
     return results;
 }
 
-function formatDate(date) {
+function formatDate (date) {
     var d = new Date(date),
         month = "" + (d.getMonth() + 1),
         day = "" + d.getDate(),
@@ -63,7 +63,7 @@ function formatDate(date) {
     return [day, month, year].join("-");
 }
 
-function formatHarga(harga) {
+function formatHarga (harga) {
     // console.log(harga);
     let hargaRP = "";
     let akhir = harga.length;
@@ -80,7 +80,7 @@ function formatHarga(harga) {
     return hargaRP;
 }
 
-function formatNewLine(line) {
+function formatNewLine (line) {
     arr_line = line.split("[br]");
     var string_formated = "";
     arr_line.forEach((new_line) => {
@@ -89,7 +89,7 @@ function formatNewLine(line) {
     return string_formated;
 }
 
-function onCheckToggle(elements) {
+function onCheckToggle (elements) {
     // console.log(elements);
     for (const element of elements) {
         console.log("(element.idCheckbox).is(':checked')");
@@ -102,7 +102,7 @@ function onCheckToggle(elements) {
     }
 }
 
-function onMultipleCheckToggleWithORLogic(elements) {
+function onMultipleCheckToggleWithORLogic (elements) {
     // console.log(elements);
     for (const element of elements) {
         // console.log("(element.idCheckbox).is(':checked')");
@@ -160,21 +160,21 @@ function onMultipleCheckToggleWithORLogic(elements) {
 // }
 // }
 
-function goBack() {
+function goBack () {
     window.history.back();
 }
 
-function windowHistoryGo(params) {
+function windowHistoryGo (params) {
     window.history.go(parseInt(params));
 }
 
-function goTo(link) {
+function goTo (link) {
     window.location.href = `${link}`;
 }
 
 // FUNCTION CREATE LIST
 
-function createList(params) {
+function createList (params) {
     var grid_num = params.keys.length + 1;
     // var list_html = `
     //     <div class='grid-${grid_num}-auto'>
@@ -232,9 +232,8 @@ function createList(params) {
         var btn = '<div class="text-right">';
         if (params.detail !== "" && typeof params.detail !== "undefined") {
             btn += `
-                <a href='${params.detail.link}${
-                obj[params.detail.key]
-            }' class='btn-warning' style="display:inline-block">Detail</a>
+                <a href='${params.detail.link}${obj[params.detail.key]
+                }' class='btn-warning' style="display:inline-block">Detail</a>
             `;
         }
 
@@ -298,7 +297,7 @@ function createList(params) {
     return list_html;
 }
 
-function showDelConfirm(delProps) {
+function showDelConfirm (delProps) {
     // delProps = JSON.parse(delProps);
     console.log("running showDelConfirm");
     var divConfirmBox = document.createElement("div");
@@ -337,7 +336,7 @@ function showDelConfirm(delProps) {
     document.body.appendChild(divConfirmBox);
 }
 
-function removeElem(elements) {
+function removeElem (elements) {
     for (let i = 0; i < elements.length; i++) {
         document.querySelector(`#${elements[i]}`).remove();
     }
@@ -345,7 +344,7 @@ function removeElem(elements) {
 
 // #################################
 
-function showDD(divID, iconID) {
+function showDD (divID, iconID) {
     console.log(iconID);
     $(divID).toggle(400);
 
@@ -360,7 +359,7 @@ function showDD(divID, iconID) {
 
 // FUNCTION CHECKBOX CONFIRM LIST
 
-function createCheckboxConfirmList(params, my_csrf) {
+function createCheckboxConfirmList (params, my_csrf) {
     console.log("params");
     console.log(params);
 
@@ -426,9 +425,8 @@ function createCheckboxConfirmList(params, my_csrf) {
             }
 
             list_html += `
-                <td style="color:${color};font-weight:bold;font-size:1em;padding-bottom:1em;padding-top:1em;" class="${attClass}">${
-                obj[key.name]
-            }</td>
+                <td style="color:${color};font-weight:bold;font-size:1em;padding-bottom:1em;padding-top:1em;" class="${attClass}">${obj[key.name]
+                }</td>
             `;
 
             var isCheckedParams = {
@@ -444,11 +442,9 @@ function createCheckboxConfirmList(params, my_csrf) {
 
             if (i == params.first_line_keys.length - 1) {
                 list_html += `
-                    <td><input id="dd_checkbox-${k}" class="dd_checkbox" type="checkbox" name="${
-                    params.checkbox.name
-                }[]" value="${
-                    obj[params.checkbox.value]
-                }" onclick='isChecked(${isCheckedParams});'></td>
+                    <td><input id="dd_checkbox-${k}" class="dd_checkbox" type="checkbox" name="${params.checkbox.name
+                    }[]" value="${obj[params.checkbox.value]
+                    }" onclick='isChecked(${isCheckedParams});'></td>
                     </tr>
                 `;
             }
@@ -562,7 +558,7 @@ function createCheckboxConfirmList(params, my_csrf) {
  * 
  */
 
-function isChecked(params) {
+function isChecked (params) {
     // console.log(params);
     const checkbox_all = document.querySelectorAll(
         `${params.class_checkbox}:checked`
@@ -616,7 +612,7 @@ function isChecked(params) {
 
 /**DATE TODAY */
 
-function getDateToday() {
+function getDateToday () {
     var now = new Date();
     var month = now.getMonth() + 1;
     var day = now.getDate();
@@ -625,4 +621,48 @@ function getDateToday() {
     var today = now.getFullYear() + "-" + month + "-" + day;
 
     return today;
+}
+
+function showLightBoxGlobal (deletePropertiesStrigified) {
+    $('.divThreeDotMenuContent').hide();
+
+    var deleteProperties = JSON.parse(deletePropertiesStrigified);
+    var divLightBoxGlobal = document.createElement("div");
+    divLightBoxGlobal.id = "divLightBoxGlobal";
+    var htmlDivLightBoxGlobal = `
+        <div class="grid-2-10_auto">
+            <div><img src="/img/icons/speech-bubble.svg" alt="" style="width: 2em;"></div>
+            <div class="font-weight-bold">${deleteProperties.title}</div>
+        </div>
+        <br><br>
+        <div class="grid-2-auto">
+            <form action="${deleteProperties.action}" method='POST'>
+                <input type="hidden" name="_token" value="${deleteProperties.csrf}">
+                <button type="submit" class="btn-1 bg-color-soft-red" style="width:100%">
+                    <img src="/img/icons/trash-can.svg" style="width:1em" alt=""><span>${deleteProperties.yes}</span>
+                </button>
+                <input type="hidden" name="${deleteProperties.column}" value=${deleteProperties.columnValue}>
+            </form>
+            
+            <button class="text-center btn-1 bg-color-orange-1" onclick='lightBoxGlobalNo();'>
+                <span>${deleteProperties.no}</span>
+            </button>
+        </div>
+    `;
+    divLightBoxGlobal.innerHTML = htmlDivLightBoxGlobal;
+
+    var divClosingGreyAreaGlobal = document.createElement("div");
+    divClosingGreyAreaGlobal.id = "divClosingGreyAreaGlobal";
+    // var htmlDivClosingGreyAreaGlobal = `
+    // <div id="divClosingGreyAreaGlobal"></div>
+    // `;
+    // divClosingGreyAreaGlobal.innerHTML(htmlDivClosingGreyAreaGlobal);
+
+    // <a href="DELETE-OneItemGlobalFromTable.php?table=${deleteProperties.table}&column=${deleteProperties.column}&columnValue=${deleteProperties.columnValue}&goBackNumber=${deleteProperties.goBackNumber}&goBackStatement=${deleteProperties.goBackStatement}" class="text-center btn-1 bg-color-soft-red">
+    //     <span>${deleteProperties.yes}</span>
+    // </a>
+
+    document.body.appendChild(divClosingGreyAreaGlobal);
+    document.body.appendChild(divLightBoxGlobal);
+
 }

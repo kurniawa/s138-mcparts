@@ -296,6 +296,7 @@ class EditSPKFDetail extends Controller
         dump($data_spk_item);
 
         $spk_item_id = (int)$post['spk_item_id'];
+        $index_spk_item = '?';
         for ($i = 0; $i < count($data_spk_item); $i++) {
             dump($data_spk_item[$i]['spk_produk_id'], $spk_item_id);
             if ($data_spk_item[$i]['spk_produk_id'] === $spk_item_id) {

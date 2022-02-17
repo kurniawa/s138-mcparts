@@ -80,6 +80,7 @@ Route::get('/sj/sjBaru-pCust', [SjController::class, 'sjBaru_pCust']);
 Route::post('/sj/sjBaru-pCust-DB', [SjController::class, 'sjBaru_pCust_DB']);
 Route::get('/sj/sj-detailSJ', [SjController::class, 'sj_detailSJ']);
 Route::post('/sj/sj-printOut', [SjController::class, 'sj_printOut']);
+Route::post('/sj/sj-hapus', [SjController::class, 'sj_hapus']);
 
 // LOGIN & REGISTER coment dikit ah
 Route::get('/login', [LoginController::class, "index"])->middleware('guest')->name('login');
