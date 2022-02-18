@@ -4,9 +4,9 @@
     
 {{-- {{ dd($pelanggans) }} --}}
 <header class="header grid-2-auto">
-    <img class="w-0_8em ml-1_5em" src="img/icons/back-button-white.svg" alt="" onclick="goBack();">
+    <img class="w-0_8em ml-1_5em" src="/img/icons/back-button-white.svg" alt="" onclick="goBack();">
     <div class="justify-self-right pr-0_5em">
-        <a href="04-03-pelanggan-baru.php" class="btn-atas-kanan">
+        <a href="pelanggan/pelanggan-baru" class="btn-atas-kanan">
             + Pelanggan Baru
         </a>
     </div>

@@ -27,6 +27,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('home');
 });
+Route::get('/about', function () {
+    return view('/about/about');
+});
 
 /**
  * SPK
@@ -54,9 +57,7 @@ Route::get('/spk/print_out_spk', [PrintOutSPK::class, "index"]);
 
 // PELANGGAN
 Route::get('/pelanggan', [PelangganController::class, "index"]);
-Route::get('/about', function () {
-    return view('/about/about');
-});
+Route::get('/pelanggan/pelanggan-baru', [PelangganController::class, "pelanggan_baru"]);
 
 /**
  * NOTA

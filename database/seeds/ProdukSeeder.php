@@ -14,13 +14,13 @@ class ProdukSeeder extends Seeder
     public function run()
     {
         $produk = [
-            ['tipe' => 'varia', 'properties' => '{"bahan_id":2,"variasi_id":1,"ukuran_id":1,"jahit_id":2}', 'nama' => 'BigDot(MC) Polos uk.JB 93x53 + jht.JB', 'nama_nota' => 'SJ BigDot(MC) Polos uk.JB + jht.JB'],
-            ['tipe' => 'kombi', 'properties' => '{"kombi_id":6}', 'nama' => 'Motif Sixpack 2 Warna + jht.Univ', 'nama_nota' => 'SJ Motif Sixpack 2 Warna + jht.Univ'],
-            ['tipe' => 'std', 'properties' => '{"standar_id":20}', 'nama' => 'Standar Supra Fit', 'nama_nota' => 'SJ Standar Supra Fit'],
-            ['tipe' => 'tankpad', 'properties' => '{"tankpad_id":5}', 'nama' => 'TP Fox Dimensi', 'nama_nota' => 'TP Fox Dimensi'],
-            ['tipe' => 'busastang', 'properties' => '{"busastang_id":1}', 'nama' => 'Busa-Stang', 'nama_nota' => 'Busa-Stang'],
-            ['tipe' => 'spjap', 'properties' => '{"spjap_id":2, "tipe_bahan":"A"}', 'nama' => 'Bahan(A) T.Sixpack + Busa uk.JB + jht.JB', 'nama_nota' => 'SJ Bahan(A) T.Sixpack + Busa uk.JB + jht.JB'],
-            ['tipe' => 'stiker', 'properties' => '{"stiker_id":1}', 'nama' => 'Stiker Api', 'nama_nota' => 'Stiker Api'],
+            ['tipe' => 'varia', 'properties' => '{"bahan_id":2,"variasi_id":1,"ukuran_id":1,"jahit_id":2}', 'nama' => 'BigDot(MC) Polos uk.JB 93x53 + jht.JB', 'nama_nota' => 'SJ BigDot(MC) Polos uk.JB + jht.JB', 'tipe_packing' => 'colly', 'aturan_packing' => 150],
+            ['tipe' => 'kombi', 'properties' => '{"kombi_id":6}', 'nama' => 'Motif Sixpack 2 Warna + jht.Univ', 'nama_nota' => 'SJ Motif Sixpack 2 Warna + jht.Univ', 'tipe_packing' => 'colly', 'aturan_packing' => 100],
+            ['tipe' => 'std', 'properties' => '{"standar_id":20}', 'nama' => 'Standar Supra Fit', 'nama_nota' => 'SJ Standar Supra Fit', 'tipe_packing' => 'colly', 'aturan_packing' => 150],
+            ['tipe' => 'tankpad', 'properties' => '{"tankpad_id":5}', 'nama' => 'TP Fox Dimensi', 'nama_nota' => 'TP Fox Dimensi', 'tipe_packing' => 'dus', 'aturan_packing' => 500],
+            ['tipe' => 'busastang', 'properties' => '{"busastang_id":1}', 'nama' => 'Busa-Stang', 'nama_nota' => 'Busa-Stang', 'tipe_packing' => 'bal', 'aturan_packing' => 72],
+            ['tipe' => 'spjap', 'properties' => '{"spjap_id":2, "tipe_bahan":"A"}', 'nama' => 'Bahan(A) T.Sixpack + Busa uk.JB + jht.JB', 'nama_nota' => 'SJ Bahan(A) T.Sixpack + Busa uk.JB + jht.JB', 'tipe_packing' => '', 'aturan_packing' => 100],
+            ['tipe' => 'stiker', 'properties' => '{"stiker_id":1}', 'nama' => 'Stiker Api', 'nama_nota' => 'Stiker Api', 'tipe_packing' => null, 'aturan_packing' => 0],
         ];
         for ($i = 0; $i < count($produk); $i++) {
             Produk::create([
