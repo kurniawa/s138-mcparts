@@ -171,14 +171,6 @@
         $('.divThreeDotMenuContent').hide();
     }
 
-    document.querySelector('.threeDot').addEventListener('click', function () {
-    let element = [{
-        id: '.divThreeDotMenuContent',
-        time: 300
-    }];
-    elementToToggle(element);
-    });
-
     function closingLightBox() {
         $('.closingGreyArea').hide();
         $('.lightBox').hide();

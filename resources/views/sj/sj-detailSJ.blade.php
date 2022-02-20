@@ -232,27 +232,6 @@
 
     $('#divDaftarItemsj').append(htmlTotalHarga);
 
-    $('.divThreeDotMenuContent').hide();
-    
-    function showLightBox() {
-        $('.lightBox').show();
-        $('#closingGreyArea').show();
-        $('.divThreeDotMenuContent').hide();
-    }
-
-    document.querySelector('.threeDot').addEventListener('click', function () {
-    let element = [{
-        id: '.divThreeDotMenuContent',
-        time: 300
-    }];
-    elementToToggle(element);
-    });
-
-    function closingLightBox() {
-        $('.closingGreyArea').hide();
-        $('.lightBox').hide();
-    }
-
     document.getElementById("konfirmasiHapussj").addEventListener("click", function() {
         var deleteProperties = {
             title: "Yakin ingin menghapus sj ini?",
@@ -292,10 +271,6 @@
         background-color: white;
         padding: 1em;
     }
-
-    .table { display: table; } 
-    .table>* { display: table-row; }
-    .table>*>* { display: table-cell; }
 </style>
 
 @endsection

@@ -1,13 +1,17 @@
-body{
+body {
     margin: 0;
     padding: 0;
-    font-family: 'Nunito';
+    font-family: "Nunito";
     font-weight: normal;
     font-style: normal;
     font-size: 0.8em;
 }
 
-textarea, input, button { outline: none; }
+textarea,
+input,
+button {
+    outline: none;
+}
 button {
     border: none;
 }
@@ -15,13 +19,13 @@ a {
     text-decoration: none;
     color: black;
 }
-a:visited{
+a:visited {
     color: black;
 }
-select:invalid{
-    color: #C4C4C4;
+select:invalid {
+    color: #c4c4c4;
 }
-option{
+option {
     color: black;
 }
 .header {
@@ -68,7 +72,7 @@ option{
     width: 100%;
 }
 .input-select-option-1 {
-    border: 1px solid #E4E4E4;
+    border: 1px solid #e4e4e4;
     border-radius: 10px;
     box-sizing: border-box;
     width: 100%;
@@ -92,7 +96,7 @@ option{
     box-sizing: border-box;
     width: 100%;
     height: 8em;
-    border: 1px solid #E4E4E4;
+    border: 1px solid #e4e4e4;
 }
 .text-center {
     text-align: center;
@@ -370,36 +374,39 @@ option{
     color: red;
 }
 .color-soft-red {
-    color: #FF856A;
+    color: #ff856a;
 }
 .color-blue-purple {
-    color: #706DFF;
+    color: #706dff;
 }
 .color-bright-green {
-    color: #00EE51;
+    color: #00ee51;
+}
+.color-indigo {
+    color: indigo;
 }
 /* background color */
 .bg-color-orange-1 {
-    background-color: #FFED50;
+    background-color: #ffed50;
 }
 
 .bg-color-orange-2 {
-    background-color: #FFB800;
+    background-color: #ffb800;
 }
 .bg-color-grey {
-    background-color: #C4C4C4;
+    background-color: #c4c4c4;
 }
 .bg-color-white {
     background-color: white;
 }
 .bg-color-soft-red {
-    background-color: #FF856A;
+    background-color: #ff856a;
 }
 .bg-color-purple-blue {
-    background-color: #706DFF;
+    background-color: #706dff;
 }
 .bg-color-green {
-    background-color: #2DAE00;
+    background-color: #2dae00;
 }
 .border-solid-red {
     border: 1px solid red;
@@ -500,10 +507,10 @@ option{
 }
 
 .transform-translate--50_0 {
-    transform: translate(-50%,0);
+    transform: translate(-50%, 0);
 }
 .transform-translate--50_-50 {
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
 }
 .opacity-0_5 {
     opacity: 0.5;
@@ -527,7 +534,7 @@ option{
 }
 
 .hover-bg-color-grey:hover {
-    background-color: #E4E4E4;
+    background-color: #e4e4e4;
 }
 
 /* PACAKGE: BUTTON */
@@ -535,7 +542,7 @@ option{
 .btn-atas-kanan {
     display: inline;
     border-radius: 25px;
-    background-color: #FFED50;
+    background-color: #ffed50;
     padding: 0.5em 1em 0.5em 1em;
     position: absolute;
     top: 1em;
@@ -545,7 +552,7 @@ option{
 .btn-atas-kanan2 {
     display: inline;
     border-radius: 25px;
-    background-color: #FFED50;
+    background-color: #ffed50;
     padding: 0.5em 1em 0.5em 1em;
 }
 
@@ -558,7 +565,7 @@ option{
 }
 
 .btn-danger {
-    background-color: #FF856A;
+    background-color: #ff856a;
     padding: 1em;
     border-radius: 5px;
     font-weight: bold;
@@ -617,7 +624,6 @@ option{
     background: rgba(251, 255, 20, 0.5);
 }
 
-
 /* ThreeDotMenu */
 .threeDotMenu {
     position: absolute;
@@ -641,7 +647,7 @@ option{
 
 .divThreeDotMenuContent {
     background-color: white;
-    border: 1px solid #C4C4C4;
+    border: 1px solid #c4c4c4;
 }
 
 .threeDotMenuItem {
@@ -653,7 +659,7 @@ option{
 }
 
 .threeDotMenuItem:hover {
-    background-color: #C4C4C4;
+    background-color: #c4c4c4;
 }
 
 .threeDotMenuItem img {
@@ -734,5 +740,16 @@ option{
     margin-right: 0.5em;
     padding: 0.5em 1em 0.5em 1em;
     border-radius: 5px;
-    background-color: #FF856A;
+    background-color: #ff856a;
+}
+
+/* DISPLAY TABLE */
+.table {
+    display: table;
+}
+.table > * {
+    display: table-row;
+}
+.table > * > * {
+    display: table-cell;
 }

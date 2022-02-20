@@ -21,7 +21,7 @@
 </div>
 
 <script>
-    const available_spk =  {!! json_encode($available_spk, JSON_HEX_TAG) !!};
+     const available_spk =  {!! json_encode($available_spk, JSON_HEX_TAG) !!};
     console.log("available_spk");
     console.log(available_spk);
 

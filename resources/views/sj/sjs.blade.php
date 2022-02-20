@@ -144,7 +144,7 @@ if (sjs == undefined || sjs.length == 0) {
         var htmlDaftarSPK =
             `<form method='GET' action='/sj/sj-detailSJ' class='pb-0_5em pt-0_5em bb-1px-solid-grey'>
                 <div class='grid-5-9_45_25_18_5'>
-                    <div class='circle-medium grid-1-auto justify-items-center font-weight-bold' style='background-color: ${randomColor()}'>${pelanggans[i].singkatan}</div>
+                    <div class='circle-medium grid-1-auto justify-items-center font-weight-bold' style='background-color: ${randomColor()}'>${pelanggans[i].initial}</div>
                     <div>${pelanggans[i].nama} - ${pelanggans[i].daerah}</div>
                     <div class='grid-3-auto'>
                         <div class='grid-1-auto justify-items-center ${warnaTglPembuatan} b-radius-5px w-3_5em' style="color:white;">

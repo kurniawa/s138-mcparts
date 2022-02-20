@@ -1,3 +1,44 @@
+2022-02-19 - Sabtu
+==================
+Contoh RegExp - replace string alamat
+-------------------------------------
+$customerAddress = pelanggan.alamat.replace(new RegExp('\r?\n', 'g'), '<br />');
+
+Eloquent: get all orderBy('name')
+---------------------------------
+$results = Project::orderBy('name')->get();
+
+*)
+Ascending Order (slow)
+$results = Project::all()->sortBy("name");
+
+Descending Order (slow)
+$results = Project::all()->sortByDesc("name");
+*)
+$results = Project::orderBy('created_at', 'desc')->get();
+
+*)
+DO THIS:
+
+$results = Project::orderBy('name')->get();
+Why? Because it's fast! The ordering is done in the database.
+
+DON'T DO THIS:
+
+$results = Project::all()->sortBy('name');
+Why? Because it's slow. First, the the rows are loaded from the database,
+then loaded into Laravel's Collection class, and finally, ordered in memory.
+
+*)
+You need to do it like this
+
+// Take 3 from the collection (you will still get all the results)
+$posts = Post::orderBy('range','asc')->get()->take(3); 
+or like this
+
+// Take only 3 results
+$posts = Post::orderBy('range','asc')->limit(3);
+
 2022-02-15 - Selasa
 ===================
 Integrity constraint violation: 1452 Cannot add or update a child row:

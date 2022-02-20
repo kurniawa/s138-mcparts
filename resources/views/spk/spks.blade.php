@@ -1,22 +1,9 @@
 @extends('layouts/main_layout')
 
-{{-- var pelanggan = {!! json_encode($pelanggan, JSON_HEX_TAG) !!};
-console.log("pelanggan:")
-console.log(pelanggan);
-
-var spk_item = {!! json_encode($spk_item, JSON_HEX_TAG) !!};
-console.log("spk_item:");
-console.log(spk_item);
-
-var spk_contains_item = {!! json_encode($spk_contains_item, JSON_HEX_TAG) !!};
-console.log("spk_contains_item:");
-console.log(spk_contains_item); --}}
-
-{{-- {{ dd($spks) }} --}}
 @section('content')
     
 <header class="header grid-2-auto">
-    <img class="w-0_8em ml-1_5em" src="img/icons/back-button-white.svg" alt="" onclick="goBack();">
+    <img class="w-0_8em ml-1_5em" src="/img/icons/back-button-white.svg" alt="" onclick="goBack();">
     <div class="justify-self-right pr-0_5em">
         <a href="/spk/spk_baru" id="btn-spk-baru" class="btn-atas-kanan2">
             + Buat SPK Baru
@@ -43,7 +30,7 @@ console.log(spk_contains_item); --}}
 </div>
 
 <script>
-
+ 
 const spks = {!! json_encode($spks, JSON_HEX_TAG) !!};
 console.log("spks:");
 console.log(spks);
@@ -153,7 +140,7 @@ if (spks == undefined || spks.length == 0) {
         var htmlDaftarSPK =
             `<form method='GET' action='/spk/detail_spk' class='pb-0_5em pt-0_5em bb-1px-solid-grey'>
                 <div class='grid-5-9_45_25_18_5'>
-                <div class='circle-medium grid-1-auto justify-items-center font-weight-bold' style='background-color: ${randomColor()}'>${pelanggans[i].singkatan}</div>
+                <div class='circle-medium grid-1-auto justify-items-center font-weight-bold' style='background-color: ${randomColor()}'>${pelanggans[i].initial}</div>
                 <div>${pelanggans[i].nama} - ${pelanggans[i].daerah}</div>
                 <div class='grid-3-auto'>
                 <div class='grid-1-auto justify-items-center ${warnaTglPembuatan} b-radius-5px w-3_5em' style="color:white;">

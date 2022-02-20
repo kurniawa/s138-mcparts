@@ -187,6 +187,42 @@
         showLightBoxGlobal(deletePropertiesStringified);
     }
 
+    /**
+     * THREE DOT MENU
+     */
+
+    $(".divThreeDotMenuContent").hide();
+
+    function showLightBox() {
+        $(".lightBox").show();
+        $("#closingGreyArea").show();
+        $(".divThreeDotMenuContent").hide();
+    }
+
+    const threeDot = document.querySelector('.threeDot');
+
+    if ( show_hidden_console === true) {
+        console.log('threeDot');
+        console.log(threeDot);
+    }
+
+    if (threeDot !== null) {
+        document.querySelector(".threeDot").addEventListener("click", function () {
+            let element = [
+                {
+                    id: ".divThreeDotMenuContent",
+                    time: 300,
+                },
+            ];
+            elementToToggle(element);
+        });
+    }
+
+    function closingLightBox() {
+        $(".closingGreyArea").hide();
+        $(".lightBox").hide();
+    }
+
 </script>
 
 </html>

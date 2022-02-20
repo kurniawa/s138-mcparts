@@ -12,9 +12,30 @@ class DetailSPKController extends Controller
 {
     public function index(Request $request)
     {
+        $load_num = SiteSetting::find(1);
+        if ($load_num !== 0) {
+            $load_num->value = 0;
+            $load_num->save();
+        }
+
+        $show_dump = false;
+        $show_hidden_dump = false;
+        $run_db = true;
+        $load_num_ignore = false;
+
+        if ($load_num->value > 0 && $load_num_ignore === false) {
+            $run_db = false;
+        }
+
         $reload_page = $request->session()->get('reload_page');
+
         if ($reload_page === true) {
             $request->session()->put('reload_page', false);
+        }
+
+        if ($show_dump === true) {
+            dump('load_num->value');
+            dump($load_num->value);
         }
         // $site_setting
         // $reload_page = $request->session()->get('reload_page');

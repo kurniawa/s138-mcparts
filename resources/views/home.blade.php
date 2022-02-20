@@ -33,7 +33,7 @@
             </a>
         </div>
         <div class="gridMenuItem">
-            <a href="05-01-ekspedisi.php" class="menuIcons">
+            <a href="ekspedisi" class="menuIcons">
                 <img src="img/icons/truck_2.svg" alt="Icon SPK">
                 <div>
                     Ekspedisi

@@ -34,7 +34,7 @@ class CreatePelanggansTable extends Migration
             $table->string("daerah", 50);
             $table->string("no_kontak", 50)->nullable();
             $table->string("pulau", 50);
-            $table->string("singkatan", 10)->nullable();
+            $table->string("initial", 10)->nullable();
             $table->string("ktrg")->nullable();
             $table->bigInteger("reseller_id")->nullable();
             $table->timestamp("created_at")->default(DB::raw('CURRENT_TIMESTAMP'));

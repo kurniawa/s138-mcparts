@@ -19,8 +19,8 @@ class ProdukSeeder extends Seeder
             ['tipe' => 'std', 'properties' => '{"standar_id":20}', 'nama' => 'Standar Supra Fit', 'nama_nota' => 'SJ Standar Supra Fit', 'tipe_packing' => 'colly', 'aturan_packing' => 150],
             ['tipe' => 'tankpad', 'properties' => '{"tankpad_id":5}', 'nama' => 'TP Fox Dimensi', 'nama_nota' => 'TP Fox Dimensi', 'tipe_packing' => 'dus', 'aturan_packing' => 500],
             ['tipe' => 'busastang', 'properties' => '{"busastang_id":1}', 'nama' => 'Busa-Stang', 'nama_nota' => 'Busa-Stang', 'tipe_packing' => 'bal', 'aturan_packing' => 72],
-            ['tipe' => 'spjap', 'properties' => '{"spjap_id":2, "tipe_bahan":"A"}', 'nama' => 'Bahan(A) T.Sixpack + Busa uk.JB + jht.JB', 'nama_nota' => 'SJ Bahan(A) T.Sixpack + Busa uk.JB + jht.JB', 'tipe_packing' => '', 'aturan_packing' => 100],
-            ['tipe' => 'stiker', 'properties' => '{"stiker_id":1}', 'nama' => 'Stiker Api', 'nama_nota' => 'Stiker Api', 'tipe_packing' => null, 'aturan_packing' => 0],
+            ['tipe' => 'spjap', 'properties' => '{"spjap_id":2, "tipe_bahan":"A"}', 'nama' => 'Bahan(A) T.Sixpack + Busa uk.JB + jht.JB', 'nama_nota' => 'SJ Bahan(A) T.Sixpack + Busa uk.JB + jht.JB', 'tipe_packing' => 'colly', 'aturan_packing' => 100],
+            ['tipe' => 'stiker', 'properties' => '{"stiker_id":1}', 'nama' => 'Stiker Api', 'nama_nota' => 'Stiker Api', 'tipe_packing' => null, 'aturan_packing' => null],
         ];
         for ($i = 0; $i < count($produk); $i++) {
             Produk::create([
@@ -28,6 +28,8 @@ class ProdukSeeder extends Seeder
                 'properties' => $produk[$i]['properties'],
                 'nama' => $produk[$i]['nama'],
                 'nama_nota' => $produk[$i]['nama_nota'],
+                'tipe_packing' => $produk[$i]['tipe_packing'],
+                'aturan_packing' => $produk[$i]['aturan_packing'],
             ]);
         }
 

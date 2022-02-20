@@ -167,7 +167,7 @@
 </style>
 
 <script>
-    const spk = {!! json_encode($spk, JSON_HEX_TAG) !!};
+     const spk = {!! json_encode($spk, JSON_HEX_TAG) !!};
     console.log(spk);
 
     const pelanggan = {!! json_encode($pelanggan, JSON_HEX_TAG) !!};
@@ -235,6 +235,8 @@
 
         if (spk_item[i].status === 'SELESAI') {
             fColor = "color-blue-purple";
+        } else if(spk_item[i].status === 'SEBAGIAN') {
+            fColor = 'color-indigo';
         } else {
             fColor = "color-red";
         }
@@ -431,21 +433,30 @@ Untuk Metode Hapus, sebaiknya tetap menggunakan form dengan method POST.
         bubbleWarning(deleteProperties);
     });
 
-    // THREE DOT MENU
-// keadaan awal apa aja yang di hide
-$('.divThreeDotMenuContent').hide();
-
-document.querySelector('.threeDot').addEventListener('click', function () {
-    let element = [{
-        id: '.divThreeDotMenuContent',
-        time: 300
-    }];
-    elementToToggle(element);
-});
-
-    // Reload Page
+    /*
+    Reload Page di lakukan dengan 2 tahap untuk jaga2 apabila tidak ter reload
+    */
+    // Reload Page Berdasarkan session
     const reload_page = {!! json_encode($reload_page, JSON_HEX_TAG) !!};
+    console.log('reload_page');
+    console.log(reload_page);
+    
     reloadPage(reload_page);
+    
+    // Reload Page Berdasarkan localStorage
+    const load_num = parseInt(localStorage.getItem("load_num"));
+    console.log("load_num");
+    console.log(load_num);
+
+
+    if (load_num !== 0) {
+        // setTimeout(() => {
+        //     localStorage.setItem("load_num", 0);
+        //     window.location.reload();
+        // }, 5000);
+        localStorage.setItem("load_num", 0);
+        window.location.reload();
+    }
 </script>
 
 <style>

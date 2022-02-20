@@ -77,7 +77,7 @@ class SPKItemSelesai extends Controller
         $show_dump = true;
         $show_hidden_dump = false;
         $run_db = true;
-        $load_num_ignore = true;
+        $load_num_ignore = false;
         // Pada development mode, load number boleh diignore. Yang perlu diperhatikan adalah
         // insert dan update database supaya tidak berantakan
 
@@ -197,7 +197,14 @@ class SPKItemSelesai extends Controller
             // diubah isi JSON jmlSelesai_kapan
 
             // 305, 160
-            dump("jml_selesai_new = $jml_selesai_new, jml_akhir = $jumlah_akhir");
+            if ($show_dump === true) {
+                dump("tbh_jml_selesai");
+                dump($tbh_jml_selesai);
+                dump("jml_selesai_new");
+                dump($jml_selesai_new);
+                dump("jml_akhir");
+                dump($jumlah_akhir);
+            }
             if ($jml_selesai_new <= $jumlah_akhir && $jml_selesai_new >= 0 && $tbh_jml_selesai > 0) {
                 // Apabila sebelumnya memang belum ada item yang selesai
                 if (count($jmlSelesai_kapan) === 0) {
@@ -254,6 +261,9 @@ class SPKItemSelesai extends Controller
             } else if ($tbh_jml_selesai < 0 && $jumlah_akhir >= $tbh_jml_selesai) {
                 // INI ADALAH KASUS PENGURANGAN. Untuk masuk ke instruksi disini, maka $tbh_jml_selesai harus minus dan $jumlah_akhir harus >= dari $tbh_jml_selesai
                 // Disini juga akan diperhatikan TAHAPAN nya
+                if ($show_dump === true) {
+                    dump('Masuk ke Kasus pengurangan');
+                }
                 if (isset($post['tahapan'])) {
                     dump('tahapan');
                     $i_tahapan = $post['tahapan'][$i];
@@ -324,7 +334,14 @@ class SPKItemSelesai extends Controller
                 } else {
                     // Disini apabila pengurangan tidak memperhatikan tahapan, otomatis pemilihan tahapan akan diabaikan
                     // akan mengurangi otomatis dari tahapan sebelumnya apabila ada.
-                    $sisa_pengurangan_jml_selesai = $tbh_jml_selesai;
+                    $sisa_pengurangan_jml_selesai = -$tbh_jml_selesai;
+
+                    if ($show_dump === true) {
+                        dump('jmlSelesai_kapan');
+                        dump($jmlSelesai_kapan);
+                        dump('count($jmlSelesai_kapan)');
+                        dump(count($jmlSelesai_kapan));
+                    }
 
                     for ($i3 = count($jmlSelesai_kapan) - 1; $i3 >= 0; $i3--) {
                         if ($jmlSelesai_kapan[$i3]['jmlSelesai'] < $sisa_pengurangan_jml_selesai) {
@@ -333,15 +350,40 @@ class SPKItemSelesai extends Controller
                             unset($jmlSelesai_kapan, $i3);
                             array_values($jmlSelesai_kapan);
                         } else if ($jmlSelesai_kapan[$i3]['jmlSelesai'] === $sisa_pengurangan_jml_selesai) {
+                            // Kasus: Pengurangan dimana di tahapan terkait, sisa pengurangan nya 0.
+                            // Atau jumlah kurang sama dengan jumlah item di tahapan terkait.
+                            if ($show_dump === true) {
+                                dump('$jmlSelesai_kapan[$i3]["jmlSelesai"] === $sisa_pengurangan_jml_selesai');
+                            }
                             $sisa_pengurangan_jml_selesai = 0;
                             // array_push($i_yang_perlu_hilang, $i3);
                             unset($jmlSelesai_kapan, $i3);
-                            array_values($jmlSelesai_kapan);
+                            if (isset($jmlSelesai_kapan)) {
+                                if (count($jmlSelesai_kapan) === 0) {
+                                    if ($show_dump === true) {
+                                        dump('count jmlSelesai_kapan baru');
+                                        dump(count($jmlSelesai_kapan));
+                                    }
+                                    $jmlSelesai_kapan = null;
+                                } else {
+                                    array_values($jmlSelesai_kapan);
+                                }
+                            } else {
+                                $jmlSelesai_kapan = null;
+                            }
+
                             break;
                         } else if ($jmlSelesai_kapan[$i3]['jmlSelesai'] > $sisa_pengurangan_jml_selesai) {
+                            if ($show_dump === true) {
+                                dump('$jmlSelesai_kapan[$i3]["jmlSelesai"] > $sisa_pengurangan_jml_selesai');
+                            }
                             $jmlSelesai_kapan[$i3]['jmlSelesai'] = $jmlSelesai_kapan[$i3]['jmlSelesai'] + $sisa_pengurangan_jml_selesai;
                             break;
                         }
+                    }
+                    if ($show_dump === true) {
+                        dump('jmlSelesai_kapan setelah looping kasus pengurangan');
+                        dump($jmlSelesai_kapan);
                     }
                 }
             } else {
@@ -361,14 +403,10 @@ class SPKItemSelesai extends Controller
 
             if ($jml_selesai_new === $jumlah_akhir) {
                 $status = 'SELESAI';
-                if ($show_hidden_dump === true) {
-                    dump("status: $status");
-                }
             } elseif ($jml_selesai_new !== 0) {
                 $status = 'SEBAGIAN';
-                if ($show_hidden_dump === true) {
-                    dump("status: $status");
-                }
+            } elseif ($jml_selesai_new === 0) {
+                $status = 'BELUM';
             }
 
             if ($show_hidden_dump === true) {
@@ -384,9 +422,11 @@ class SPKItemSelesai extends Controller
             $spk_produk_this->jml_blm_sls = $jumlah_akhir - $jml_selesai_new;
 
             // Supaya di database tetap null di bagian jmlSelesai_kapan nya, apabila memang tidak ada perubahan
-            if (count($jmlSelesai_kapan) !== 0) {
-                $spk_produk_this->jmlSelesai_kapan = json_encode($jmlSelesai_kapan);
+            if ($show_dump === true) {
+                dump('jmlSelesai_kapan sebelum save db');
+                dump($jmlSelesai_kapan);
             }
+            $spk_produk_this->jmlSelesai_kapan = json_encode($jmlSelesai_kapan);
 
             $spk_produk_this->status = $status;
 
@@ -399,7 +439,14 @@ class SPKItemSelesai extends Controller
              */
             // $jmlSelesai_kapan_this = $spk_produk_this->jmlSelesai_kapan;
 
+            dump('load_num->value');
+            dump($load_num->value);
+            dump('run_db');
+            dump($run_db);
+
             if ($run_db === true) {
+                dump('spk_produk_this sebelum save');
+                dump($spk_produk_this);
                 $spk_produk_this->save();
             }
 

@@ -61,7 +61,7 @@
 </style>
 
 <script>
-
+ 
 const spk = {!! json_encode($spk, JSON_HEX_TAG) !!};
     console.log('spk');
     console.log(spk);
