@@ -40,7 +40,7 @@ class SpkProduk extends Migration
             $table->integer('harga');
             $table->integer('koreksi_harga')->nullable();
             $table->string('status', 20)->nullable(); // Status yang berkaitan dengan sudah selesai di produksi atau belum
-            $table->string('jmlSelesai_kapan')->nullable()->default(null);
+            $table->string('jmlSelesai_kapan')->nullable();
             $table->string('nota_jml_kapan')->nullable();
             $table->string('status_nota')->nullable()->default('BELUM');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));

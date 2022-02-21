@@ -426,7 +426,12 @@ class SPKItemSelesai extends Controller
                 dump('jmlSelesai_kapan sebelum save db');
                 dump($jmlSelesai_kapan);
             }
-            $spk_produk_this->jmlSelesai_kapan = json_encode($jmlSelesai_kapan);
+
+            if ($jmlSelesai_kapan === null) {
+                $spk_produk_this->jmlSelesai_kapan = $jmlSelesai_kapan;
+            } else {
+                $spk_produk_this->jmlSelesai_kapan = json_encode($jmlSelesai_kapan);
+            }
 
             $spk_produk_this->status = $status;
 
