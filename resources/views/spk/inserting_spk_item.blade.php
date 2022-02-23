@@ -1,44 +1,3 @@
-
-{{-- 
-include_once "01-header.php";
-include_once "01-config.php";
-
-if ($_SERVER["REQUEST_METHOD"] == "GET") {
-    // KENAPA DISINI PAKE GET: Karena nanti supaya ga hilang parameter2 yang dibutuhkan, ketika harus bolak balik pindah halaman.
-    $status = "OK";
-} else {
-    $status = "ERROR";
-    die;
-}
-
-$pelanggan_id = $_GET["pelanggan_id"];
-$tanggal = $_GET["tanggal"];
-$ket_judul = $_GET["ket_judul"];
-$nama_pelanggan = $_GET["nama_pelanggan"];
-$daerah = $_GET["daerah"];
-
-// CEK APAKAH ADA ITEM YANG SUDAH SEMPAT DIINPUT
-$spk_item;
-if ($status == "OK") {
-    $table = "spk_item";
-    $spk_item = dbGet($table);
-    // var_dump($spk_item);
-}
-
-$htmlLogError = $htmlLogError . "</div>";
-$htmlLogOK = $htmlLogOK . "</div>";
-$htmlLogWarning = $htmlLogWarning . "</div>"; 
-
- var spk_item = <-?= json_encode($spk_item); ?>;
-    console.log("spk_item:");
-    console.log(spk_item);
-
-    var status = '<-?= $status; ?>';
-
---}}
-
-{{-- {{ dd($post) }} --}}
-
 @extends('layouts/main_layout')
 
 @section('content')
@@ -67,7 +26,12 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
             <div class="divSPKDate fw-bold">{{ $tanggal }}</div>
             <div>Untuk</div>
             <div>:</div>
-            <div class="divSPKCustomer fw-bold">{{ $spks['nama_pelanggan'] }} - {{ $spks['daerah'] }}</div>
+            <div class="divSPKCustomer fw-bold">
+                @if ($reseller !== null)
+                    {{ $reseller['nama'] }}: 
+                @endif
+                {{ $pelanggan['nama'] }} - {{ $pelanggan['daerah'] }}
+            </div>
         </div>
         <div class="grid-1-auto justify-items-right m-0_5em">
             <div>
@@ -79,10 +43,9 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
     <div class="divTitleDesc grid-1-auto justify-items-center mt-0_5em"></div>
     
     {{-- INPUT HIDDEN YANG NANTI NYA DI KIRIM VIA POST --}}
-    <input id="inputIDCustomer" type="hidden" name="pelanggan_id" value="{{ $spks['pelanggan_id'] }}">
-    <input type="hidden" name="reseller_id" value="{{ $spks['reseller_id'] }}">
-    <input type="hidden" name="tgl_pembuatan" value="{{ $spks['tanggal'] }}">
-    <input type="hidden" name="judul" value="{{ $spks['judul'] }}">
+    <input id="inputIDCustomer" type="hidden" name="pelanggan_id" value="{{ $pelanggan['id'] }}">
+    <input type="hidden" name="tgl_pembuatan" value="{{ $tanggal }}">
+    <input type="hidden" name="judul" value="{{ $judul }}">
     <input type="hidden" name="submit_type" value="proceed_spk">
 
     <div id="divItemList" class="bt-1px-solid-grey"></div>
@@ -146,18 +109,18 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
 <div class="h-4em"></div> --}}
 
 <script>
-
+    const show_console = true;
     // $("#containerBeginSPK").css("display", "none");
     $('#btnProsesSPK').hide();
     $('#divJmlTotal').hide();
     // getSPKItems();
 
-    var spks = {!! json_encode($spks, JSON_HEX_TAG) !!};
     var spk_item = {!! json_encode($spk_item, JSON_HEX_TAG) !!};
 
-    console.log(spks);
-    // console.log(spks.daerah);
-    console.log(spk_item);
+    if (show_console === true) {
+        console.log('spk_item');
+        console.log(spk_item);
+    }
 
     var htmlItemList = '';
     var totalHarga = 0;
@@ -261,12 +224,7 @@ $htmlLogWarning = $htmlLogWarning . "</div>";
         $("#containerBeginSPK").toggle();
     }
 
-// RELOAD PAGE
-const reload_page =  {!! json_encode($reload_page, JSON_HEX_TAG) !!};
-console.log('reload_page: ' + reload_page);
-if (reload_page === true) {
-    window.location.reload();
-}
+    reload_page();
     
 </script>
 @endsection

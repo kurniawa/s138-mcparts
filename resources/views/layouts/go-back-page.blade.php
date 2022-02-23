@@ -8,12 +8,6 @@
 
 <script>
     // Metode reload page dengan javascript untuk nantinya pada saat pindah halaman
-    var load_num = localStorage.getItem("load_num");
-    if (load_num === null) {
-        localStorage.setItem("load_num", 0);
-    } else {
-        load_num = parseInt(load_num);
-        localStorage.setItem("load_num", load_num++);
-    }
+    localStorage.setItem("reload_page", true);
  </script>
 @endsection

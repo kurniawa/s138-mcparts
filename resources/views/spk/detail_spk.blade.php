@@ -25,7 +25,7 @@
         <!-- <a href="03-03-01-pembuatanNota.php?id_spk=<a?= $id_spk" id="" class="threeDotMenuItem">
             <img src="/img/icons/pencil.svg" alt=""><span>Buat Nota</span>
         </a> -->
-        <div id="deleteSPK" class="threeDotMenuItem">
+        <div id="konfirmasiHapusSPK" class="threeDotMenuItem">
             <img src="/img/icons/trash-can.svg" alt=""><span>Cancel/Hapus SPK</span>
         </div>
         <a href="/spk/penetapan_item_selesai?spk_id={{ $spk['id'] }}" id="SPKSelesai" class="threeDotMenuItem">
@@ -167,19 +167,22 @@
 </style>
 
 <script>
-     const spk = {!! json_encode($spk, JSON_HEX_TAG) !!};
-    console.log(spk);
-
+    const show_console = true;
+    const spk = {!! json_encode($spk, JSON_HEX_TAG) !!};
     const pelanggan = {!! json_encode($pelanggan, JSON_HEX_TAG) !!};
-    console.log(pelanggan);
-
+    const reseller = {!! json_encode($reseller, JSON_HEX_TAG) !!};
     const produks = {!! json_encode($produks, JSON_HEX_TAG) !!};
-    console.log("produks:");
-    console.log(produks);
-
     const spk_item = {!! json_encode($spk_item, JSON_HEX_TAG) !!};
-    console.log("spk_item:");
-    console.log(spk_item);
+    const my_csrf = {!! json_encode($my_csrf, JSON_HEX_TAG) !!};
+    
+    if (show_console === true) {
+        console.log(spk);
+        console.log(pelanggan);
+        console.log("produks:");
+        console.log(produks);
+        console.log("spk_item:");
+        console.log(spk_item);
+    }
 
     // var produk = json_encode($array_produk)
     // console.log(produk);
@@ -321,7 +324,11 @@ Untuk Metode Hapus, sebaiknya tetap menggunakan form dengan method POST.
     console.log($jmlTotalSPK);
 
     $('#divTglPembuatan').html(spk.tgl_pembuatan);
-    $('#divSPKCustomer').html(`${pelanggan.nama} - ${pelanggan.daerah}`);
+    if (reseller !== null) {
+        $('#divSPKCustomer').html(`${reseller.nama}: ${pelanggan.nama} - ${pelanggan.daerah}`);
+    } else {
+        $('#divSPKCustomer').html(`${pelanggan.nama} - ${pelanggan.daerah}`);
+    }
     $('#divTitleDesc').html(spk.ket_judul);
     $('#taKeteranganTambahan').html(spk.ktrg);
 
@@ -418,45 +425,50 @@ Untuk Metode Hapus, sebaiknya tetap menggunakan form dengan method POST.
     }
 
     // Bubble Warning
-    var deleteProperties = [{
-        title: "Yakin ingin menghapus SPK ini?",
-        yes: "Ya",
-        no: "Batal",
-        table: "spk",
-        column: "id",
-        columnValue: spk.id,
-        goBackNumber: -2,
-        goBackStatement: "Daftar SPK"
-    }];
+    // var deleteProperties = [{
+    //     title: "Yakin ingin menghapus SPK ini?",
+    //     yes: "Ya",
+    //     no: "Batal",
+    //     table: "spk",
+    //     column: "id",
+    //     columnValue: spk.id,
+    //     goBackNumber: -2,
+    //     goBackStatement: "Daftar SPK"
+    // }];
     
-    document.getElementById('deleteSPK').addEventListener('click', function () {
-        bubbleWarning(deleteProperties);
+    // document.getElementById('deleteSPK').addEventListener('click', function () {
+    //     bubbleWarning(deleteProperties);
+    // });
+
+    document.getElementById("konfirmasiHapusSPK").addEventListener("click", function() {
+        var deleteProperties = {
+            title: "Yakin ingin menghapus SPK ini?",
+            yes: "Ya",
+            no: "Batal",
+            table: "spks",
+            column: "id",
+            columnValue: spk.id,
+            action: "/spk/hapus-SPK",
+            csrf: my_csrf,
+            goBackNumber: -2,
+            goBackStatement: "Daftar SPK"
+        };
+
+        var deletePropertiesStringified = JSON.stringify(deleteProperties);
+        showLightBoxGlobal(deletePropertiesStringified);
     });
 
     /*
     Reload Page di lakukan dengan 2 tahap untuk jaga2 apabila tidak ter reload
     */
     // Reload Page Berdasarkan session
-    const reload_page = {!! json_encode($reload_page, JSON_HEX_TAG) !!};
-    console.log('reload_page');
-    console.log(reload_page);
+    const reload_page2 = {!! json_encode($reload_page, JSON_HEX_TAG) !!};
+    console.log('reload_page2');
+    console.log(reload_page2);
     
     reloadPage(reload_page);
     
-    // Reload Page Berdasarkan localStorage
-    const load_num = parseInt(localStorage.getItem("load_num"));
-    console.log("load_num");
-    console.log(load_num);
-
-
-    if (load_num !== 0) {
-        // setTimeout(() => {
-        //     localStorage.setItem("load_num", 0);
-        //     window.location.reload();
-        // }, 5000);
-        localStorage.setItem("load_num", 0);
-        window.location.reload();
-    }
+    reload_page();
 </script>
 
 <style>

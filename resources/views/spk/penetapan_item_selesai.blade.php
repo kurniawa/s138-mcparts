@@ -488,8 +488,9 @@ Coba cari tau, ini buat apa ya?
     }
 
     /*METHODE U. RELOAD PAGE*/
-    const reload_page = {!! json_encode($reload_page, JSON_HEX_TAG) !!};
-    reloadPage(reload_page);
+    const reload_page2 = {!! json_encode($reload_page, JSON_HEX_TAG) !!};
+    reloadPage(reload_page2);
 
+    reload_page();
 </script>
 @endsection

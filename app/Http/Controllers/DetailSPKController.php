@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Pelanggan;
 use App\Produk;
 use App\SiteSetting;
 use App\Spk;
@@ -33,7 +34,7 @@ class DetailSPKController extends Controller
             $request->session()->put('reload_page', false);
         }
 
-        if ($show_dump === true) {
+        if ($show_hidden_dump === true) {
             dump('load_num->value');
             dump($load_num->value);
         }
@@ -44,16 +45,33 @@ class DetailSPKController extends Controller
         // }
 
         $get = $request->input();
-        // dump($get);
         $spk = Spk::find($get['spk_id']);
-        // dump($spk);
         $pelanggan = Spk::find($spk['id'])->pelanggan;
-        // dump($pelanggan);
+        $reseller = null;
+        if ($spk['reseller_id'] !== null) {
+            $reseller = Pelanggan::find($spk['reseller_id']);
+        }
         $produks = Spk::find($spk['id'])->produks;
-        // dump($produks);
         $spk_item = Spk::find($spk['id'])->spk_item;
-        // dd($spk_item);
-        $data = ['spk' => $spk, 'pelanggan' => $pelanggan, 'spk_item' => $spk_item, 'produks' => $produks, 'reload_page' => $reload_page];
+        
+        if ($show_dump === true) {
+            dump($get);
+            dump('$spk');
+            dump($spk);
+            dump($pelanggan);
+            dump($produks);
+            dump($spk_item);
+        }
+        $data = [
+            'spk' => $spk,
+            'pelanggan' => $pelanggan,
+            'reseller' => $reseller,
+            'spk_item' => $spk_item,
+            'produks' => $produks,
+            'my_csrf' => csrf_token(),
+            'reload_page' => $reload_page,
+        ];
+
         return view('spk.detail_spk', $data);
     }
 
@@ -158,5 +176,42 @@ class DetailSPKController extends Controller
             ];
         }
         return view('spk.inserting_spk_item-2', $data);
+    }
+
+    public function hapus_SPK(Request $request)
+    {
+        $load_num = SiteSetting::find(1);
+
+        $show_dump = true;
+        $show_hidden_dump = false;
+        $run_db = true;
+        $load_num_ignore = false;
+
+        if ($load_num->value > 0 && $load_num_ignore === false) {
+            $run_db = false;
+        }
+
+        $post = $request->input();
+        $spk = Spk::find($post['id']);
+
+        if ($run_db === true) {
+            $spk->delete();
+        }
+
+        $data = [
+            "go_back_number" => -2,
+        ];
+
+        $load_num->value += 1;
+        $load_num->save();
+
+        if ($show_dump === true) {
+            dump('$post');
+            dump($post);
+            dump('$spk');
+            dump($spk);
+            dump("DELETION PROCESS IS FINISHED!");
+        }
+        return view('layouts.go-back-page', $data);
     }
 }

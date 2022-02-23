@@ -53,23 +53,83 @@ class NotaController extends Controller
 
     public function notaBaru_pilihSPK(Request $request)
     {
+        $load_num = SiteSetting::find(1);
+        if ($load_num !== 0) {
+            $load_num->value = 0;
+            $load_num->save();
+        }
+
+        $show_dump = true;
+        $show_hidden_dump = true;
+        $run_db = true;
+        $load_num_ignore = true;
+        
+        if ($show_hidden_dump === true) {
+            dump("load_num_value: " . $load_num->value);
+        }
+
+        if ($load_num->value > 0 && $load_num_ignore === false) {
+            $run_db = false;
+        }
         /**
          * Form pilihan spk yang ingin dibuatkan nota nya akan muncul. Daftar spk yang ada di pilihan adalah SPK dengan status "SELESAI"
          * atau "SEBAGIAN"
          */
-        $available_spk = Spk::where('status', 'SEBAGIAN')->orWhere('status', 'SELESAI')->get();
-        // dump('available_spk');
-        // dump($available_spk);
+        $av_spks = Spk::where('status', 'SEBAGIAN')->orWhere('status', 'SELESAI')->orderByDesc('created_at')->groupBy('pelanggan_id')->get();
+        $pelanggan_spks = array();
+        foreach ($av_spks as $av_spk) {
+            $pelanggan = Pelanggan::find($av_spk['pelanggan_id']);
+            $reseller = null;
+            if ($pelanggan['reseller_id'] !== null) {
+                $reseller = Pelanggan::find($pelanggan['reseller_id']);
+            }
+
+            $spks = Spk::where('pelanggan_id', $pelanggan['id'])->get();
+
+            $pelanggan_spk = [
+                'pelanggan' => $pelanggan,
+                'reseller' => $reseller,
+                'spks' => $spks,
+            ];
+
+            array_push($pelanggan_spks, $pelanggan_spk);
+        }
+
+        if ($show_dump === true) {
+            dump('av_spks');
+            dump($av_spks);
+            dump('pelanggan_spks');
+            dump($pelanggan_spks);
+        }
 
         $data = [
             'csrf' => csrf_token(),
-            'available_spk' => $available_spk,
+            'pelanggan_spks' => $pelanggan_spks,
         ];
         return view('nota/nota_baru-pilih_spk', $data);
     }
 
     public function notaBaru_pSPK_pItem(Request $request)
     {
+        $load_num = SiteSetting::find(1);
+        if ($load_num !== 0) {
+            $load_num->value = 0;
+            $load_num->save();
+        }
+
+        $show_dump = true;
+        $show_hidden_dump = true;
+        $run_db = true;
+        $load_num_ignore = true;
+        
+        if ($show_hidden_dump === true) {
+            dump("load_num_value: " . $load_num->value);
+        }
+
+        if ($load_num->value > 0 && $load_num_ignore === false) {
+            $run_db = false;
+        }
+
         $reload_page = $request->session()->get('reload_page');
         if ($reload_page === true) {
             $request->session()->put('reload_page', false);
@@ -98,23 +158,45 @@ class NotaController extends Controller
          */
 
         $get = $request->input();
-        dump('get');
-        dump($get);
 
-        $spk_id = $get['spk_id'];
-        $spk_this = Spk::find($spk_id);
-        $pelanggan_this = Pelanggan::find($spk_this['pelanggan_id']);
+        if ($show_dump === true) {
+            dump('get');
+            dump($get);
+        }
 
-        /**
-         * nota_item_available Tadinya di ambil langsung dari table SpkProduk. Namun karena di table spk terdapat data yang sama
-         * dan juga lebih lengkap karena disertai juga dengan nama nya, maka kita consider jg untuk ambil data dari table spk
-         */
-        $nota_item_av = SpkProduk::where('spk_id', $spk_id)
+        $spks = array();
+        $arr_av_nota_items = array();
+        $arr_produks = array();
+
+        for ($i_spkID=0; $i_spkID < count($get['spk_id']); $i_spkID++) { 
+            $spk = Spk::find($get['spk_id'][$i_spkID]);
+            $av_nota_items = SpkProduk::where('spk_id', $spk['id'])
             ->where(function ($query) {
                 $query->where('status_nota', 'BELUM')
                     ->orWhere('status_nota', 'SEBAGIAN');
             })
             ->get();
+
+            $produks = array();
+            foreach ($av_nota_items as $av_nota_item) {
+                $produk = Produk::find($av_nota_item['produk_id']);
+                array_push($produks, $produk);
+            }
+
+            array_push($spks, $spk);
+            array_push($arr_av_nota_items, $av_nota_items);
+            array_push($arr_produks, $produks);
+        }
+
+        // $spk_id = $get['spk_id'];
+        // $spk_this = Spk::find($spk_id);
+        $pelanggan = Pelanggan::find($spks[0]['pelanggan_id']);
+
+        /**
+         * nota_item_available Tadinya di ambil langsung dari table SpkProduk. Namun karena di table spk terdapat data yang sama
+         * dan juga lebih lengkap karena disertai juga dengan nama nya, maka kita consider jg untuk ambil data dari table spk
+         */
+        
 
         // FILTER BERIKUTNYA ADALAH APAKAH ADA JUMLAH YANG SUDAH NOTA?
 
@@ -129,19 +211,13 @@ class NotaController extends Controller
         //     }
         // }
 
-        dump('nota_item_av');
-        dump($nota_item_av);
-        // dd($nota_item_av);
-
-        $produks = array();
-
-        for ($i = 0; $i < count($nota_item_av); $i++) {
-            $produk = Produk::find($nota_item_av[$i]['produk_id']);
-            array_push($produks, $produk);
+        if ($show_dump === true) {
+            dump('arr_av_nota_items');
+            dump($arr_av_nota_items);
+            // dd($arr_av_nota_items);
+            dump('arr_produks: ', $arr_produks);
         }
 
-        // dd('produks: ', $produks);
-        dump('produks: ', $produks);
 
 
         // $spk_nota_this = SpkNotas::where('spk_id', $spk_id)->get();
@@ -158,10 +234,10 @@ class NotaController extends Controller
 
         $data = [
             'csrf' => csrf_token(),
-            'spk' => $spk_this,
-            'pelanggan' => $pelanggan_this,
-            'nota_item_av' => $nota_item_av,
-            'produks' => $produks,
+            'spks' => $spks,
+            'pelanggan' => $pelanggan,
+            'arr_av_nota_items' => $arr_av_nota_items,
+            'arr_produks' => $arr_produks,
             'tgl_nota' => date('Y-m-d\TH:i:s'),
             'reload_page' => $reload_page,
         ];
@@ -185,8 +261,7 @@ class NotaController extends Controller
         $post = $request->input();
         if ($show_dump === true) {
             dump('post');
-            dump($post);
-            // dd($post);
+            dd($post);
         }
         /**
          * Mulai insert ke table notas, maka kita perlu mengetahui pelanggan_id, reseller_id terlebih dahulu.

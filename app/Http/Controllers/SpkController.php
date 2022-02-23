@@ -10,6 +10,7 @@ use App\Pelanggan;
 // use App\Kombi;
 use App\Produk;
 use App\ProdukHarga;
+use App\SiteSetting;
 // use App\SPJap;
 // use App\Standar;
 // use App\Stiker;
@@ -66,8 +67,48 @@ class SpkController extends Controller
 
     public function spk_baru()
     {
-        $pelanggan = new Pelanggan();
-        $d_label_pelanggan = $pelanggan->d_label_pelanggan();
+        $load_num = SiteSetting::find(1);
+        if ($load_num !== 0) {
+            $load_num->value = 0;
+            $load_num->save();
+        }
+
+        $show_dump = false;
+        $show_hidden_dump = false;
+        $run_db = true;
+        $load_num_ignore = true;
+        // Pada development mode, load number boleh diignore. Yang perlu diperhatikan adalah
+        // insert dan update database supaya tidak berantakan
+        if ($show_hidden_dump === true) {
+            dump("load_num_value: " . $load_num->value);
+        }
+
+        if ($load_num->value > 0 && $load_num_ignore === false) {
+            $run_db = false;
+        }
+        // $pelanggan = new Pelanggan();
+        // $d_label_pelanggan = $pelanggan->d_label_pelanggan();
+        $pelanggans = Pelanggan::all();
+        $d_label_pelanggan = array();
+        foreach ($pelanggans as $pelanggan) {
+            $label_nama = $pelanggan['nama'];
+            if ($pelanggan['reseller_id'] !== null) {
+                $nama_reseller = Pelanggan::find($pelanggan['reseller_id'])['nama'];
+                $label_nama = "$nama_reseller - " . $pelanggan['nama'];
+            }
+            $arr_to_push = [
+                "id" => $pelanggan['id'],
+                "label" => $label_nama,
+                "value" => $label_nama,
+            ];
+            array_push($d_label_pelanggan, $arr_to_push);
+        }
+
+        if ($show_dump === true) {
+            dump("d_label_pelanggan");
+            dump($d_label_pelanggan);
+        }
+
         // $d_nama_pelanggan_2 = $pelanggan->d_nama_pelanggan_2();
         // dd($d_label_pelanggan);
         // dd($d_label_pelanggan_2);
@@ -78,39 +119,56 @@ class SpkController extends Controller
 
     public function inserting_spk_item(Request $request)
     {
+        $load_num = SiteSetting::find(1);
+        if ($load_num !== 0) {
+            $load_num->value = 0;
+            $load_num->save();
+        }
+
+        $show_dump = true;
+        $show_hidden_dump = false;
+        $run_db = true;
+        $load_num_ignore = true;
+        
+        if ($show_hidden_dump === true) {
+            dump("load_num_value: " . $load_num->value);
+        }
+
+        if ($load_num->value > 0 && $load_num_ignore === false) {
+            $run_db = false;
+        }
         $get = $request->input();
-
         // #
-        // Karena akan sering bolak balik halaman ini, maka butuh bantuan variable lain
-        // yang akan menandakan, bahwa tidak perlu create spk lagi
-
-
-        // $spk = Spk::create([
-        //     'pelanggan_id' => $get['pelanggan_id'],
-        //     'reseller_id' => $get['reseller_id'],
-        //     'status' => 'PROSES',
-        //     'judul' => $get['judul'],
-        //     'created_at' => $get['tanggal'],
-        // ]);
-
-        // $no_spk = createNoSPK($get['tanggal']);
-        // $getmonth = (int)date('m', strtotime($get['tanggal']));
-        // $getyear = (int)date('Y', strtotime($get['tanggal']));
-        // $month_roman = integerToRoman($getmonth);
-
-        // $spk_update = Spk::find($spk['id']);
-        // $spk_update->no_spk = "01.$spk_update[id]/MCP-A/$month_roman/$getyear";
-        // $spk_update->save();
-
+        // Karena akan sering bolak balik halaman ini, maka request methodnya ditetapkan menjadi GET
+        $pelanggan = Pelanggan::find($get['pelanggan_id']);
+        $reseller = null;
+        if ($pelanggan['reseller_id'] !== null) {
+            $reseller = Pelanggan::find($pelanggan['reseller_id']);
+        }
+        $judul = $get['judul'];
         $tanggal = date('d-m-Y', strtotime($get['tanggal']));
         $spk_item = DB::table('temp_spk_produk')->get();
+
+        if ($show_dump) {
+            dump("get");
+            dump($get);
+            dump("pelanggan");
+            dump($pelanggan);
+        }
 
         $reload_page = $request->session()->get('reload_page');
         // dump($reload_page);
         if ($reload_page === true) {
             $request->session()->put('reload_page', false);
         }
-        $data = ['spks' => $get, 'spk_item' => $spk_item, 'tanggal' => $tanggal, 'reload_page' => $reload_page];
+        $data = [
+            'pelanggan' => $pelanggan,
+            'reseller' => $reseller,
+            'judul' => $judul,
+            'spk_item' => $spk_item,
+            'tanggal' => $tanggal,
+            'reload_page' => $reload_page
+        ];
         return view('spk.inserting_spk_item', $data);
 
         // dump(time());
@@ -338,10 +396,31 @@ class SpkController extends Controller
 
     public function inserting_item_db(Request $request)
     {
+        $load_num = SiteSetting::find(1);
+        if ($load_num !== 0) {
+            $load_num->value = 0;
+            $load_num->save();
+        }
+
+        $show_dump = true;
+        $show_hidden_dump = false;
+        $run_db = true;
+        $load_num_ignore = true;
+        
+        if ($show_hidden_dump === true) {
+            dump("load_num_value: " . $load_num->value);
+        }
+
+        if ($load_num->value > 0 && $load_num_ignore === false) {
+            $run_db = false;
+        }
+
         $post = $request->all();
 
-        dump($post);
-        // dd($post);
+        if ($show_dump === true) {
+            dump($post);
+            dump($post);
+        }
 
         /**
          * Menentukan semua variable yang nantinya akan diinsert ke table temp_spk_item
@@ -505,7 +584,7 @@ class SpkController extends Controller
         $spk_item = DB::table('temp_spk_produk')->get();
         $data = ['spks' => $post, 'spk_item' => $spk_item, 'go_back_number' => -2];
         $request->session()->put('reload_page', true);
-        return view('spk.inserting_item-db', $data);
+        return view('layouts.go-back-page', $data);
         // return $post;
     }
 
@@ -527,9 +606,33 @@ class SpkController extends Controller
      */
     public function store(Request $request)
     {
-        $post = $request->all();
-        // dd($post);
-        dump($post);
+        $load_num = SiteSetting::find(1);
+        if ($load_num !== 0) {
+            $load_num->value = 0;
+            $load_num->save();
+        }
+
+        $show_dump = true;
+        $show_hidden_dump = false;
+        $run_db = true;
+        $load_num_ignore = true;
+        
+        if ($show_hidden_dump === true) {
+            dump("load_num_value: " . $load_num->value);
+        }
+
+        if ($load_num->value > 0 && $load_num_ignore === false) {
+            $run_db = false;
+        }
+
+        $post = $request->input();
+        $pelanggan = Pelanggan::find($post['pelanggan_id']);
+
+        if ($show_dump === true) {
+            dump($post);
+            dump($post);
+        }
+
         if ($post['submit_type'] === 'proceed_spk') {
             $spk_item = DB::table('temp_spk_produk')->get();
             dump('spk_item');
@@ -719,7 +822,7 @@ class SpkController extends Controller
 
             $spk_id = DB::table('spks')->insertGetId([
                 'pelanggan_id' => $post['pelanggan_id'],
-                'reseller_id' => $post['reseller_id'],
+                'reseller_id' => $pelanggan['reseller_id'],
                 'status' => 'PROSES',
                 'judul' => $post['judul'],
                 // 'data_spk_item' => $string_spk_item_simple,
@@ -777,7 +880,7 @@ class SpkController extends Controller
 
             $request->session()->put('reload_page', true);
             $data = ['spk_item' => $spk_item, 'spks' => $post, 'go_back_number' => -3];
-            return view('spk.inserting_item-db', $data);
+            return view('layouts.go-back-page', $data);
         }
     }
 

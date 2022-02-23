@@ -563,7 +563,8 @@ function createCheckboxConfirmList(params, my_csrf) {
  */
 
 function isChecked(params) {
-    // console.log(params);
+    console.log("params");
+    console.log(params);
     const checkbox_all = document.querySelectorAll(
         `${params.class_checkbox}:checked`
     );
@@ -591,9 +592,12 @@ function isChecked(params) {
     }
 
     // SHOW BUTTON
-    // console.log('btnToShow');
+    // console.log("btnToShow");
     // console.log(btnToShow);
     if (btnToShow !== null) {
+        // console.log("btnToShow !== null");
+        // console.log("checkbox_all");
+        // console.log(checkbox_all);
         if (checkbox_all.length !== 0) {
             // console.log("checked");
             btnToShow.style.display = "block";

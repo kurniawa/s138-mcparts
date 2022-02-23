@@ -36,9 +36,6 @@
 </div>
 
 <div id="divMarginBottom" style="height: 20vh;"></div>
-<style>
-
-</style>
 
 <script>
 

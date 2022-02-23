@@ -2,8 +2,9 @@
 
 @section('content')
     
-<header class="header grid-2-auto">
+<header class="header grid-3-auto">
     <img class="w-0_8em ml-1_5em" src="/img/icons/back-button-white.svg" alt="" onclick="goBack();">
+    <h1 style="color: white">SPK</h1>
     <div class="justify-self-right pr-0_5em">
         <a href="/spk/spk_baru" id="btn-spk-baru" class="btn-atas-kanan2">
             + Buat SPK Baru
@@ -141,7 +142,10 @@ if (spks == undefined || spks.length == 0) {
             `<form method='GET' action='/spk/detail_spk' class='pb-0_5em pt-0_5em bb-1px-solid-grey'>
                 <div class='grid-5-9_45_25_18_5'>
                 <div class='circle-medium grid-1-auto justify-items-center font-weight-bold' style='background-color: ${randomColor()}'>${pelanggans[i].initial}</div>
-                <div>${pelanggans[i].nama} - ${pelanggans[i].daerah}</div>
+                <div>
+                    <div style="display:inline-block" class="border border-primary border-2 rounded p-1">${spks[i].no_spk}</div>
+                    <div>${pelanggans[i].nama} - ${pelanggans[i].daerah}</div>
+                </div>
                 <div class='grid-3-auto'>
                 <div class='grid-1-auto justify-items-center ${warnaTglPembuatan} b-radius-5px w-3_5em' style="color:white;">
                 <div style="font-size:2.5em">${getDay}</div><div>${getMonth}-${subGetYear}</div>
@@ -305,8 +309,10 @@ if (localStorage.getItem('dataSPKToEdit') !== null || localStorage.getItem('data
 }
 
 // Reload Page
-const reload_page = {!! json_encode($reload_page, JSON_HEX_TAG) !!};
-reloadPage(reload_page);
+const reload_page2 = {!! json_encode($reload_page, JSON_HEX_TAG) !!};
+reloadPage(reload_page2);
+
+reload_page();
 
 </script>
 

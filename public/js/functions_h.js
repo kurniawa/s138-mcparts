@@ -22,3 +22,15 @@ function reloadPage(reload_page) {
 
     return false;
 }
+
+function reload_page() {
+    // Reload Page Berdasarkan localStorage
+    const reload_page = localStorage.getItem("reload_page");
+    console.log("reload_page");
+    console.log(reload_page);
+
+    if (reload_page === "true") {
+        localStorage.setItem("reload_page", false);
+        window.location.reload();
+    }
+}
