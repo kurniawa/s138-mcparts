@@ -17,8 +17,8 @@ class Spkcpnota extends Migration
         //
         Schema::create('spkcp_notas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('spkcp_id')->nullable()->constrained('spk_produks')->onDelete('cascade');
-            $table->foreignId('nota_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('spkcp_id')->nullable()->constrained('spk_produks')->onDelete('CASCADE')->onUpdate('CASCADE');
+            $table->foreignId('nota_id')->nullable()->constrained()->onDelete('CASCADE')->onUpdate('CASCADE');
             $table->integer('jml');
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));

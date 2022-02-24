@@ -10,6 +10,7 @@ use App\Http\Controllers\EkspedisiController;
 use App\Http\Controllers\PrintOutSPK;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SjController;
+use App\Http\Controllers\SpkBaru;
 use App\Http\Controllers\SpkController;
 use App\Http\Controllers\SPKItemSelesai;
 use Illuminate\Support\Facades\Route;
@@ -46,7 +47,7 @@ Route::get('/spk/inserting_tankpad', [SpkController::class, "inserting_tankpad"]
 Route::get('/spk/inserting_busastang', [SpkController::class, "inserting_busastang"])->middleware('auth');
 Route::get('/spk/inserting_spjap', [SpkController::class, "inserting_spjap"])->middleware('auth');
 Route::get('/spk/inserting_stiker', [SpkController::class, "inserting_stiker"])->middleware('auth');
-Route::post('/spk/proceed_spk', [SpkController::class, "store"])->middleware('auth');
+Route::post('/spk/proceed_spk', [SpkBaru::class, "proceed_spk"])->middleware('auth');
 Route::get('/spk/detail_spk', [DetailSPKController::class, "index"]);
 Route::get('/spk/edit_spk_item', [DetailSPKController::class, "editSPKItem"])->middleware('auth');
 Route::post('/spk/edit_spk_item-db', [EditSPKFDetail::class, "index"])->middleware('auth');
