@@ -530,7 +530,7 @@ class SPKItemSelesai extends Controller
             $spk->save();
         }
 
-        $request->session()->put('reload_page', true);
+        // $request->session()->put('reload_page', true);
 
         $data = [
             'go_back_number' => -2,

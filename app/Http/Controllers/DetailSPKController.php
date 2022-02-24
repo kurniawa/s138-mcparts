@@ -28,11 +28,11 @@ class DetailSPKController extends Controller
             $run_db = false;
         }
 
-        $reload_page = $request->session()->get('reload_page');
+        // $reload_page = $request->session()->get('reload_page');
 
-        if ($reload_page === true) {
-            $request->session()->put('reload_page', false);
-        }
+        // if ($reload_page === true) {
+        //     $request->session()->put('reload_page', false);
+        // }
 
         if ($show_hidden_dump === true) {
             dump('load_num->value');
@@ -53,7 +53,7 @@ class DetailSPKController extends Controller
         }
         $produks = Spk::find($spk['id'])->produks;
         $spk_item = Spk::find($spk['id'])->spk_item;
-        
+
         if ($show_dump === true) {
             dump($get);
             dump('$spk');
@@ -69,7 +69,7 @@ class DetailSPKController extends Controller
             'spk_item' => $spk_item,
             'produks' => $produks,
             'my_csrf' => csrf_token(),
-            'reload_page' => $reload_page,
+            // 'reload_page' => $reload_page,
         ];
 
         return view('spk.detail_spk', $data);

@@ -462,11 +462,11 @@ Untuk Metode Hapus, sebaiknya tetap menggunakan form dengan method POST.
     Reload Page di lakukan dengan 2 tahap untuk jaga2 apabila tidak ter reload
     */
     // Reload Page Berdasarkan session
-    const reload_page2 = {!! json_encode($reload_page, JSON_HEX_TAG) !!};
-    console.log('reload_page2');
-    console.log(reload_page2);
+    // const reload_page2 = {-!! json_encode($reload_page, JSON_HEX_TAG) !!};
+    // console.log('reload_page2');
+    // console.log(reload_page2);
     
-    reloadPage(reload_page);
+    // reloadPage(reload_page);
     
     reload_page();
 </script>

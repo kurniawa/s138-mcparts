@@ -129,7 +129,7 @@ class SpkController extends Controller
         $show_hidden_dump = false;
         $run_db = true;
         $load_num_ignore = true;
-        
+
         if ($show_hidden_dump === true) {
             dump("load_num_value: " . $load_num->value);
         }
@@ -406,7 +406,7 @@ class SpkController extends Controller
         $show_hidden_dump = false;
         $run_db = true;
         $load_num_ignore = true;
-        
+
         if ($show_hidden_dump === true) {
             dump("load_num_value: " . $load_num->value);
         }
@@ -616,7 +616,7 @@ class SpkController extends Controller
         $show_hidden_dump = false;
         $run_db = true;
         $load_num_ignore = true;
-        
+
         if ($show_hidden_dump === true) {
             dump("load_num_value: " . $load_num->value);
         }
@@ -878,7 +878,7 @@ class SpkController extends Controller
 
             // uncomment
 
-            $request->session()->put('reload_page', true);
+            // $request->session()->put('reload_page', true);
             $data = ['spk_item' => $spk_item, 'spks' => $post, 'go_back_number' => -3];
             return view('layouts.go-back-page', $data);
         }
