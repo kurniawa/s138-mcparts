@@ -277,6 +277,7 @@ class NotaController extends Controller
         $data_nota_item = array();
         $d_spk_produk_id = array();
         $d_jml_input = array();
+        $d_spkcpnota_id = array();
         // $d_jml_av = array();
 
         $hrg_total_nota = 0;
@@ -290,17 +291,24 @@ class NotaController extends Controller
             }
             $spk = Spk::find($post['spk_id'][$i_spkID]);
 
+            $spk_produk_ids = array();
+            $jml_inputs = array();
             for ($i0 = 0; $i0 < count($post['spk_produk_id'][$i_spkID]); $i0++) {
                 if ((int)$post['jml_input'][$i_spkID][$i0] > 0 && (int)$post['jml_input'][$i_spkID][$i0] <= (int)$post['jml_av'][$i_spkID][$i0]) {
-                    array_push($d_spk_produk_id, $post['spk_produk_id'][$i_spkID][$i0]);
-                    array_push($d_jml_input, (int)$post['jml_input'][$i_spkID][$i0]);
+                    array_push($spk_produk_ids, $post['spk_produk_id'][$i_spkID][$i0]);
+                    array_push($jml_inputs, (int)$post['jml_input'][$i_spkID][$i0]);
                     // array_push($d_jml_av, (int)$post['jml_av'][$i0]);
                 }
+            } // END loop $i0
+
+            if ($show_dump === true) {
+                dump("spk_produk_ids setelah looping pertama");
+                dd($spk_produk_ids);
             }
 
-            $d_spkcpnota_id = array();
-            for ($i = 0; $i < count($d_spk_produk_id); $i++) {
-                $spk_produk = SpkProduk::find($d_spk_produk_id[$i]);
+            $spkcpnota_ids = array();
+            for ($i = 0; $i < count($spk_produk_ids); $i++) {
+                $spk_produk = SpkProduk::find($spk_produk_ids[$i]);
                 // $spkcpnota = SpkcpNota::where('spkcp_id', $spk_produk['id']);
                 dump('spk_produk: ', $spk_produk);
                 $produk = Produk::find($spk_produk['produk_id']);
@@ -391,10 +399,14 @@ class NotaController extends Controller
 
                 array_push($data_nota_item, $nota_item);
 
-                array_push($d_spkcpnota_id, $spkcpnota_id);
+                array_push($spkcpnota_ids, $spkcpnota_id);
                 // to recomment
                 // array_push($d_spkcpnota_id, $i);
-            }
+            } // END LOOP $i -> count($spk_produk_ids)
+
+            array_push($d_spk_produk_id, $spk_produk_ids);
+            array_push($d_jml_input, $jml_inputs);
+            array_push($d_spkcpnota_id, $spkcpnota_ids);
 
             // CEK SEMUA YANG PERLU DIINSERT
 
@@ -447,7 +459,7 @@ class NotaController extends Controller
                 // ]);
 
             }
-        }
+        } // END FOR $i_spkID
 
         if ($show_dump === true) {
             dump('d_spk_produk_id:', $d_spk_produk_id);

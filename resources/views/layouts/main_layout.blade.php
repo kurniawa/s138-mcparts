@@ -16,6 +16,9 @@
     <script src="/js/jquery-ui-1.12.1/jquery-ui.js"></script>
     <link href="/bootstrap-css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <script>
+        var reloadable_page = true;
+    </script>
     <script src="/js/functions_h.js"></script>
     <script src="/js/functions.js"></script>
     
@@ -222,6 +225,8 @@
         $(".closingGreyArea").hide();
         $(".lightBox").hide();
     }
+
+    reload_page(reloadable_page);
 
 </script>
 

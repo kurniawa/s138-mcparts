@@ -8,6 +8,7 @@
 
 <script>
     // Metode reload page dengan javascript untuk nantinya pada saat pindah halaman
-    localStorage.setItem("reload_page", true);
+    sessionStorage.setItem("reload_page", true);
+    reloadable_page = false;
  </script>
 @endsection

@@ -35,20 +35,6 @@
 
     console.log('tgl_pembuatan');
     console.log(tgl_pembuatan);
-    // Perbaikan mulai dari sini
-    // let spkToPrint;
-    // if (localStorage.getItem('dataSPKToPrint') != null) {
-    //     spkToPrint = localStorage.getItem('dataSPKToPrint');
-    //     spkToPrint = JSON.parse(spkToPrint);
-    //     console.log(spkToPrint);
-    // } else {
-    //     spkToPrint = localStorage.getItem('dataSPKToPrint');
-    //     spkToPrint = JSON.parse(spkToPrint);
-    //     console.log(spkToPrint);
-    // }
-
-    // const SPKDate = spks[i].created_at.split(' ')[0];
-    // const tgl_pembuatan = spk.created_at.split(' ')[0];
 
     var htmlTable =
         `

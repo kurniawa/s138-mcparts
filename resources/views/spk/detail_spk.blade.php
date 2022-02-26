@@ -468,7 +468,7 @@ Untuk Metode Hapus, sebaiknya tetap menggunakan form dengan method POST.
     
     // reloadPage(reload_page);
     
-    reload_page();
+    
 </script>
 
 <style>

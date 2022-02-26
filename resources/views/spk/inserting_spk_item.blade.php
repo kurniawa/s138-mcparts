@@ -224,7 +224,7 @@
         $("#containerBeginSPK").toggle();
     }
 
-    reload_page();
+    
     
 </script>
 @endsection

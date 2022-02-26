@@ -1,12 +1,12 @@
 const show_hidden_console = false;
 
-function randomColor() {
+function randomColor () {
     let arrayColor = ["#FFB08E", "#DEDEDE", "#D1FFCA", "#FFB800", "#706DFF"];
     let randomIndex = Math.floor(Math.random() * arrayColor.length);
     return arrayColor[randomIndex];
 }
 
-function reloadPage(reload_page) {
+function reloadPage (reload_page) {
     // RELOAD PAGE
     /**
      * Seletah reload pertama, maka controller yang berkaitan akan di panggil kembali, dimana
@@ -23,14 +23,14 @@ function reloadPage(reload_page) {
     return false;
 }
 
-function reload_page() {
-    // Reload Page Berdasarkan localStorage
-    const reload_page = localStorage.getItem("reload_page");
+function reload_page (reloadable_page) {
+    // Reload Page Berdasarkan sessionStorage
+    const reload_page = sessionStorage.getItem("reload_page");
     console.log("reload_page");
     console.log(reload_page);
 
-    if (reload_page === "true") {
-        localStorage.setItem("reload_page", false);
+    if (reload_page === "true" && reloadable_page === true) {
+        sessionStorage.setItem("reload_page", false);
         window.location.reload();
     }
 }
