@@ -93,10 +93,6 @@ class SPKItemSelesai extends Controller
          * 
          */
         $post = $request->input();
-        if ($show_dump === true) {
-            dump('post');
-            dump($post);
-        }
 
         // dd($post);
 
@@ -108,10 +104,7 @@ class SPKItemSelesai extends Controller
         $spk = Spk::find($post['spk_id']);
         $str_data_spk_item_old = $spk['data_spk_item'];
 
-        dump('data_spk_item_old');
-        dump($str_data_spk_item_old);
         $data_spk_item_old = json_decode($str_data_spk_item_old, true);
-        dump($data_spk_item_old);
         $data_spk_item_new = $data_spk_item_old;
 
         $d_spk_produk_id = $post['spk_produk_id'];
@@ -124,11 +117,22 @@ class SPKItemSelesai extends Controller
         $jumlah_total_new = $jumlah_total_old;
         $harga_total_new = $harga_total_old;
 
+        if ($show_dump === true) {
+            dump('post');
+            dump($post);
+            dump('spk');
+            dump($spk);
+            dump('data_spk_item_old');
+            dump($data_spk_item_old);
+            dump('d_spk_produk_id');
+            dump($d_spk_produk_id);
+        }
+
         for ($i = 0; $i < count($d_spk_produk_id); $i++) {
             /** DEFINISI VARIABLE AWAL */
             $spk_produk_this = SpkProduk::find($d_spk_produk_id[$i]);
-            // dump('spk_produk_this');
-            // dump($spk_produk_this);
+            dump('spk_produk_this awal');
+            dump($spk_produk_this);
             $deviasi_jml = (int)$post['deviasi_jml'][$i];
             $tbh_jml_selesai = (int)$post['tbh_jml_selesai'][$i];
             // $jumlah_akhir adalah jumlah masing-masing item setelah adanya deviasi jumlah
@@ -455,6 +459,10 @@ class SPKItemSelesai extends Controller
                 $spk_produk_this->save();
             }
 
+            // if ($i === 0) {
+            //     dd('looping 1 telah selesai!');
+            // }
+
             /**
              * UPDATE DATABASE SPK
              * ===================
@@ -486,6 +494,8 @@ class SPKItemSelesai extends Controller
             $data_spk_item_new[$index_data_spk_item]['jml_selesai'] = $jml_selesai_new;
             $data_spk_item_new[$index_data_spk_item]['status'] = $status;
         }
+
+        // dd("d_spk_produk_this SELESAI di loop dan di save!");
 
         /**
          * -UPDATE STATUS SPK-

@@ -251,7 +251,7 @@ class NotaController extends Controller
 
         $show_dump = true;
         $hide_dump = true;
-        $run_db = true;
+        $run_db = false;
         $load_num_ignore = false;
 
         if ($load_num->value > 0 && $load_num_ignore === false) {
@@ -261,7 +261,7 @@ class NotaController extends Controller
         $post = $request->input();
         if ($show_dump === true) {
             dump('post');
-            dump($post);
+            dd($post);
         }
         /**
          * Mulai insert ke table notas, maka kita perlu mengetahui pelanggan_id, reseller_id terlebih dahulu.
@@ -274,10 +274,10 @@ class NotaController extends Controller
         /**PENCEGAHAN apabila jumlah yang diinput ternyata 0 atau kurang dari 0, maka tidak dapat diproses ke nota 
          * JUGA APABILA jml_input <= jml_av
          */
-        $data_nota_item = array();
-        $d_spk_produk_id = array();
-        $d_jml_input = array();
-        $d_spkcpnota_id = array();
+        $d_data_nota_item = array();
+        $d_spk_produk_ids = array();
+        $d_jml_inputs = array();
+        $d_spkcpnota_ids = array();
         // $d_jml_av = array();
 
         $hrg_total_nota = 0;
@@ -303,10 +303,11 @@ class NotaController extends Controller
 
             if ($show_dump === true) {
                 dump("spk_produk_ids setelah looping pertama");
-                dd($spk_produk_ids);
+                dump($spk_produk_ids);
             }
 
             $spkcpnota_ids = array();
+            $data_nota_items = array();
             for ($i = 0; $i < count($spk_produk_ids); $i++) {
                 $spk_produk = SpkProduk::find($spk_produk_ids[$i]);
                 // $spkcpnota = SpkcpNota::where('spkcp_id', $spk_produk['id']);
@@ -319,7 +320,7 @@ class NotaController extends Controller
                     $hrg_per_item += $spk_produk['koreksi_harga'];
                 }
 
-                $hrg_total_item = (int)$hrg_per_item * (int)$d_jml_input[$i];
+                $hrg_total_item = (int)$hrg_per_item * (int)$jml_inputs[$i];
                 $hrg_total_nota += $hrg_total_item;
 
                 // MULAI INSERT KE nota_produks
@@ -329,7 +330,7 @@ class NotaController extends Controller
                 // DB::table('nota_produks')->insert([
                 //     'spk_id' => $spk['id'],
                 //     'produk_id' => $produk['id'],
-                //     'jumlah' => $d_jml_input[$i],
+                //     'jumlah' => $jml_inputs[$i],
                 //     'harga' => $hrg_per_item,
                 //     'koreksi_harga' => $spk_produk['koreksi_harga'],
                 // ]);
@@ -353,11 +354,11 @@ class NotaController extends Controller
 
                 $nota_jml_kapan = [
                     'nota_id' => '',
-                    'jml_item' => $d_jml_input[$i],
+                    'jml_item' => $jml_inputs[$i],
                     'tgl_input' => date('Y-m-d\TH:i:s'),
                 ];
 
-                $jml_sdh_nota += $d_jml_input[$i];
+                $jml_sdh_nota += $jml_inputs[$i];
                 $status_nota = 'BELUM';
 
                 $jml_total_item_ini = $spk_produk['jumlah'] + $spk_produk['deviasi_jml'];
@@ -383,8 +384,10 @@ class NotaController extends Controller
                     // to comment
                     $spkcpnota_id = DB::table('spkcp_notas')->insertGetId([
                         'spkcp_id' => $spk_produk['id'],
-                        'jml' => $d_jml_input[$i]
+                        'jml' => $jml_inputs[$i]
                     ]);
+                } else {
+                    $spkcpnota_id = 00;
                 }
 
 
@@ -392,83 +395,100 @@ class NotaController extends Controller
                     'spkcpnota_id' => $spkcpnota_id,
                     'produk_id' => $produk['id'],
                     'nama_nota' => $produk['nama_nota'],
-                    'jml_item' => $d_jml_input[$i],
+                    'jml_item' => $jml_inputs[$i],
                     'hrg_per_item' => $hrg_per_item,
                     'hrg_total_item' => $hrg_total_item,
                 ];
 
-                array_push($data_nota_item, $nota_item);
+                array_push($data_nota_items, $nota_item);
 
                 array_push($spkcpnota_ids, $spkcpnota_id);
                 // to recomment
-                // array_push($d_spkcpnota_id, $i);
+                // array_push($d_spkcpnota_ids, $i);
             } // END LOOP $i -> count($spk_produk_ids)
 
-            array_push($d_spk_produk_id, $spk_produk_ids);
-            array_push($d_jml_input, $jml_inputs);
-            array_push($d_spkcpnota_id, $spkcpnota_ids);
+            array_push($d_spk_produk_ids, $spk_produk_ids);
+            array_push($d_jml_inputs, $jml_inputs);
+            array_push($d_spkcpnota_ids, $spkcpnota_ids);
+            array_push($d_data_nota_item, $data_nota_items);
+
+            if ($show_dump === true) {
+                dump('$d_spk_produk_ids');
+                dump($d_spk_produk_ids);
+                dump('$d_jml_inputs');
+                dump($d_jml_inputs);
+                dump('$d_spkcpnota_ids');
+                dump($d_spkcpnota_ids);
+                dump('$d_data_nota_item');
+                dump($d_data_nota_item);
+            }
 
             // CEK SEMUA YANG PERLU DIINSERT
 
             // PENCEGAHAN APABILA SEMUA JUMLAH YANG DIINPUT TIDAK SESUAI (=== 0 atau < 0)
             // MAKA TIDAK PERLU ADA YANG DIINPUT KE DB
 
-            if (count($d_spk_produk_id) === 0) {
-                dump('TIDAK ADA YANG DI PROSES KE DATABASE, KARENA JUMLAH TIDAK SESUAI!');
-            } else {
-
-                dump('INSERT TABLE nota');
-                dump([
-                    'pelanggan_id' => $spk['pelanggan_id'],
-                    'reseller_id' => $spk['reseller_id'],
-                    'status' => 'PROSES',
-                    'data_nota_item' => json_encode($data_nota_item),
-                    'harga_total' => $hrg_total_nota,
-                ]);
-
-                dump('INSERT TABLE spk_notas', [
-                    'spk_id' => $spk['id'],
-                    'nota_id' => 'Dari insertGetId sebelumnya dulu',
-                ]);
-
-                // MULAI INSERT
-
-                if ($run_db === true) {
-                    // to comment:
-                    if ($i_spkID === 0) {
-                        $nota_id = DB::table('notas')->insertGetId([
+            for ($i_dSPKProdukID=0; $i_dSPKProdukID < count($d_spk_produk_ids); $i_dSPKProdukID++) { 
+                for ($i_SPKProduk=0; $i_SPKProduk < count($d_spk_produk_ids[$i_dSPKProdukID]); $i_SPKProduk++) { 
+                    if (count($d_spk_produk_ids) === 0) {
+                        dump('TIDAK ADA YANG DI PROSES KE DATABASE, KARENA JUMLAH TIDAK SESUAI!');
+                    } else {
+        
+                        dump('INSERT TABLE nota');
+                        dump([
                             'pelanggan_id' => $spk['pelanggan_id'],
                             'reseller_id' => $spk['reseller_id'],
+                            'status' => 'PROSES',
                             'data_nota_item' => json_encode($data_nota_item),
                             'harga_total' => $hrg_total_nota,
                         ]);
+        
+                        dump('INSERT TABLE spk_notas', [
+                            'spk_id' => $spk['id'],
+                            'nota_id' => 'Dari insertGetId sebelumnya dulu',
+                        ]);
+        
+                        // MULAI INSERT
+        
+                        if ($run_db === true) {
+                            // to comment:
+                            if ($i_spkID === 0) {
+                                $nota_id = DB::table('notas')->insertGetId([
+                                    'pelanggan_id' => $spk['pelanggan_id'],
+                                    'reseller_id' => $spk['reseller_id'],
+                                    'data_nota_item' => json_encode($data_nota_item),
+                                    'harga_total' => $hrg_total_nota,
+                                ]);
+                            }
+        
+                            DB::table('spk_notas')->insert([
+                                'spk_id' => $spk['id'],
+                                'nota_id' => $nota_id,
+                            ]);
+                        }
+        
+                        // UPDATE spk_produk dan spkcpnota
+        
+                        // to recomment
+                        // DB::table('spkcp_notas')->insert([
+                        //     'spkcp_id' => 1,
+                        //     'jml' => 150
+                        // ]);
+        
                     }
-
-                    DB::table('spk_notas')->insert([
-                        'spk_id' => $spk['id'],
-                        'nota_id' => $nota_id,
-                    ]);
+                    
                 }
-
-                // UPDATE spk_produk dan spkcpnota
-
-                // to recomment
-                // DB::table('spkcp_notas')->insert([
-                //     'spkcp_id' => 1,
-                //     'jml' => 150
-                // ]);
-
             }
         } // END FOR $i_spkID
 
         if ($show_dump === true) {
-            dump('d_spk_produk_id:', $d_spk_produk_id);
-            dump('count($d_spk_produk_id):', count($d_spk_produk_id));
-            dump('$d_jml_input:', $d_jml_input);
+            dump('d_spk_produk_ids:', $d_spk_produk_ids);
+            dump('count($d_spk_produk_ids):', count($d_spk_produk_ids));
+            dump('$d_jml_inputs:', $d_jml_inputs);
         }
 
-        for ($i3 = 0; $i3 < count($d_spk_produk_id); $i3++) {
-            $spk_produk = SpkProduk::find($d_spk_produk_id[$i3]);
+        for ($i3 = 0; $i3 < count($d_spk_produk_ids); $i3++) {
+            $spk_produk = SpkProduk::find($d_spk_produk_ids[$i3]);
             $nota_jml_kapan = json_decode($spk_produk['nota_jml_kapan'], true);
             dump('nota_jml_kapan: ', $nota_jml_kapan);
             dump('index_nota_jml_kpn[$i3]: ', $index_nota_jml_kpn[$i3]);
@@ -478,7 +498,7 @@ class NotaController extends Controller
             dump('spk_produk_new: ', $spk_produk);
 
             // to comment
-            $spkcpnota = SpkcpNota::where('spkcp_id', $d_spk_produk_id[$i3])->latest()->get();
+            $spkcpnota = SpkcpNota::where('spkcp_id', $d_spk_produk_ids[$i3])->latest()->get();
             // to recomment
             // $spkcpnota = SpkcpNota::where('spkcp_id', 1)->latest()->get();
             dump('spkcpnota:', $spkcpnota);

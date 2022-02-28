@@ -59,6 +59,7 @@ class DetailSPKController extends Controller
             dump('$spk');
             dump($spk);
             dump($pelanggan);
+            dump('$produks');
             dump($produks);
             dump($spk_item);
         }
@@ -71,6 +72,30 @@ class DetailSPKController extends Controller
             'my_csrf' => csrf_token(),
             // 'reload_page' => $reload_page,
         ];
+
+        // DB run testing seeder apabila ada file yang terhapus
+        $run_seeder = false;
+        if ($run_seeder === true) {
+            
+            $spk_produk = [
+                ['spk_id' => 1, 'produk_id' => 1, 'jumlah' => 150, 'harga' => 18000],
+                ['spk_id' => 1, 'produk_id' => 2, 'jumlah' => 150, 'harga' => 27500],
+                ['spk_id' => 1, 'produk_id' => 3, 'jumlah' => 150, 'harga' => 12500],
+                ['spk_id' => 1, 'produk_id' => 4, 'jumlah' => 300, 'harga' => 5500],
+                ['spk_id' => 1, 'produk_id' => 5, 'jumlah' => 150, 'harga' => 9000],
+                ['spk_id' => 1, 'produk_id' => 6, 'jumlah' => 150, 'harga' => 30000],
+                ['spk_id' => 1, 'produk_id' => 7, 'jumlah' => 300, 'harga' => 4000],
+            ];
+            for ($i = 0; $i < count($spk_produk); $i++) {
+                SpkProduk::create([
+                    'spk_id' => $spk_produk[$i]['spk_id'],
+                    'produk_id' => $spk_produk[$i]['produk_id'],
+                    'jumlah' => $spk_produk[$i]['jumlah'],
+                    'harga' => $spk_produk[$i]['harga'],
+                ]);
+            }
+            dump("seeder finished!");
+        }
 
         return view('spk.detail_spk', $data);
     }
