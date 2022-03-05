@@ -128,6 +128,9 @@ class SPKItemSelesai extends Controller
             dump($d_spk_produk_id);
         }
 
+        $d_tgl_selesai = array();
+        $recent_date = '?';
+
         for ($i = 0; $i < count($d_spk_produk_id); $i++) {
             /** DEFINISI VARIABLE AWAL */
             $spk_produk_this = SpkProduk::find($d_spk_produk_id[$i]);
@@ -219,6 +222,7 @@ class SPKItemSelesai extends Controller
                     ];
 
                     array_push($jmlSelesai_kapan, $arrToPush);
+                    array_push($d_tgl_selesai, $post['tgl_selesai'][$i]);
                 } else {
                     // Apabila memang sebelumnya sudah ada yang selesai dan juga checkbox tahapan di klik
                     if (isset($post['tahapan'])) {
@@ -248,6 +252,7 @@ class SPKItemSelesai extends Controller
                             ];
 
                             array_push($jmlSelesai_kapan, $arrToPush);
+                            array_push($d_tgl_selesai, $post["tgl_selesai_dd-$i"]);
                         } else {
                             // disini brrti tahap yang sama, artinya JSON yang sebelumnya diganti dengan ini
                             $jmlSelesai_kapan[$i_tahap_sama] = [
@@ -255,6 +260,7 @@ class SPKItemSelesai extends Controller
                                 'jmlSelesai' => $tbh_jml_selesai,
                                 'tglSelesai' => date('Y-m-d', strtotime($post["tgl_selesai_dd-$i"])),
                             ];
+                            array_push($d_tgl_selesai, $post["tgl_selesai_dd-$i"]);
                         }
 
                         // dump('arrToPush');
@@ -407,6 +413,11 @@ class SPKItemSelesai extends Controller
 
             if ($jml_selesai_new === $jumlah_akhir) {
                 $status = 'SELESAI';
+                $recent_date = max(array_map('strtotime', $d_tgl_selesai));
+                if ($show_dump === true) {
+                    dump('recent_date');
+                    dump($recent_date);
+                }
             } elseif ($jml_selesai_new !== 0) {
                 $status = 'SEBAGIAN';
             } elseif ($jml_selesai_new === 0) {
@@ -535,6 +546,10 @@ class SPKItemSelesai extends Controller
         $spk->jumlah_total = $jumlah_total_new;
         $spk->harga_total = $harga_total_new;
         $spk->status = $spk_status;
+
+        if ($spk_status === 'SELESAI') {
+            $spk->finished_at = date('Y-m.d', $recent_date);
+        }
 
         if ($run_db === true) {
             $spk->save();

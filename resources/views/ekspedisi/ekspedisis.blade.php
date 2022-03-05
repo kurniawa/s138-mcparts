@@ -26,8 +26,8 @@
     </div>
 </div>
 
-<div id="list_ekspedisi">
-</div>
+<table id="list_ekspedisi" style="width:100%">
+</table>
 
 <script>
     const show_console = true;
@@ -47,26 +47,33 @@
         });
 
             // "<div class='grid-4-8-auto-auto-5'>" +
-        $htmlEkspedisi = "<div class='ml-1em mr-1em pt-1em pb-1em bb-1px-solid-grey table'>" +
-            "<div class=''>" +
-            "<div class='font-weight-bold'>" + ekspedisi.nama + "</div>" +
-            "<div class='font-weight-bold justify-self-right color-blue-purple'>" + ekspedisi.no_kontak + "</div>" +
-            "<div id='divDropdown-" + ekspedisi.id + "' class='justify-self-right' onclick='showDropDown(" + ekspedisi.id + ");'><img class='w-0_7em' src='img/icons/dropdown.svg'></div>" +
-            "</div>" +
-            "<div id='divDetailDropDown-" + ekspedisi.id + "' class='b-1px-solid-grey p-0_5em mt-1em' style='display:none'>" +
+        $htmlEkspedisi = 
+            "<tr>" +
+                "<td class='font-weight-bold'>" + ekspedisi.nama + "</td>" +
+                "<td class='font-weight-bold color-blue-purple'>" + ekspedisi.no_kontak + "</td>" +
+                "<td id='divDropdown-" + ekspedisi.id + "' onclick='showDropDown(" + ekspedisi.id + ");'><img src='/img/icons/dropdown.svg' style='width:0.7em'></td>" +
+            "</tr>" +
+            "<tr id='divDetailDropDown-" + ekspedisi.id + "' class='b-1px-solid-grey p-0_5em mt-1em' style='display:none'>" +
+            `<td colspan=3>
+                <table>
+                    <tr>
+                        <td class='grid-2-10-auto'>
+                            <div><img class='w-2em' src='/img/icons/address.svg'></div>
+                            <div>${html_alamat_eks}</div>
+                        </td>
 
-            "<div class='grid-2-10-auto'>" +
-            "<div><img class='w-2em' src='/img/icons/address.svg'></div>" +
-            "<div>" + html_alamat_eks + "</div>" +
-            "</div>" +
+                        <td class='grid-1-auto justify-items-right mt-1em'>
+                            <a href='05-05-detail-ekspedisi.php?id=${ekspedisi.id}' class='bg-color-orange-1 b-radius-50px pl-1em pr-1em'>Lebih Detail >></a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
 
-            "<div class='grid-1-auto justify-items-right mt-1em'>" +
-            "<a href='05-05-detail-ekspedisi.php?id=" + ekspedisi.id + "' class='bg-color-orange-1 b-radius-50px pl-1em pr-1em'>Lebih Detail >></a>" +
-            "</div>" +
+            </tr>
+            <tr class='alamat text-right' style='display:none'>${html_alamat_eks}</tr>
+            `;
 
-            "</div>" +
-            "</div>" +
-            "<div class='alamat justify-self-right text-right' style='display:none'>" + html_alamat_eks + "</div>";
+
 
         $("#list_ekspedisi").append($htmlEkspedisi);
     }

@@ -66,8 +66,14 @@ if (spks == undefined || spks.length == 0) {
         // apabila tanggal selesai telah ada
         var html_tgl_sls = "";
 
+        var nama_pelanggan = `${pelanggans[i].nama} - ${pelanggans[i].daerah}`;
+        if (resellers[i] !== 'none') {
+            nama_pelanggan = `${resellers[i].nama}: ${nama_pelanggan}`;
+        }
+
         if (spks[i].finished_at !== '' && spks[i].finished_at !== null) {
-            const arrayDateSls = spks[i].finished_at.split('-');
+            const SPKDateSls = spks[i].finished_at.split(' ')[0];
+            const arrayDateSls = SPKDateSls.split('-');
             const getYearSls = arrayDateSls[0];
             const getMonthSls = arrayDateSls[1];
             const getDaySls = arrayDateSls[2];
@@ -81,8 +87,9 @@ if (spks == undefined || spks.length == 0) {
             warnaTglPembuatan = 'bg-color-orange-2';
 
             html_tgl_sls = `
-                <div class='grid-1-auto justify-items-center ${warnaTglSls} color-white b-radius-5px w-3_5em'>
-                <div class='font-size-2_5em'>${getDaySls}</div><div>${getMonthSls}-${subGetYearSls}</div></div>
+                <div class='grid-1-auto justify-items-center ${warnaTglSls} b-radius-5px w-3_5em' style="color:white;">
+                    <div style='font-size:2.5em'>${getDaySls}</div><div>${getMonthSls}-${subGetYearSls}</div>
+                </div>
             `;
         } else {
             var statusColor = "";
@@ -144,12 +151,12 @@ if (spks == undefined || spks.length == 0) {
                 <div class='circle-medium grid-1-auto justify-items-center font-weight-bold' style='background-color: ${randomColor()}'>${pelanggans[i].initial}</div>
                 <div>
                     <div style="display:inline-block" class="border border-primary border-2 rounded p-1">${spks[i].no_spk}</div>
-                    <div>${pelanggans[i].nama} - ${pelanggans[i].daerah}</div>
+                    <div>${nama_pelanggan}</div>
                 </div>
                 <div class='grid-3-auto'>
-                <div class='grid-1-auto justify-items-center ${warnaTglPembuatan} b-radius-5px w-3_5em' style="color:white;">
-                <div style="font-size:2.5em">${getDay}</div><div>${getMonth}-${subGetYear}</div>
-                </div>
+                    <div class='grid-1-auto justify-items-center ${warnaTglPembuatan} b-radius-5px w-3_5em' style="color:white;">
+                        <div style="font-size:2.5em">${getDay}</div><div>${getMonth}-${subGetYear}</div>
+                    </div>
                 -
                 ${html_tgl_sls}
                 </div>
