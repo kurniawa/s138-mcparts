@@ -13,6 +13,7 @@ use App\Http\Controllers\SjController;
 use App\Http\Controllers\SpkBaru;
 use App\Http\Controllers\SpkController;
 use App\Http\Controllers\SPKItemSelesai;
+use App\Http\Controllers\TutorialController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,6 +33,11 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return view('/about/about');
 });
+/**
+ * TUTORIAL
+ */
+
+Route::get('/tutorial/tutorial-laravel_vapor', [TutorialController::class, "laravel_vapor"]);
 
 /**
  * SPK
