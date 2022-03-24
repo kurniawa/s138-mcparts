@@ -29,9 +29,7 @@
 <table id="list_ekspedisi" style="width:100%">
 </table>
 
-<script>
-    const show_console = true;
-     
+<script>     
     const ekspedisis = {!! json_encode($ekspedisis, JSON_HEX_TAG) !!};
 
     if (show_console === true) {
@@ -54,16 +52,19 @@
                 "<td id='divDropdown-" + ekspedisi.id + "' onclick='showDropDown(" + ekspedisi.id + ");'><img src='/img/icons/dropdown.svg' style='width:0.7em'></td>" +
             "</tr>" +
             "<tr id='divDetailDropDown-" + ekspedisi.id + "' class='b-1px-solid-grey p-0_5em mt-1em' style='display:none'>" +
-            `<td colspan=3>
-                <table>
+            `<td colspan=3 style="padding:1rem;">
+                <table style="width:100%">
                     <tr>
-                        <td class='grid-2-10-auto'>
+                        <td style="width:50%;">
                             <div><img class='w-2em' src='/img/icons/address.svg'></div>
+                            <br>
                             <div>${html_alamat_eks}</div>
                         </td>
-
-                        <td class='grid-1-auto justify-items-right mt-1em'>
-                            <a href='05-05-detail-ekspedisi.php?id=${ekspedisi.id}' class='bg-color-orange-1 b-radius-50px pl-1em pr-1em'>Lebih Detail >></a>
+                        <td valign="bottom" align="right">
+                            <form action='ekspedisi/detail' method='GET'>
+                                <input type="hidden" name="ekspedisi_id" value="${ekspedisi.id}">
+                                <button class="btn btn-warning">Lebih Detail</button>
+                            </form>
                         </td>
                     </tr>
                 </table>
@@ -76,19 +77,6 @@
 
 
         $("#list_ekspedisi").append($htmlEkspedisi);
-    }
-
-    function showDropDown(id) {
-        $selectedDiv = $("#divDetailDropDown-" + id);
-        $selectedDiv.toggle(400);
-
-        setTimeout(() => {
-            if ($selectedDiv.css("display") === "block") {
-                $("#divDropdown-" + id + " img").attr("src", "/img/icons/dropup.svg");
-            } else {
-                $("#divDropdown-" + id + " img").attr("src", "/img/icons/dropdown.svg");
-            }
-        }, 450);
     }
 
 </script>

@@ -10,6 +10,7 @@
 namespace PHPUnit\Util\TestDox;
 
 use function sprintf;
+use PHPUnit\Framework\TestResult;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -31,6 +32,8 @@ final class HtmlResultPrinter extends ResultPrinter
                 font-variant-ligatures: common-ligatures;
                 font-kerning: normal;
                 margin-left: 2em;
+                background-color: #ffffff;
+                color: #000000;
             }
 
             body > ul > li {
@@ -78,6 +81,10 @@ EOT;
 </html>
 EOT;
 
+    public function printResult(TestResult $result): void
+    {
+    }
+
     /**
      * Handler for 'start run' event.
      */
@@ -103,7 +110,7 @@ EOT;
     /**
      * Handler for 'on test' event.
      */
-    protected function onTest($name, bool $success = true): void
+    protected function onTest(string $name, bool $success = true): void
     {
         $this->write(
             sprintf(

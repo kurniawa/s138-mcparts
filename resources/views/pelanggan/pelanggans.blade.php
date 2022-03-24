@@ -1,7 +1,7 @@
 @extends('layouts/main_layout')
 
 @section('content')
-    
+
 <header class="header grid-2-auto">
     <img class="w-0_8em ml-1_5em" src="/img/icons/back-button-white.svg" alt="" onclick="goBack();">
     <div class="justify-self-right pr-0_5em">
@@ -30,8 +30,8 @@
 </div>
 
 <script>
-    const show_console = true;
- 
+    // const show_console = true;
+
     const pelanggans = {!! json_encode($pelanggans, JSON_HEX_TAG) !!};
     const resellers = {!! json_encode($resellers, JSON_HEX_TAG) !!};
 
@@ -52,7 +52,7 @@
             console.log("$randomIndex: " + $randomIndex);
             var initial = "";
             if (pelanggan.initial === null || typeof pelanggan.initial === 'undefined') {
-                
+
             } else {
                 initial = pelanggan.initial;
             }

@@ -26,8 +26,13 @@ function reloadPage (reload_page) {
 function reload_page (reloadable_page) {
     // Reload Page Berdasarkan sessionStorage
     const reload_page = sessionStorage.getItem("reload_page");
-    console.log("reload_page");
-    console.log(reload_page);
+
+    if (show_console === true) {
+        // console.log("reload_page");
+        // console.log(reload_page);
+        // console.log("reloadable_page");
+        // console.log(reloadable_page);
+    }
 
     if (reload_page === "true" && reloadable_page === true) {
         sessionStorage.setItem("reload_page", false);

@@ -1,7 +1,7 @@
 @extends('layouts/main_layout')
 
 @section('content')
-    
+
 <header class="header grid-2-auto">
     <img class="w-0_8em ml-1_5em" src="/img/icons/back-button-white.svg" alt="" onclick="goBack();">
     <div>
@@ -9,10 +9,22 @@
     </div>
 </header>
 
-<form action="04-03-pelanggan-baru-2.php" method="POST">
+<form action="/pelanggan/pelanggan-baru-db" method="POST">
+    @csrf
     <div class="ml-1em mr-1em mt-2em">
-        <input name="nama_pelanggan" id="nama" class="input-1 pb-1em" type="text" placeholder="Nama/Perusahaan/Pabrik">
-        <textarea class="mt-1em pt-1em pl-1em text-area-mode-1" name="alamat_pelanggan" id="alamat" placeholder="Alamat"></textarea>
+        <input name="nama_pelanggan" id="nama" class="form-control @error('nama_pelanggan') is-invalid @enderror" type="text" placeholder="Nama/Perusahaan/Pabrik">
+        @error('nama_pelanggan')
+            <div class="invalid-feedback">{{ $message }}</div>
+        @enderror
+
+        <label for="">Alamat:</label>
+        <input type="text" class="form-control" name="alamat_pelanggan[]" placeholder="Baris 1">
+        <input type="text" class="form-control" name="alamat_pelanggan[]" placeholder="Baris 2">
+        <input type="text" class="form-control" name="alamat_pelanggan[]" placeholder="Baris 3">
+        <input type="text" class="form-control" name="alamat_pelanggan[]" placeholder="Baris 4">
+        <input type="text" class="form-control" name="alamat_pelanggan[]" placeholder="Baris 5">
+        <br>
+
         <div class="grid-2-auto grid-column-gap-1em mt-1em">
             <input name="pulau" id="pulau" class="input-1 pb-1em" type="text" placeholder="Pulau">
             <input name="daerah" id="daerah" class="input-1 pb-1em" type="text" placeholder="Daerah">

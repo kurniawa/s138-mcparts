@@ -3,10 +3,12 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DetailSPKController;
 use App\Http\Controllers\EditSPKFDetail;
+use App\Http\Controllers\EkspedisiBaruController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NotaController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\EkspedisiController;
+use App\Http\Controllers\PelangganBaruController;
 use App\Http\Controllers\PrintOutSPK;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\SjController;
@@ -65,18 +67,39 @@ Route::post('/spk/penetapan_item_selesai-db', [SPKItemSelesai::class, "setItemSe
 Route::get('/spk/print_out_spk', [PrintOutSPK::class, "index"]);
 
 // PELANGGAN
-Route::get('/pelanggan', [PelangganController::class, "index"]);
-Route::get('/pelanggan/pelanggan-detail', [PelangganController::class, "pelanggan_detail"]);
-Route::get('/pelanggan/pelanggan-baru', [PelangganController::class, "pelanggan_baru"])->middleware('auth');
+Route::controller(PelangganController::class)->group(function ()
+{
+    Route::get('/pelanggan', 'index');
+    Route::get('/pelanggan/pelanggan-detail', 'pelanggan_detail');
+});
+Route::controller(PelangganBaruController::class)->group(function ()
+{
+   Route::get('/pelanggan/pelanggan-baru', 'pelanggan_baru')->middleware('auth');
+   Route::post('/pelanggan/pelanggan-baru-db', 'create')->middleware('auth');
+});
 
 /**
  * EKSPEDISI
  */
-Route::get('/ekspedisi', [EkspedisiController::class, "index"]);
+// Route::get('/ekspedisi', [EkspedisiController::class, "index"]);
+Route::controller(EkspedisiController::class)->group(function () {
+    Route::get('/ekspedisi', "index");
+    Route::get('/ekspedisi/detail', 'ekspedisi_detail');
+});
+// group route by controller. Dapat dilakukan mulai dari Laravel 9:
+Route::controller(EkspedisiBaruController::class)->group(function () {
+    Route::get('/ekspedisi/ekspedisi-baru', "index");
+    Route::post('/ekspedisi/ekspedisi-baru-db', "ekspedisi_baru_db");
+});
+Route::controller(EkspedisiEdit::class)->group(function () {
+    Route::get('/ekspedisi/edit', "ekspedisi_edit");
+    Route::post('/ekspedisi/edit-db', "ekspedisi_edit_db");
+    Route::post('/ekspedisi/hapus', "ekspedisi_hapus");
+});
 
 /**
  * NOTA
- * 
+ *
  * Terkadang saya butuh get, supaya ketika back, tidak terjadi masalah expired.
  */
 Route::get('/nota', [NotaController::class, 'index']);

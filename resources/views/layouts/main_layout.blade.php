@@ -18,10 +18,11 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <script>
         var reloadable_page = true;
+        const show_console = true;
     </script>
     <script src="/js/functions_h.js"></script>
     <script src="/js/functions.js"></script>
-    
+
     <style>
         a {
             text-decoration: none;
@@ -32,13 +33,21 @@
             text-decoration: underline;
             color: #0d6efd;
         }
+        #loading-progress-icon {
+            position: fixed;
+            width: 5rem;
+            top: 20%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
     </style>
 
     <title>MC-Parts Smart System</title>
 </head>
 
 <body>
-    
+    <img id="loading-progress-icon" src="/img/icons/loading/gear_loading-violet.gif" alt="">
+
     @yield('content')
 </body>
 
@@ -47,15 +56,16 @@
 
 <script>
     function showDropDown(id) {
-        // console.log("run dropdown!");
+        // console.log(`run dropdown! ID=${id}`);
         $selectedDiv = $("#divDetailDropDown-" + id);
         $selectedDiv.toggle(400);
 
         setTimeout(() => {
-            if ($selectedDiv.css("display") === "block") {
-                $("#divDropdown-" + id + " img").attr("src", "img/icons/dropup.svg");
+            // console.log(`$selectedDiv.css("display") = ${$selectedDiv.css("display")}`);
+            if ($selectedDiv.css("display") === "block" || $selectedDiv.css("display") === "table-row") {
+                $("#divDropdown-" + id + " img").attr("src", "/img/icons/dropup.svg");
             } else {
-                $("#divDropdown-" + id + " img").attr("src", "img/icons/dropdown.svg");
+                $("#divDropdown-" + id + " img").attr("src", "/img/icons/dropdown.svg");
             }
         }, 450);
     }
@@ -227,7 +237,15 @@
     }
 
     reload_page(reloadable_page);
-
+    // $('#loading-progress-icon').hide();
+    document.onreadystatechange = function () {
+        if (document.readyState === 'complete') {
+            console.log(document.readyState);
+            // document.getElementById("PreLoaderBar").style.display = "none";
+            // $('#loading-progress-icon').hide(300);
+            $('#loading-progress-icon').hide(500);
+        }
+    };
 </script>
 
 </html>
