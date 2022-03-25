@@ -56,19 +56,42 @@ class PelangganBaruController extends Controller
         $request->validate([
             'nama_pelanggan' => 'required',
             // 'alamat_pelanggan[]' => 'required',
-            // 'daerah' => 'required',
-            // 'pulau' => 'required',
+            'daerah' => 'required',
+            'pulau' => 'required',
         ]);
 
         $post = $request->input();
 
         if ($show_dump === true) {
-            dump("post:", $post);
+            dd("post:", $post);
         }
+
+        // ALAMAT
+        $arr_alamat_pelanggan = $post['alamat_pelanggan'];
+        $alamat_pelanggan = "";
+
+        $i_arrAlamatEks = 0;
+        foreach ($arr_alamat_pelanggan as $baris_alamat_pelanggan) {
+            if ($baris_alamat_pelanggan === null || $baris_alamat_pelanggan === "") {
+                # Kalau tidak diisi, maka tidak perlu ada yang diinput
+            } else {
+                if ($i_arrAlamatEks !== 0) {
+                    $alamat_pelanggan .= "[br]";
+                }
+                $alamat_pelanggan .= $baris_alamat_pelanggan;
+            }
+            $i_arrAlamatEks++;
+        }
+
 
         if ($run_db === true) {
             Pelanggan::create([
                 'nama' => $post['nama_pelanggan'],
+                'daerah' => $post['daerah'],
+                'no_kontak' => $post['kontak_pelanggan'],
+                'pulau' => $post['pulau'],
+                'initial' => $post['singkatan_pelanggan'],
+                'ktrg' => $post['keterangan'],
             ]);
         }
 
